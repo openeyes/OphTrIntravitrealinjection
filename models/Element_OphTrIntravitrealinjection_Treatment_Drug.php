@@ -22,6 +22,7 @@
  * The followings are the available columns in table:
  * @property string $id
  * @property string $name
+ * @property boolean $available
  *
  * The followings are the available model relations:
  *
@@ -59,11 +60,11 @@ class Element_OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'safe'),
-			array('name', 'required'),
+			array('name, available', 'safe'),
+			array('name, available', 'required'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on' => 'search'),
+			array('id, name, available', 'safe', 'on' => 'search'),
 		);
 	}
 	
@@ -72,12 +73,7 @@ class Element_OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
 		return array(
-			'element_type' => array(self::HAS_ONE, 'ElementType', 'id','on' => "element_type.class_name='".get_class($this)."'"),
-			'eventType' => array(self::BELONGS_TO, 'EventType', 'event_type_id'),
-			'event' => array(self::BELONGS_TO, 'Event', 'event_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 		);
@@ -91,6 +87,7 @@ class Element_OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
+			'available' => 'Available'
 		);
 	}
 
