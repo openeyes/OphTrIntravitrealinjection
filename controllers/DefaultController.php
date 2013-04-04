@@ -30,4 +30,44 @@ class DefaultController extends BaseEventTypeController {
 	public function actionPrint($id) {
 		parent::actionPrint($id);
 	}
+	
+	/*
+	 * override to set the defaults on the elements that are arrived at dynamically
+	 */
+	public function getDefaultElements($action, $event_type_id=false, $event=false) {
+		$elements = parent::getDefaultElements($action, $event_type_id, $event);
+	
+		if ($action == 'create' && empty($_POST)) {
+			// set any calculated defaults on the elements
+			foreach ($elements as $element) {
+				// get the side of the episode diagnosis and use that as the default for the elements
+				if ($this->episode && $this->episode->eye_id) {	
+					$element->eye_id = $this->episode->eye_id;
+				}
+			}
+		}
+		
+		return $elements;
+	}
+	
+	/*
+	 * similar to setPOSTManyToMany, but will actually call methods on the elements that will create database entries
+	* should be called on create and update.
+	*
+	*/
+	protected function storePOSTManyToMany($elements) {
+		foreach ($elements as $el) {
+			if (get_class($el) == 'Element_OphTrIntravitrealinjection_Complications') {
+				$el->updateDecisionTreeResponses(SplitEventTypeElement::LEFT,
+						isset($_POST['Element_OphTrIntravitrealinjection_Complications']['left_complications']) ?
+						$_POST['Element_OphTrIntravitrealinjection_Complications']['left_complications'] :
+						array());
+				$el->updateDecisionTreeResponses(SplitEventTypeElement::RIGHT,
+						isset($_POST['Element_OphTrIntravitrealinjection_Complications']['right_complications']) ?
+						$_POST['Element_OphTrIntravitrealinjection_Complications']['right_complications'] :
+						array());
+	
+			}
+		}
+	}
 }

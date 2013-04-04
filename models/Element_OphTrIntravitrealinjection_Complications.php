@@ -87,8 +87,8 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
 			// TODO: determine whether this can be altered to be a MANY_MANY when testing
-			'left_complications' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment', 'element_id', 'on' => 'left_previousinterventions.exceptional_side = ' . SplitEventTypeElement::LEFT),
-			'right_complications' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment', 'element_id', 'on' => 'left_previousinterventions.exceptional_side = ' . SplitEventTypeElement::RIGHT),
+			'left_complications' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment', 'element_id', 'on' => 'left_complications.eye_id = ' . SplitEventTypeElement::LEFT),
+			'right_complications' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment', 'element_id', 'on' => 'right_complications.eye_id = ' . SplitEventTypeElement::RIGHT),
 		);
 	}
 
@@ -104,8 +104,10 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 		return array(
 			'id' => 'ID',
 			'event_id' => 'Event',
-			'complicat' => 'complications',
-			'oth_descrip' => 'Other Description',
+			'left_complications' => 'Complications',
+			'right_complications' => 'Complications',
+			'left_oth_descrip' => 'Other Description',
+			'right_oth_descrip' => 'Other Description',
 		);
 	}
 
@@ -182,6 +184,48 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 	protected function beforeValidate()
 	{
 		return parent::beforeValidate();
+	}
+	
+	public function updateComplications($side, $complication_ids) {
+		$current_complications = array();
+		$save_complications = array();
+		if ($side == $this::LEFT) {
+			$complications = $this->left_complications;
+		}
+		elseif ($side == $this::RIGHT) {
+			$complications = $this->right_complications;
+		}
+		else {
+			throw Exception("Invalid side value");
+		}
+		
+		foreach ($complications as $curr_comp) {
+			$current_complications[$curr_comp->et_ophtrintravitinjection_complicat_complicat_id] = $curr_comp;
+		}
+		
+		// go through each update complication, if there isn't one for this element,
+		// create it and store for saving
+		// if there is, check if the value is the same ... if it has changed
+		// update and store for saving, otherwise remove from the current responses array
+		// anything left in current responses at the end is ripe for deleting
+		foreach ($complication_ids as $comp_id) {
+			if (!array_key_exists($comp_id, $current_complications)) {
+				$s = new OphCoTherapyapplication_PatientSuitability_DecisionTreeNodeResponse();
+				$s->attributes = array('element_id' => $this->id, 'eye_id' => $side, 'et_ophtrintravitinjection_complicat_complicat_id' => $comp_id);
+				$save_complications[] = $s;
+			} else {
+				// don't want to delete later
+				unset($current_complications[$node_id]);
+			}
+		}
+		// save what needs saving
+		foreach ($save_complications as $save) {
+			$save->save();
+		}
+		// delete the rest
+		foreach ($current_complications as $curr) {
+			$curr->delete();
+		}
 	}
 }
 ?>

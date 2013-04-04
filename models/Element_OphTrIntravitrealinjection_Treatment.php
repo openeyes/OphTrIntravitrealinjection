@@ -78,13 +78,13 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		return array(
 			array('event_id, eye_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' .
 				'right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id', 'safe'),
-			array('left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ', 'requiredIfSide', 'left'),
-			array('right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, ', 'requiredIfSide', 'right'),
+			array('left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ', 'requiredIfSide', 'side' => 'left'),
+			array('right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, ', 'requiredIfSide', 'side' => 'right'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, event_id, eye_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' .
 				'right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id', 'safe', 'on' => 'search'),
-			array('number', 'numerical', 'integerOnly' => true, 'min' => 1, 'message' => 'Number of Injections must be higher or equal to 1'),
+			array('left_number, right_number', 'numerical', 'integerOnly' => true, 'min' => 1, 'message' => 'Number of Injections must be higher or equal to 1'),
 		);
 	}
 	

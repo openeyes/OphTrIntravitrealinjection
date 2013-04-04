@@ -18,5 +18,7 @@
  */
 ?>
 
-<?php echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_complications]', $side . '_complications', 'et_ophtrintravitinjection_complicat_complicat_id', CHtml::listData(Element_OphTrIntravitrealinjection_Complications_Complicat::model()->findAll(array('order'=>'display_order asc')),'id','name'), $element->et_ophtrintravitinjection_complicat_complicat_defaults, array('empty' => '- Please select -', 'label' => 'complications'))?>
-<?php echo $form->textArea($element, $side . '_oth_descrip', array('rows' => 4, 'cols' => 30))?>
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_cra') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_cra'} ? 'Yes' : 'No'?></div>
+</div>

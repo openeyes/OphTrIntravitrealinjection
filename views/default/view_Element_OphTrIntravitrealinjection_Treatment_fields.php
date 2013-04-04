@@ -18,5 +18,27 @@
  */
 ?>
 
-<?php echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_complications]', $side . '_complications', 'et_ophtrintravitinjection_complicat_complicat_id', CHtml::listData(Element_OphTrIntravitrealinjection_Complications_Complicat::model()->findAll(array('order'=>'display_order asc')),'id','name'), $element->et_ophtrintravitinjection_complicat_complicat_defaults, array('empty' => '- Please select -', 'label' => 'complications'))?>
-<?php echo $form->textArea($element, $side . '_oth_descrip', array('rows' => 4, 'cols' => 30))?>
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_drug_id') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_drug'}->name ?></div>
+</div>
+
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_number') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_number'} ?></div>
+</div>
+
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_batch_number') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_batch_number'} ?></div>
+</div>
+
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_batch_expiry_date') ?>:</div>
+	<div class="data"><?php echo $element->NHSDate($side . '_batch_expiry_date') ?></div>
+</div>
+
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_injection_given_by_id') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_injection_given_by'}->ReversedFullName ?></div>
+</div>

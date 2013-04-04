@@ -20,27 +20,21 @@
 
 <h4 class="elementTypeName"><?php echo $element->elementType->name?></h4>
 
-<table class="subtleWhite normalText">
-	<tbody>
-		<tr>
-			<td width="30%"><?php echo CHtml::encode($element->getAttributeLabel('drug_id'))?></td>
-			<td><span class="big"><?php echo $element->drug ? $element->drug->name : 'None'?></span></td>
-		</tr>
-		<tr>
-			<td width="30%"><?php echo CHtml::encode($element->getAttributeLabel('number'))?></td>
-			<td><span class="big"><?php echo $element->number?></span></td>
-		</tr>
-		<tr>
-			<td width="30%"><?php echo CHtml::encode($element->getAttributeLabel('batch_number'))?></td>
-			<td><span class="big"><?php echo CHtml::encode($element->batch_number)?></span></td>
-		</tr>
-		<tr>
-			<td width="30%"><?php echo CHtml::encode($element->getAttributeLabel('batch_expiry_date'))?></td>
-			<td><span class="big"><?php echo CHtml::encode($element->NHSDate('batch_expiry_date'))?></span></td>
-		</tr>
-		<tr>
-			<td width="30%"><?php echo CHtml::encode($element->getAttributeLabel('injection_given_by_id'))?></td>
-			<td><span class="big"><?php echo $element->injection_given_by ? $element->injection_given_by->name : 'None'?></span></td>
-		</tr>
-	</tbody>
-</table>
+	<div class="cols2 clearfix">
+		<div class="left eventDetail">
+			<?php if($element->hasRight()) {
+				$this->renderPartial('view_' . get_class($element) . '_fields',
+					array('side' => 'right', 'element' => $element));
+			} else { ?>
+			Not recorded
+			<?php } ?>
+		</div>
+		<div class="right eventDetail">
+			<?php if($element->hasLeft()) {
+				$this->renderPartial('view_' . get_class($element) . '_fields',
+					array('side' => 'left', 'element' => $element));
+			} else { ?>
+			Not recorded
+			<?php } ?>
+		</div>
+	</div>

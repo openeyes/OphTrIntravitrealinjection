@@ -46,7 +46,7 @@
 			<div class="activeForm">
 				<a href="#" class="removeSide">-</a>
 				<?php $this->renderPartial('form_' . get_class($element) . '_fields',
-					array('side' => 'right', 'element' => $element, 'form' => $form, 'data' => $data)); ?>
+					array('side' => 'left', 'element' => $element, 'form' => $form, 'data' => $data)); ?>
 			</div>
 			<div class="inactiveForm">
 				<a href="#">Add left side</a>

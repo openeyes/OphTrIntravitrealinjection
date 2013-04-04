@@ -18,5 +18,26 @@
  */
 ?>
 
-<?php echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_complications]', $side . '_complications', 'et_ophtrintravitinjection_complicat_complicat_id', CHtml::listData(Element_OphTrIntravitrealinjection_Complications_Complicat::model()->findAll(array('order'=>'display_order asc')),'id','name'), $element->et_ophtrintravitinjection_complicat_complicat_defaults, array('empty' => '- Please select -', 'label' => 'complications'))?>
-<?php echo $form->textArea($element, $side . '_oth_descrip', array('rows' => 4, 'cols' => 30))?>
+
+	<div class="eventDetail aligned">
+		<div class="label"><?php echo $element->getAttributeLabel($side . '_complications') ?>:</div>
+		<div class="data">
+			<?php if (!$element->{$side . '_complications'}) {?>
+				<h4>None</h4>
+			<?php }else{?>
+				<h4>
+					<?php foreach ($element->{$side . '_complications'} as $item) {
+						echo $item->et_ophtrintravitinjection_complicat_complicat->name?><br/>
+					<?php }?>
+				</h4>
+			<?php }?>
+		</div>
+	</div>
+
+	<?php if ($element->{$side . '_oth_descrip'}) { ?>
+		<div class="eventDetail aligned">
+			<div class="label"><?php echo $element->getAttributeLabel($side . '_oth_descrip') ?>:</div>
+			<div class="data"><?php echo CHtml::encode($element->{$side . '_oth_descrip'}) ?></div>
+		</div>
+	<?php } ?>
+

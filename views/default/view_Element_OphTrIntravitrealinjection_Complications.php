@@ -20,29 +20,22 @@
 
 <h4 class="elementTypeName"><?php echo $element->elementType->name?></h4>
 
-<table class="subtleWhite normalText">
-	<tbody>
-		<tr>
-			<td colspan="2">
-				<div class="colThird">
-					<b><?php echo CHtml::encode($element->getAttributeLabel('complicat'))?>:</b>
-					<div class="eventHighlight medium">
-						<?php if (!$element->complicats) {?>
-							<h4>None</h4>
-						<?php }else{?>
-							<h4>
-								<?php foreach ($element->complicats as $item) {
-									echo $item->et_ophtrintravitinjection_complicat_complicat->name?><br/>
-								<?php }?>
-							</h4>
-						<?php }?>
-					</div>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td width="30%"><?php echo CHtml::encode($element->getAttributeLabel('oth_descrip'))?></td>
-			<td><span class="big"><?php echo CHtml::encode($element->oth_descrip)?></span></td>
-		</tr>
-	</tbody>
-</table>
+	<div class="cols2 clearfix">
+		<div class="left eventDetail">
+			<?php if($element->hasRight()) {
+				$this->renderPartial('view_' . get_class($element) . '_fields',
+					array('side' => 'right', 'element' => $element));
+			} else { ?>
+			Not recorded
+			<?php } ?>
+		</div>
+		<div class="right eventDetail">
+			<?php if($element->hasLeft()) {
+				$this->renderPartial('view_' . get_class($element) . '_fields',
+					array('side' => 'left', 'element' => $element));
+			} else { ?>
+			Not recorded
+			<?php } ?>
+		</div>
+	</div>
+	

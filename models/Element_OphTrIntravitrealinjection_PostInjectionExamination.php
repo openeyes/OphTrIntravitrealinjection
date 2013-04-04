@@ -67,8 +67,8 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		return array(
 			array('event_id, eye_id, left_cra, right_cra, ', 'safe'),
 			array('eye_id', 'required'),
-			array('left_cra', 'requiredIfSide', 'left'),
-			array('right_cra', 'requiredIfSide', 'right'),
+			array('left_cra', 'requiredIfSide', 'side' => 'left'),
+			array('right_cra', 'requiredIfSide', 'side' => 'right'),
 			// The following rule is used by search().
 			array('id, event_id, eye_id, left_cra, right_cra, ', 'safe', 'on' => 'search'),
 		);
