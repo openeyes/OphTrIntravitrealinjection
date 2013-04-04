@@ -23,8 +23,9 @@
  * The followings are the available columns in table:
  * @property string $id
  * @property integer $event_id
- * @property integer $cra
- * @property string $iop
+ * @property integer $eye_id
+ * @property integer $left_cra
+ * @property string $right_cra
  *
  * The followings are the available model relations:
  *
@@ -35,7 +36,7 @@
  * @property User $usermodified
  */
 
-class Element_OphTrIntravitrealinjection_PostInjectionExamination extends BaseEventTypeElement
+class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitEventTypeElement
 {
 	public $service;
 
@@ -64,11 +65,12 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends BaseEv
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, cra, iop, ', 'safe'),
-			array('cra, iop, ', 'required'),
+			array('event_id, eye_id, left_cra, right_cra, ', 'safe'),
+			array('eye_id', 'required'),
+			array('left_cra', 'requiredIfSide', 'left'),
+			array('right_cra', 'requiredIfSide', 'right'),
 			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, event_id, cra, iop, ', 'safe', 'on' => 'search'),
+			array('id, event_id, eye_id, left_cra, right_cra, ', 'safe', 'on' => 'search'),
 		);
 	}
 	
@@ -85,9 +87,14 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends BaseEv
 			'event' => array(self::BELONGS_TO, 'Event', 'event_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
+			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
 		);
 	}
 
+	public function sidedFields() {
+		return array('cra');
+	}
+	
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -96,8 +103,8 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends BaseEv
 		return array(
 			'id' => 'ID',
 			'event_id' => 'Event',
-			'cra' => 'CRA',
-			'iop' => 'IOP',
+			'left_cra' => 'CRA',
+			'right_cra' => 'CRA',
 		);
 	}
 
@@ -114,8 +121,8 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends BaseEv
 
 		$criteria->compare('id', $this->id, true);
 		$criteria->compare('event_id', $this->event_id, true);
-		$criteria->compare('cra', $this->cra);
-		$criteria->compare('iop', $this->iop);
+		$criteria->compare('left_cra', $this->left_cra);
+		$criteria->compare('right_cra', $this->right_cra);
 		
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,

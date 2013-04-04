@@ -23,11 +23,16 @@
  * The followings are the available columns in table:
  * @property string $id
  * @property integer $event_id
- * @property integer $drug_id
- * @property integer $number
- * @property string $batch_number
- * @property string $batch_expiry_date
- * @property integer $injection_given_by_id
+ * @property integer $left_drug_id
+ * @property integer $left_number
+ * @property string $left_batch_number
+ * @property string $left_batch_expiry_date
+ * @property integer $left_injection_given_by_id
+ * @property integer $right_drug_id
+ * @property integer $right_number
+ * @property string $right_batch_number
+ * @property string $right_batch_expiry_date
+ * @property integer $right_injection_given_by_id
  *
  * The followings are the available model relations:
  *
@@ -36,11 +41,13 @@
  * @property Event $event
  * @property User $user
  * @property User $usermodified
- * @property Element_OphTrIntravitrealinjection_Treatment_Drug $drug
- * @property Firm $injection_given_by
+ * @property Element_OphTrIntravitrealinjection_Treatment_Drug $left_drug
+ * @property User $left_injection_given_by
+ * @property Element_OphTrIntravitrealinjection_Treatment_Drug $right_drug
+ * @property User $right_injection_given_by
  */
 
-class Element_OphTrIntravitrealinjection_Treatment extends BaseEventTypeElement
+class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 {
 	public $service;
 
@@ -69,11 +76,14 @@ class Element_OphTrIntravitrealinjection_Treatment extends BaseEventTypeElement
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, drug_id, number, batch_number, batch_expiry_date, injection_given_by_id, ', 'safe'),
-			array('drug_id, number, batch_number, batch_expiry_date, injection_given_by_id, ', 'required'),
+			array('event_id, eye_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' .
+				'right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id', 'safe'),
+			array('left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ', 'requiredIfSide', 'left'),
+			array('right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, ', 'requiredIfSide', 'right'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, event_id, drug_id, number, batch_number, batch_expiry_date, injection_given_by_id, ', 'safe', 'on' => 'search'),
+			array('id, event_id, eye_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' .
+				'right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id', 'safe', 'on' => 'search'),
 			array('number', 'numerical', 'integerOnly' => true, 'min' => 1, 'message' => 'Number of Injections must be higher or equal to 1'),
 		);
 	}
@@ -91,11 +101,18 @@ class Element_OphTrIntravitrealinjection_Treatment extends BaseEventTypeElement
 			'event' => array(self::BELONGS_TO, 'Event', 'event_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
-			'drug' => array(self::BELONGS_TO, 'Element_OphTrIntravitrealinjection_Treatment_Drug', 'drug_id'),
-			'injection_given_by' => array(self::BELONGS_TO, 'Firm', 'injection_given_by_id'),
+			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
+			'left_drug' => array(self::BELONGS_TO, 'Element_OphTrIntravitrealinjection_Treatment_Drug', 'left_drug_id'),
+			'right_drug' => array(self::BELONGS_TO, 'Element_OphTrIntravitrealinjection_Treatment_Drug', 'right_drug_id'),
+			'left_injection_given_by' => array(self::BELONGS_TO, 'User', 'left_injection_given_by_id'),
+			'right_injection_given_by' => array(self::BELONGS_TO, 'User', 'right_injection_given_by_id'),
 		);
 	}
 
+	public function sidedFields() {
+		return array('drug_id', 'number', 'batch_number', 'batch_expiry_date', 'injection_given_by_id');
+	}
+	
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -104,11 +121,16 @@ class Element_OphTrIntravitrealinjection_Treatment extends BaseEventTypeElement
 		return array(
 			'id' => 'ID',
 			'event_id' => 'Event',
-			'drug_id' => 'Drug',
-			'number' => 'Number of Injections',
-			'batch_number' => 'Batch Number',
-			'batch_expiry_date' => 'Batch Expiry Date',
-			'injection_given_by_id' => 'Injection Given By',
+			'left_drug_id' => 'Drug',
+			'left_number' => 'Number of Injections',
+			'left_batch_number' => 'Batch Number',
+			'left_batch_expiry_date' => 'Batch Expiry Date',
+			'left_injection_given_by_id' => 'Injection Given By',
+			'right_drug_id' => 'Drug',
+			'right_number' => 'Number of Injections',
+			'right_batch_number' => 'Batch Number',
+			'right_batch_expiry_date' => 'Batch Expiry Date',
+			'right_injection_given_by_id' => 'Injection Given By',
 		);
 	}
 
@@ -125,11 +147,16 @@ class Element_OphTrIntravitrealinjection_Treatment extends BaseEventTypeElement
 
 		$criteria->compare('id', $this->id, true);
 		$criteria->compare('event_id', $this->event_id, true);
-		$criteria->compare('drug_id', $this->drug_id);
-		$criteria->compare('number', $this->number);
-		$criteria->compare('batch_number', $this->batch_number);
-		$criteria->compare('batch_expiry_date', $this->batch_expiry_date);
-		$criteria->compare('injection_given_by_id', $this->injection_given_by_id);
+		$criteria->compare('left_drug_id', $this->left_drug_id);
+		$criteria->compare('left_number', $this->left_number);
+		$criteria->compare('left_batch_number', $this->left_batch_number);
+		$criteria->compare('left_batch_expiry_date', $this->left_batch_expiry_date);
+		$criteria->compare('left_injection_given_by_id', $this->left_injection_given_by_id);
+		$criteria->compare('right_drug_id', $this->right_drug_id);
+		$criteria->compare('right_number', $this->right_number);
+		$criteria->compare('right_batch_number', $this->right_batch_number);
+		$criteria->compare('right_batch_expiry_date', $this->right_batch_expiry_date);
+		$criteria->compare('right_injection_given_by_id', $this->right_injection_given_by_id);
 		
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,

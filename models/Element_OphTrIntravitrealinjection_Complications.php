@@ -32,10 +32,11 @@
  * @property Event $event
  * @property User $user
  * @property User $usermodified
- * @property Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment $complicats
+ * @property array(Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment) $left_complications
+ * @property array(Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment) $right_complications
  */
 
-class Element_OphTrIntravitrealinjection_Complications extends BaseEventTypeElement
+class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeElement
 {
 	public $service;
 
@@ -64,11 +65,10 @@ class Element_OphTrIntravitrealinjection_Complications extends BaseEventTypeElem
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, oth_descrip, ', 'safe'),
-			array('', 'required'),
+			array('event_id, eye_id, left_oth_descrip, right_oth_descrip', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, event_id, oth_descrip, ', 'safe', 'on' => 'search'),
+			array('id, event_id, eye_id, left_oth_descrip, right_oth_descrip', 'safe', 'on' => 'search'),
 		);
 	}
 	
@@ -85,10 +85,17 @@ class Element_OphTrIntravitrealinjection_Complications extends BaseEventTypeElem
 			'event' => array(self::BELONGS_TO, 'Event', 'event_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
-			'complicats' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment', 'element_id'),
+			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
+			// TODO: determine whether this can be altered to be a MANY_MANY when testing
+			'left_complications' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment', 'element_id', 'on' => 'left_previousinterventions.exceptional_side = ' . SplitEventTypeElement::LEFT),
+			'right_complications' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment', 'element_id', 'on' => 'left_previousinterventions.exceptional_side = ' . SplitEventTypeElement::RIGHT),
 		);
 	}
 
+	public function sidedFields() {
+		return array('oth_descrip');
+	}
+	
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */

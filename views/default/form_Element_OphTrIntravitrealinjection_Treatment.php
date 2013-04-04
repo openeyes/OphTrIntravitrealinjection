@@ -24,10 +24,34 @@
 	data-element-type-name="<?php echo $element->elementType->name?>"
 	data-element-display-order="<?php echo $element->elementType->display_order?>">
 	<h4 class="elementTypeName"><?php echo $element->elementType->name; ?></h4>
-
-	<?php echo $form->dropDownList($element, 'drug_id', CHtml::listData(Element_OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order'=> 'display_order asc')),'id','name'),array('empty'=>'- Please select -'))?>
-	<?php echo $form->textField($element, 'number', array('size' => '10'))?>
-	<?php echo $form->textField($element, 'batch_number', array('size' => '32'))?>
-	<?php echo $form->datePicker($element, 'batch_expiry_date', array('maxDate' => 'today'), array('style'=>'width: 110px;'))?>
-	<?php echo $form->dropDownList($element, 'injection_given_by_id', CHtml::listData(Firm::model()->findAll(array('order'=> 'name asc')),'id','name'),array('empty'=>'- Please select -'))?>
+	
+	<div class="cols2 clearfix">
+		<?php echo $form->hiddenInput($element, 'eye_id', false, array('class' => 'sideField')); ?>
+		<div
+			class="side left eventDetail<?php if(!$element->hasRight()) { ?> inactive<?php } ?>"
+			data-side="right">
+			<div class="activeForm">
+				<a href="#" class="removeSide">-</a>
+				<?php $this->renderPartial('form_' . get_class($element) . '_fields',
+					array('side' => 'right', 'element' => $element, 'form' => $form, 'data' => $data)); ?>
+			</div>
+			<div class="inactiveForm">
+				<a href="#">Add right side</a>
+			</div>
+		</div>
+	
+		<div
+			class="side right eventDetail<?php if(!$element->hasLeft()) { ?> inactive<?php } ?>"
+			data-side="left">
+			<div class="activeForm">
+				<a href="#" class="removeSide">-</a>
+				<?php $this->renderPartial('form_' . get_class($element) . '_fields',
+					array('side' => 'right', 'element' => $element, 'form' => $form, 'data' => $data)); ?>
+			</div>
+			<div class="inactiveForm">
+				<a href="#">Add left side</a>
+			</div>
+		</div>
+	
+	</div>
 </div>

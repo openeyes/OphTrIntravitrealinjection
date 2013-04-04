@@ -24,7 +24,34 @@
 	data-element-type-name="<?php echo $element->elementType->name?>"
 	data-element-display-order="<?php echo $element->elementType->display_order?>">
 	<h4 class="elementTypeName"><?php echo $element->elementType->name; ?></h4>
-
-	<?php echo $form->multiSelectList($element, 'MultiSelect_complicat', 'complicats', 'et_ophtrintravitinjection_complicat_complicat_id', CHtml::listData(Element_OphTrIntravitrealinjection_Complications_Complicat::model()->findAll(array('order'=>'display_order asc')),'id','name'), $element->et_ophtrintravitinjection_complicat_complicat_defaults, array('empty' => '- Please select -', 'label' => 'complications'))?>
-	<?php echo $form->textArea($element, 'oth_descrip', array('rows' => 4, 'cols' => 30))?>
+	
+	<div class="cols2 clearfix">
+		<?php echo $form->hiddenInput($element, 'eye_id', false, array('class' => 'sideField')); ?>
+		<div
+			class="side left eventDetail<?php if(!$element->hasRight()) { ?> inactive<?php } ?>"
+			data-side="right">
+			<div class="activeForm">
+				<a href="#" class="removeSide">-</a>
+				<?php $this->renderPartial('form_' . get_class($element) . '_fields',
+					array('side' => 'right', 'element' => $element, 'form' => $form, 'data' => $data)); ?>
+			</div>
+			<div class="inactiveForm">
+				<a href="#">Add right side</a>
+			</div>
+		</div>
+	
+		<div
+			class="side right eventDetail<?php if(!$element->hasLeft()) { ?> inactive<?php } ?>"
+			data-side="left">
+			<div class="activeForm">
+				<a href="#" class="removeSide">-</a>
+				<?php $this->renderPartial('form_' . get_class($element) . '_fields',
+					array('side' => 'right', 'element' => $element, 'form' => $form, 'data' => $data)); ?>
+			</div>
+			<div class="inactiveForm">
+				<a href="#">Add left side</a>
+			</div>
+		</div>
+	
+	</div>
 </div>
