@@ -20,9 +20,25 @@
 
 <h1><?php echo $title ? $title : "Intravitreal Injection Admin" ?></h1>
 
-<a href="<?php echo Yii::app()->createUrl('OphTrIntravitrealinjection/admin/create' . $dataProvider->modelClass); ?>">Add New</a>
+<a href="<?php echo Yii::app()->createUrl('OphTrIntravitrealinjection/admin/create' . $model_class); ?>">Add New</a>
 
-<?php $this->widget('zii.widgets.CListView', array(
-	'dataProvider'=>$dataProvider,
-	'itemView'=>'list_' . $dataProvider->modelClass,
-)); ?>
+<div>
+	<ul class="grid reduceheight">
+		<li class="header">
+			<span class="column_name">Name</span>
+			<span class="column_available">Available?</span>
+		</li>
+		<div class="sortable">
+			<?php
+			foreach ($model_list as $i => $model) {?>
+				<li class="<?php if ($i%2 == 0) {?>even<?php }else{?>odd<?php }?>" data-attr-id="<?php echo $model->id?>">
+					<?php 
+					$this->renderPartial('list_' . get_class($model), array(
+						'model' => $model,
+						));
+					?>
+				</li>
+			<?php }?>
+		</div>
+	</ul>
+</div>

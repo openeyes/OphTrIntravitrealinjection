@@ -19,8 +19,5 @@
 
 ?>
 
-<div class="view">
-
-<a href="<?php echo Yii::app()->createUrl($this->module->getName() . '/admin/update' . get_class($data), array('id'=> $data->id)) ?>"><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>: <?php echo $data->name ?></a>
-	
-</div>
+<span class="column_name"><a class="drugItem" href="<?php echo Yii::app()->createUrl($this->module->getName() . '/admin/update' . get_class($model), array('id'=> $model->id)) ?>"><?php echo $model->name?></a></span>
+<span class="column_available"><?php echo $model->available ? 'Yes' : 'No'; ?></span>

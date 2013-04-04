@@ -24,10 +24,13 @@ class AdminController extends ModuleAdminController
 	// Treatment Drug actions
 	public function actionViewAllElement_OphTrIntravitrealinjection_Treatment_Drug() {
 		$dataProvider=new CActiveDataProvider('Element_OphTrIntravitrealinjection_Treatment_Drug');
+		$model_list = Element_OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order' => 'display_order asc'));
+		$this->jsVars['OphTrIntravitrealinjection_sort_url'] = $this->createUrl('sortTreatmentDrugs');
 		
 		$this->render('list',array(
-				'dataProvider'=>$dataProvider,
+				'model_list'=>$model_list,
 				'title'=>'Treatment Drugs',
+				'model_class'=>'Element_OphTrIntravitrealinjection_Treatment_Drug',
 		));
 	}
 	
@@ -36,7 +39,14 @@ class AdminController extends ModuleAdminController
 		
 		if (isset($_POST['Element_OphTrIntravitrealinjection_Treatment_Drug'])) {
 			$model->attributes = $_POST['Element_OphTrIntravitrealinjection_Treatment_Drug'];
-		
+			
+			if ($bottom_drug = Element_OphTrIntravitrealinjection_Treatment_Drug::model()->find(array('order'=>'display_order desc'))) {
+				$display_order = $bottom_drug->display_order+1;
+			} else {
+				$display_order = 1;
+			}
+			$model->display_order = $display_order;
+			
 			if ($model->save()) {
 				Audit::add('Element_OphTrIntravitrealinjection_Treatment_Drug', 'create', serialize($model->attributes));
 				Yii::app()->user->setFlash('success', 'Treatment drug created');
@@ -70,4 +80,19 @@ class AdminController extends ModuleAdminController
 		));
 	}
 	
+	/*
+	 * sorts the drugs into the provided order (NOTE does not support a paginated list of drugs)
+	 */
+	public function actionSortTreatmentDrugs() {
+		if (!empty($_POST['order'])) {
+			foreach ($_POST['order'] as $i => $id) {
+				if ($drug = Element_OphTrIntravitrealinjection_Treatment_Drug::model()->findByPk($id)) {
+					$drug->display_order = $i+1;
+					if (!$drug->save()) {
+						throw new Exception("Unable to save drug: ".print_r($drug->getErrors(),true));
+					}
+				}
+			}
+		}
+	}
 }
