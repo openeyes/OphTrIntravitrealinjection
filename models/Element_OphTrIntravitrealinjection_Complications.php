@@ -66,6 +66,8 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 		// will receive user inputs.
 		return array(
 			array('event_id, eye_id, left_oth_descrip, right_oth_descrip', 'safe'),
+			array('left_complications', 'complicationsOtherValidation', 'side' => 'left'),
+			array('right_complications', 'complicationsOtherValidation', 'side' => 'right'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, event_id, eye_id, left_oth_descrip, right_oth_descrip', 'safe', 'on' => 'search'),
@@ -87,8 +89,9 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
 			// TODO: determine whether this can be altered to be a MANY_MANY when testing
-			'left_complications' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment', 'element_id', 'on' => 'left_complications.eye_id = ' . SplitEventTypeElement::LEFT),
-			'right_complications' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment', 'element_id', 'on' => 'right_complications.eye_id = ' . SplitEventTypeElement::RIGHT),
+			'complication_assignments' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment' , 'element_id' ),
+			'left_complications' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat', 'et_ophtrintravitinjection_complicat_complicat_id', 'through' => 'complication_assignments', 'on' => 'complication_assignments.eye_id = ' . SplitEventTypeElement::LEFT),
+			'right_complications' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat', 'et_ophtrintravitinjection_complicat_complicat_id', 'through' => 'complication_assignments' , 'on' => 'complication_assignments.eye_id = ' . SplitEventTypeElement::RIGHT),
 		);
 	}
 
@@ -148,36 +151,6 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 
 	protected function afterSave()
 	{
-		if (!empty($_POST['MultiSelect_complicat'])) {
-
-			$existing_ids = array();
-
-			foreach (Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment::model()->findAll('element_id = :elementId', array(':elementId' => $this->id)) as $item) {
-				$existing_ids[] = $item->et_ophtrintravitinjection_complicat_complicat_id;
-			}
-
-			foreach ($_POST['MultiSelect_complicat'] as $id) {
-				if (!in_array($id,$existing_ids)) {
-					$item = new Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment;
-					$item->element_id = $this->id;
-					$item->et_ophtrintravitinjection_complicat_complicat_id = $id;
-
-					if (!$item->save()) {
-						throw new Exception('Unable to save MultiSelect item: '.print_r($item->getErrors(),true));
-					}
-				}
-			}
-
-			foreach ($existing_ids as $id) {
-				if (!in_array($id,$_POST['MultiSelect_complicat'])) {
-					$item = Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment::model()->find('element_id = :elementId and et_ophtrintravitinjection_complicat_complicat_id = :lookupfieldId',array(':elementId' => $this->id, ':lookupfieldId' => $id));
-					if (!$item->delete()) {
-						throw new Exception('Unable to delete MultiSelect item: '.print_r($item->getErrors(),true));
-					}
-				}
-			}
-		}
-
 		return parent::afterSave();
 	}
 
@@ -186,36 +159,49 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 		return parent::beforeValidate();
 	}
 	
+	/*
+	 * only need a text "other" description for complications that are flagged "other"
+	*/
+	public function complicationsOtherValidation($attribute, $params) {
+		$other_comp = null;
+		$complications = $this->{$params['side'] . '_complications'};
+		foreach ($complications as $comp) {
+			if ($comp->description_required) {
+				$other_comp = $comp;
+			}
+		}
+		if ($other_comp) {
+ 			$v = CValidator::createValidator('requiredIfSide', $this, array($params['side'] . '_oth_descrip'), 
+ 					array('side' => $params['side'], 'message' => ucfirst($params['side']) . ' {attribute} required when ' . $other_comp->name . ' is selected'));
+			$v->validate($this);
+		}
+	}
+	
+	
 	public function updateComplications($side, $complication_ids) {
+		error_log($side);
 		$current_complications = array();
 		$save_complications = array();
-		if ($side == $this::LEFT) {
-			$complications = $this->left_complications;
-		}
-		elseif ($side == $this::RIGHT) {
-			$complications = $this->right_complications;
-		}
-		else {
-			throw Exception("Invalid side value");
+		
+		foreach ($this->complication_assignments as $curr_comp) {
+			if ($curr_comp->eye_id == $side) {
+				$current_complications[$curr_comp->et_ophtrintravitinjection_complicat_complicat_id] = $curr_comp;
+			}
 		}
 		
-		foreach ($complications as $curr_comp) {
-			$current_complications[$curr_comp->et_ophtrintravitinjection_complicat_complicat_id] = $curr_comp;
-		}
-		
-		// go through each update complication, if there isn't one for this element,
-		// create it and store for saving
-		// if there is, check if the value is the same ... if it has changed
-		// update and store for saving, otherwise remove from the current responses array
-		// anything left in current responses at the end is ripe for deleting
+		// go through each update complication id, if it isn't assigned for this element,
+		// create assignment and store for saving
+		// if there is, remove from the current complications array
+		// anything left in current complications at the end is ripe for deleting
 		foreach ($complication_ids as $comp_id) {
 			if (!array_key_exists($comp_id, $current_complications)) {
-				$s = new OphCoTherapyapplication_PatientSuitability_DecisionTreeNodeResponse();
+				$s = new Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment();
 				$s->attributes = array('element_id' => $this->id, 'eye_id' => $side, 'et_ophtrintravitinjection_complicat_complicat_id' => $comp_id);
 				$save_complications[] = $s;
 			} else {
 				// don't want to delete later
-				unset($current_complications[$node_id]);
+				error_log('unsetting' . $comp_id);
+				unset($current_complications[$comp_id]);
 			}
 		}
 		// save what needs saving

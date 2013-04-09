@@ -21,16 +21,17 @@
 
 	<div class="eventDetail aligned">
 		<div class="label"><?php echo $element->getAttributeLabel($side . '_complications') ?>:</div>
-		<div class="data">
-			<?php if (!$element->{$side . '_complications'}) {?>
-				<h4>None</h4>
-			<?php }else{?>
-				<h4>
-					<?php foreach ($element->{$side . '_complications'} as $item) {
-						echo $item->et_ophtrintravitinjection_complicat_complicat->name?><br/>
-					<?php }?>
-				</h4>
-			<?php }?>
+		<div class="data" style="display: inline-block;">
+			<?php 
+			if (!$element->{$side . '_complications'}) {
+				echo "None";
+			}
+			else {
+				foreach ($element->{$side . '_complications'} as $item) {
+					echo $item->name . "<br />";
+				}
+			}
+			?>
 		</div>
 	</div>
 

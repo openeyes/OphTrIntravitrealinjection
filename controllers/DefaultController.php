@@ -50,6 +50,30 @@ class DefaultController extends BaseEventTypeController {
 		return $elements;
 	}
 	
+	protected function setPOSTManyToMany($element) {
+		if (get_class($element) == 'Element_OphTrIntravitrealinjection_Complications') {
+			if (isset($_POST['Element_OphTrIntravitrealinjection_Complications']['left_complications']) ) {
+				$complications = array();
+			
+				foreach ($_POST['Element_OphTrIntravitrealinjection_Complications']['left_complications'] as $comp_id) {
+					if ($comp = Element_OphTrIntravitrealinjection_Complications_Complicat::model()->findByPk($comp_id)) {
+						$complications[] = $comp;
+					}
+				}
+				$element->left_complications = $complications;
+			}
+			if (isset($_POST['Element_OphTrIntravitrealinjection_Complications']['right_complications']) ) {			
+				$complications = array();
+				foreach ($_POST['Element_OphTrIntravitrealinjection_Complications']['right_complications'] as $comp_id) {
+					if ($comp = Element_OphTrIntravitrealinjection_Complications_Complicat::model()->findByPk($comp_id)) {
+						$complications[] = $comp;
+					}
+				}
+				$element->right_complications = $complications;
+			}
+		}
+	}
+	
 	/*
 	 * similar to setPOSTManyToMany, but will actually call methods on the elements that will create database entries
 	* should be called on create and update.
@@ -58,11 +82,11 @@ class DefaultController extends BaseEventTypeController {
 	protected function storePOSTManyToMany($elements) {
 		foreach ($elements as $el) {
 			if (get_class($el) == 'Element_OphTrIntravitrealinjection_Complications') {
-				$el->updateDecisionTreeResponses(SplitEventTypeElement::LEFT,
+				$el->updateComplications(SplitEventTypeElement::LEFT,
 						isset($_POST['Element_OphTrIntravitrealinjection_Complications']['left_complications']) ?
 						$_POST['Element_OphTrIntravitrealinjection_Complications']['left_complications'] :
 						array());
-				$el->updateDecisionTreeResponses(SplitEventTypeElement::RIGHT,
+				$el->updateComplications(SplitEventTypeElement::RIGHT,
 						isset($_POST['Element_OphTrIntravitrealinjection_Complications']['right_complications']) ?
 						$_POST['Element_OphTrIntravitrealinjection_Complications']['right_complications'] :
 						array());
@@ -70,4 +94,27 @@ class DefaultController extends BaseEventTypeController {
 			}
 		}
 	}
+	
+	/*
+	 * ensures Many Many fields processed for elements
+	*/
+	public function createElements($elements, $data, $firm, $patientId, $userId, $eventTypeId) {
+		if ($id = parent::createElements($elements, $data, $firm, $patientId, $userId, $eventTypeId)) {
+			// create has been successful, store many to many values
+			$this->storePOSTManyToMany($elements);
+		}
+		return $id;
+	}
+	
+	/*
+	 * ensures Many Many fields processed for elements
+	*/
+	public function updateElements($elements, $data, $event) {
+		if (parent::updateElements($elements, $data, $event)) {
+			// update has been successful, now need to deal with many to many changes
+			$this->storePOSTManyToMany($elements);
+		}
+		return true;
+	}
+	
 }

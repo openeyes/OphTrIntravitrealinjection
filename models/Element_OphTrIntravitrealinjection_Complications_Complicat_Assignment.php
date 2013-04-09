@@ -27,7 +27,7 @@
  * The followings are the available model relations:
  *
  * @property Element_OphTrIntravitrealinjection_Complications $element
- * @property Element_OphTrIntravitrealinjection_Complications_Complicat $et_ophtrintravitinjection_complicat_complicat
+ * @property Element_OphTrIntravitrealinjection_Complications_Complicat $complication
  * @property User $user
  * @property User $usermodified 
  */
@@ -59,8 +59,8 @@ class Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment exte
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('element_id, et_ophtrintravitinjection_complicat_complicat_id', 'safe'),
-			array('element_id, et_ophtrintravitinjection_complicat_complicat_id', 'required'),
+			array('element_id, eye_id, et_ophtrintravitinjection_complicat_complicat_id', 'safe'),
+			array('element_id, eye_id, et_ophtrintravitinjection_complicat_complicat_id', 'required'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, element_id, et_ophtrintravitinjection_complicat_complicat_id', 'safe', 'on' => 'search'),
@@ -76,7 +76,7 @@ class Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment exte
 		// class name for the relations automatically generated below.
 		return array(
 			'element' => array(self::BELONGS_TO, 'Element_OphTrIntravitrealinjection_Complications', 'element_id'),
-			'et_ophtrintravitinjection_complicat_complicat' => array(self::BELONGS_TO, 'Element_OphTrIntravitrealinjection_Complications_Complicat', 'et_ophtrintravitinjection_complicat_complicat_id'),
+			'complication' => array(self::BELONGS_TO, 'Element_OphTrIntravitrealinjection_Complications_Complicat', 'et_ophtrintravitinjection_complicat_complicat_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 		);
