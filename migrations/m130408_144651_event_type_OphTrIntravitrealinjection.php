@@ -130,6 +130,7 @@ class m130408_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'name' => 'varchar(128) COLLATE utf8_bin NOT NULL',
 				'display_order' => 'int(10) unsigned NOT NULL DEFAULT 1',
 				'default' => 'tinyint(1) unsigned NOT NULL DEFAULT 0',
+				'description_required' => 'boolean NOT NULL DEFAULT False',
 				'last_modified_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
 				'last_modified_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
 				'created_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
@@ -147,7 +148,7 @@ class m130408_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		$this->insert('et_ophtrintravitinjection_complicat_complicat',array('name'=>'Vitreous haze or haemorrhage','display_order'=>4));
 		$this->insert('et_ophtrintravitinjection_complicat_complicat',array('name'=>'Retinal damage','display_order'=>5));
 		$this->insert('et_ophtrintravitinjection_complicat_complicat',array('name'=>'Lens damage','display_order'=>6));
-		$this->insert('et_ophtrintravitinjection_complicat_complicat',array('name'=>'Other','display_order'=>7));
+		$this->insert('et_ophtrintravitinjection_complicat_complicat',array('name'=>'Other','display_order'=>7, 'description_required' => true));
 		
 		// create the table for this element type: et_modulename_elementtypename
 		$this->createTable('et_ophtrintravitinjection_complicat', array(

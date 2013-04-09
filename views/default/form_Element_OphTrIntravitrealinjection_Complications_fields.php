@@ -18,5 +18,15 @@
  */
 ?>
 
-<?php echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_complications]', $side . '_complications', 'et_ophtrintravitinjection_complicat_complicat_id', CHtml::listData(Element_OphTrIntravitrealinjection_Complications_Complicat::model()->findAll(array('order'=>'display_order asc')),'id','name'), $element->et_ophtrintravitinjection_complicat_complicat_defaults, array('empty' => '- Please select -', 'label' => 'complications'))?>
+<?php 
+$html_options = array(
+	'options' => array(),	
+	'empty' => '- Please select -',
+	'div_id' =>  get_class($element) . '_' . $side . '_complications',
+	'label' => 'Complications');
+$complications = Element_OphTrIntravitrealinjection_Complications_Complicat::model()->findAll(array('order'=>'display_order asc'));
+foreach ($complications as $complication) {
+	$html_options['options'][(string)$complication->id] = array('data-order' => $complication->display_order, 'data-description_required' => $complication->description_required); 
+}
+echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_complications]', $side . '_complications', 'et_ophtrintravitinjection_complicat_complicat_id', CHtml::listData($complications,'id','name'), $element->et_ophtrintravitinjection_complicat_complicat_defaults, $html_options)?>
 <?php echo $form->textArea($element, $side . '_oth_descrip', array('rows' => 4, 'cols' => 30))?>
