@@ -22,7 +22,7 @@ function OphTrIntravitrealinjection_othercomplications_check(side) {
 		}
 	});
 	var el = $('#div_Element_OphTrIntravitrealinjection_Complications_'+side+'_oth_descrip');
-	var input = el.find('input');
+	var input = el.find('textarea');
 	
 	if (show) {
 		el.show();
