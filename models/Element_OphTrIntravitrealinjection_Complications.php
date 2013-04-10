@@ -32,8 +32,8 @@
  * @property Event $event
  * @property User $user
  * @property User $usermodified
- * @property array(Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment) $left_complications
- * @property array(Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment) $right_complications
+ * @property array(OphTrIntravitrealinjection_Complication) $left_complications
+ * @property array(OphTrIntravitrealinjection_Complication) $right_complications
  */
 
 class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeElement
@@ -54,7 +54,7 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 	 */
 	public function tableName()
 	{
-		return 'et_ophtrintravitinjection_complicat';
+		return 'et_ophtrintravitinjection_complications';
 	}
 
 	/**
@@ -89,9 +89,9 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
 			// TODO: determine whether this can be altered to be a MANY_MANY when testing
-			'complication_assignments' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment' , 'element_id' ),
-			'left_complications' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat', 'et_ophtrintravitinjection_complicat_complicat_id', 'through' => 'complication_assignments', 'on' => 'complication_assignments.eye_id = ' . SplitEventTypeElement::LEFT),
-			'right_complications' => array(self::HAS_MANY, 'Element_OphTrIntravitrealinjection_Complications_Complicat', 'et_ophtrintravitinjection_complicat_complicat_id', 'through' => 'complication_assignments' , 'on' => 'complication_assignments.eye_id = ' . SplitEventTypeElement::RIGHT),
+			'complication_assignments' => array(self::HAS_MANY, 'OphTrIntravitrealinjection_ComplicationAssignment' , 'element_id' ),
+			'left_complications' => array(self::HAS_MANY, 'OphTrIntravitrealinjection_Complication', 'complication_id', 'through' => 'complication_assignments', 'on' => 'complication_assignments.eye_id = ' . SplitEventTypeElement::LEFT),
+			'right_complications' => array(self::HAS_MANY, 'OphTrIntravitrealinjection_Complication', 'complication_id', 'through' => 'complication_assignments' , 'on' => 'complication_assignments.eye_id = ' . SplitEventTypeElement::RIGHT),
 		);
 	}
 
@@ -136,9 +136,9 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 	}
 
 
-	public function getet_ophtrintravitinjection_complicat_complicat_defaults() {
+	public function getophtrintravitinjection_complication_defaults() {
 		$ids = array();
-		foreach (Element_OphTrIntravitrealinjection_Complications_Complicat::model()->findAll('`default` = ?',array(1)) as $item) {
+		foreach (OphTrIntravitrealinjection_Complication::model()->findAll('`default` = ?',array(1)) as $item) {
 			$ids[] = $item->id;
 		}
 		return $ids;
@@ -185,7 +185,7 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 		
 		foreach ($this->complication_assignments as $curr_comp) {
 			if ($curr_comp->eye_id == $side) {
-				$current_complications[$curr_comp->et_ophtrintravitinjection_complicat_complicat_id] = $curr_comp;
+				$current_complications[$curr_comp->complication_id] = $curr_comp;
 			}
 		}
 		
@@ -195,8 +195,8 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 		// anything left in current complications at the end is ripe for deleting
 		foreach ($complication_ids as $comp_id) {
 			if (!array_key_exists($comp_id, $current_complications)) {
-				$s = new Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment();
-				$s->attributes = array('element_id' => $this->id, 'eye_id' => $side, 'et_ophtrintravitinjection_complicat_complicat_id' => $comp_id);
+				$s = new OphTrIntravitrealinjection_ComplicationAssignment();
+				$s->attributes = array('element_id' => $this->id, 'eye_id' => $side, 'complication_id' => $comp_id);
 				$save_complications[] = $s;
 			} else {
 				// don't want to delete later

@@ -56,7 +56,7 @@ class DefaultController extends BaseEventTypeController {
 				$complications = array();
 			
 				foreach ($_POST['Element_OphTrIntravitrealinjection_Complications']['left_complications'] as $comp_id) {
-					if ($comp = Element_OphTrIntravitrealinjection_Complications_Complicat::model()->findByPk($comp_id)) {
+					if ($comp = OphTrIntravitrealinjection_Complication::model()->findByPk($comp_id)) {
 						$complications[] = $comp;
 					}
 				}
@@ -65,7 +65,7 @@ class DefaultController extends BaseEventTypeController {
 			if (isset($_POST['Element_OphTrIntravitrealinjection_Complications']['right_complications']) ) {			
 				$complications = array();
 				foreach ($_POST['Element_OphTrIntravitrealinjection_Complications']['right_complications'] as $comp_id) {
-					if ($comp = Element_OphTrIntravitrealinjection_Complications_Complicat::model()->findByPk($comp_id)) {
+					if ($comp = OphTrIntravitrealinjection_Complication::model()->findByPk($comp_id)) {
 						$complications[] = $comp;
 					}
 				}

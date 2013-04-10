@@ -17,22 +17,21 @@
  */
 
 /**
- * This is the model class for table "et_ophtrintravitinjection_complicat_complicat_assignment".
+ * This is the model class for table "ophtrintravitinjection_complicat".
  *
  * The followings are the available columns in table:
  * @property string $id
- * @property integer $element_id
- * @property integer $et_ophtrintravitinjection_complicat_complicat_id
+ * @property string $name
+ * @property integer $display_order
+ * @property boolean $description_required
  *
  * The followings are the available model relations:
  *
- * @property Element_OphTrIntravitrealinjection_Complications $element
- * @property Element_OphTrIntravitrealinjection_Complications_Complicat $complication
  * @property User $user
- * @property User $usermodified 
+ * @property User $usermodified
  */
 
-class Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment extends BaseActiveRecord
+class OphTrIntravitrealinjection_Complication extends BaseActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -48,7 +47,7 @@ class Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment exte
 	 */
 	public function tableName()
 	{
-		return 'et_ophtrintravitinjection_complicat_complicat_assignment';
+		return 'ophtrintravitinjection_complicat';
 	}
 
 	/**
@@ -59,11 +58,11 @@ class Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment exte
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('element_id, eye_id, et_ophtrintravitinjection_complicat_complicat_id', 'safe'),
-			array('element_id, eye_id, et_ophtrintravitinjection_complicat_complicat_id', 'required'),
+			array('name', 'safe'),
+			array('name', 'required'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, element_id, et_ophtrintravitinjection_complicat_complicat_id', 'safe', 'on' => 'search'),
+			array('id, name', 'safe', 'on' => 'search'),
 		);
 	}
 	
@@ -75,8 +74,9 @@ class Element_OphTrIntravitrealinjection_Complications_Complicat_Assignment exte
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'element' => array(self::BELONGS_TO, 'Element_OphTrIntravitrealinjection_Complications', 'element_id'),
-			'complication' => array(self::BELONGS_TO, 'Element_OphTrIntravitrealinjection_Complications_Complicat', 'et_ophtrintravitinjection_complicat_complicat_id'),
+			'element_type' => array(self::HAS_ONE, 'ElementType', 'id','on' => "element_type.class_name='".get_class($this)."'"),
+			'eventType' => array(self::BELONGS_TO, 'EventType', 'event_type_id'),
+			'event' => array(self::BELONGS_TO, 'Event', 'event_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 		);
