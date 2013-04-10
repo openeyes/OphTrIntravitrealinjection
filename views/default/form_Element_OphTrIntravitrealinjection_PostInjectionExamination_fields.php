@@ -19,3 +19,12 @@
 ?>
 
 <?php echo $form->radioBoolean($element, $side . '_cra')?>
+
+<div id="Element_OphTrIntravitrealinjection_PostInjectionExamination_<?php echo $side ?>_iop" class="eventDetail">
+	<div class="label">IOP:</div>
+	<div class="data">
+		<?php echo $form->dropDownList($element, $side .'_iop_reading_id', CHtml::listData(OphTrIntravitrealinjection_IntraocularPressure_Reading::model()->findAll(array('order'=>'display_order')),'id','name'), array('class' => 'iopReading', 'nowrapper'=>true))?>
+		mmHg,
+		<?php echo $form->dropDownList($element, $side . '_iop_instrument_id', $element->getInstrumentValues(), array('class' => 'iopInstrument', 'nowrapper'=>true)) ?>
+	</div>
+</div>

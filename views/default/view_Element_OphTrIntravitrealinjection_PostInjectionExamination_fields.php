@@ -22,3 +22,16 @@
 	<div class="label"><?php echo $element->getAttributeLabel($side . '_cra') ?>:</div>
 	<div class="data"><?php echo $element->{$side . '_cra'} ? 'Yes' : 'No'?></div>
 </div>
+<div class="eventDetail aligned">
+	<div class="label">IOP:</div>
+	<div class="data">
+		<?php if($element->{$side . '_iop_reading'}->name != 'NR') { ?>
+			<?php echo $element->{$side . '_iop_reading'}->name ?> mmHg
+			<?php if($element->{$side . '_iop_instrument'}) { 
+					echo '('.$element->{$side . '_iop_instrument'}->name.')';
+			} ?>
+			<?php } else { ?>
+			Not Recorded
+		<?php }?>
+	</div>
+</div>

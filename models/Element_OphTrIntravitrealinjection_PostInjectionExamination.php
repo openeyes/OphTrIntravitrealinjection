@@ -65,10 +65,10 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, eye_id, left_cra, right_cra, ', 'safe'),
+			array('event_id, eye_id, left_cra, left_iop_instrument_id, left_iop_reading_id, right_cra, right_iop_instrument_id, right_iop_reading_id', 'safe'),
 			array('eye_id', 'required'),
-			array('left_cra', 'requiredIfSide', 'side' => 'left'),
-			array('right_cra', 'requiredIfSide', 'side' => 'right'),
+			array('left_cra, left_iop_instrument_id, left_iop_reading_id', 'requiredIfSide', 'side' => 'left'),
+			array('right_cra, right_iop_instrument_id, right_iop_reading_id', 'requiredIfSide', 'side' => 'right'),
 			// The following rule is used by search().
 			array('id, event_id, eye_id, left_cra, right_cra, ', 'safe', 'on' => 'search'),
 		);
@@ -88,11 +88,15 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
+			'left_iop_instrument' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Instrument', 'left_iop_instrument_id'),
+			'right_iop_instrument' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Instrument', 'right_iop_instrument_id'),
+			'left_iop_reading' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_IntraocularPressure_Reading', 'left_iop_reading_id'),
+			'right_iop_reading' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_IntraocularPressure_Reading', 'right_iop_reading_id'),
 		);
 	}
 
 	public function sidedFields() {
-		return array('cra');
+		return array('cra', 'iop_instrument', 'iop_reading');
 	}
 	
 	/**
@@ -105,6 +109,10 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 			'event_id' => 'Event',
 			'left_cra' => 'CRA',
 			'right_cra' => 'CRA',
+			'left_iop_instrument' => 'Instrument',
+			'right_iop_instrument' => 'Instrument',
+			'left_iop_reading' => 'IOP Reading',
+			'right_iop_reading' => 'IOP Reading',
 		);
 	}
 
@@ -123,7 +131,11 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		$criteria->compare('event_id', $this->event_id, true);
 		$criteria->compare('left_cra', $this->left_cra);
 		$criteria->compare('right_cra', $this->right_cra);
-		
+		$criteria->compare('left_iop_reading_id', $this->left_iop_reading_id);
+		$criteria->compare('right_iop_reading_id', $this->right_iop_reading_id);
+		$criteria->compare('left_iop_instrument_id', $this->left_iop_instrument_id);
+		$criteria->compare('right_iop_instrument_id', $this->right_iop_instrument_id);
+				
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,
 		));
@@ -146,5 +158,10 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 	{
 		return parent::beforeValidate();
 	}
+	
+	public function getInstrumentValues() {
+		return CHtml::listData(OphTrIntravitrealinjection_Instrument::model()->findAll(array('order' => 'display_order')), 'id', 'name') ;
+	}
+	
 }
 ?>
