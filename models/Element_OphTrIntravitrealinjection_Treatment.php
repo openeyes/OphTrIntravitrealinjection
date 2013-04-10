@@ -80,6 +80,8 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 				'right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id', 'safe'),
 			array('left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ', 'requiredIfSide', 'side' => 'left'),
 			array('right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, ', 'requiredIfSide', 'side' => 'right'),
+			array('left_batch_expiry_date', 'todayOrFutureValidation', 'message' => 'Left {attribute} cannot be in the past.'),
+			array('right_batch_expiry_date', 'todayOrFutureValidation', 'message' => 'Right {attribute} cannot be in the past.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, event_id, eye_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' .
@@ -179,6 +181,24 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 	protected function beforeValidate()
 	{
 		return parent::beforeValidate();
+	}
+	
+	/*
+	 * Validator ripe for refactoring up the tree, checks if the given date attribute is in the future
+	 * 
+	 */
+	public function todayOrFutureValidation($attribute, $params) {
+		$min_date = $this->id ? date('Y-m-d', strtotime($this->created_date)) : date('Y-m-d');  
+		if (!@$params['message']) {
+			$params['message'] = "{attribute} cannot be in the past";
+		}
+		 
+		$params['{attribute}'] = $this->getAttributeLabel($attribute);
+		
+		if ($this->$attribute < $min_date) {
+			$this->addError($attribute, strtr($params['message'], $params) );
+		}
+
 	}
 }
 ?>
