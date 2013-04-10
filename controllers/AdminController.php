@@ -19,28 +19,28 @@
 
 class AdminController extends ModuleAdminController
 {
-	public $defaultAction = "ViewAllElement_OphTrIntravitrealinjection_Treatment_Drug";
+	public $defaultAction = "ViewAllOphTrIntravitrealinjection_Treatment_Drug";
 	
 	// Treatment Drug actions
-	public function actionViewAllElement_OphTrIntravitrealinjection_Treatment_Drug() {
-		$dataProvider=new CActiveDataProvider('Element_OphTrIntravitrealinjection_Treatment_Drug');
-		$model_list = Element_OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order' => 'display_order asc'));
+	public function actionViewAllOphTrIntravitrealinjection_Treatment_Drug() {
+		$dataProvider=new CActiveDataProvider('OphTrIntravitrealinjection_Treatment_Drug');
+		$model_list = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order' => 'display_order asc'));
 		$this->jsVars['OphTrIntravitrealinjection_sort_url'] = $this->createUrl('sortTreatmentDrugs');
 		
 		$this->render('list',array(
 				'model_list'=>$model_list,
 				'title'=>'Treatment Drugs',
-				'model_class'=>'Element_OphTrIntravitrealinjection_Treatment_Drug',
+				'model_class'=>'OphTrIntravitrealinjection_Treatment_Drug',
 		));
 	}
 	
-	public function actionCreateElement_OphTrIntravitrealinjection_Treatment_Drug() {
-		$model = new Element_OphTrIntravitrealinjection_Treatment_Drug();
+	public function actionCreateOphTrIntravitrealinjection_Treatment_Drug() {
+		$model = new OphTrIntravitrealinjection_Treatment_Drug();
 		
-		if (isset($_POST['Element_OphTrIntravitrealinjection_Treatment_Drug'])) {
-			$model->attributes = $_POST['Element_OphTrIntravitrealinjection_Treatment_Drug'];
+		if (isset($_POST['OphTrIntravitrealinjection_Treatment_Drug'])) {
+			$model->attributes = $_POST['OphTrIntravitrealinjection_Treatment_Drug'];
 			
-			if ($bottom_drug = Element_OphTrIntravitrealinjection_Treatment_Drug::model()->find(array('order'=>'display_order desc'))) {
+			if ($bottom_drug = OphTrIntravitrealinjection_Treatment_Drug::model()->find(array('order'=>'display_order desc'))) {
 				$display_order = $bottom_drug->display_order+1;
 			} else {
 				$display_order = 1;
@@ -48,10 +48,10 @@ class AdminController extends ModuleAdminController
 			$model->display_order = $display_order;
 			
 			if ($model->save()) {
-				Audit::add('Element_OphTrIntravitrealinjection_Treatment_Drug', 'create', serialize($model->attributes));
+				Audit::add('OphTrIntravitrealinjection_Treatment_Drug', 'create', serialize($model->attributes));
 				Yii::app()->user->setFlash('success', 'Treatment drug created');
 		
-				$this->redirect(array('ViewAllElement_OphTrIntravitrealinjection_Treatment_Drug'));
+				$this->redirect(array('ViewAllOphTrIntravitrealinjection_Treatment_Drug'));
 			}
 		}
 		
@@ -61,17 +61,17 @@ class AdminController extends ModuleAdminController
 	}
 	
 	
-	public function actionUpdateElement_OphTrIntravitrealinjection_Treatment_Drug($id) {
-		$model = Element_OphTrIntravitrealinjection_Treatment_Drug::model()->findByPk((int)$id);
+	public function actionUpdateOphTrIntravitrealinjection_Treatment_Drug($id) {
+		$model = OphTrIntravitrealinjection_Treatment_Drug::model()->findByPk((int)$id);
 	
-		if (isset($_POST['Element_OphTrIntravitrealinjection_Treatment_Drug'])) {
-			$model->attributes = $_POST['Element_OphTrIntravitrealinjection_Treatment_Drug'];
+		if (isset($_POST['OphTrIntravitrealinjection_Treatment_Drug'])) {
+			$model->attributes = $_POST['OphTrIntravitrealinjection_Treatment_Drug'];
 	
 			if ($model->save()) {
-				Audit::add('Element_OphTrIntravitrealinjection_Treatment_Drug', 'update', serialize($model->attributes));
+				Audit::add('OphTrIntravitrealinjection_Treatment_Drug', 'update', serialize($model->attributes));
 				Yii::app()->user->setFlash('success', 'Treatment drug updated');
 	
-				$this->redirect(array('ViewAllElement_OphTrIntravitrealinjection_Treatment_Drug'));
+				$this->redirect(array('ViewAllOphTrIntravitrealinjection_Treatment_Drug'));
 			}
 		}
 	
@@ -86,7 +86,7 @@ class AdminController extends ModuleAdminController
 	public function actionSortTreatmentDrugs() {
 		if (!empty($_POST['order'])) {
 			foreach ($_POST['order'] as $i => $id) {
-				if ($drug = Element_OphTrIntravitrealinjection_Treatment_Drug::model()->findByPk($id)) {
+				if ($drug = OphTrIntravitrealinjection_Treatment_Drug::model()->findByPk($id)) {
 					$drug->display_order = $i+1;
 					if (!$drug->save()) {
 						throw new Exception("Unable to save drug: ".print_r($drug->getErrors(),true));

@@ -33,7 +33,7 @@
  * @property User $usermodified
  */
 
-class Element_OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
+class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.

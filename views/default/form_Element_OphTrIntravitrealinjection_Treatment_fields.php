@@ -18,7 +18,7 @@
  */
 ?>
 
-	<?php echo $form->dropDownList($element, $side . '_drug_id', CHtml::listData(Element_OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order'=> 'display_order asc')),'id','name'),array('empty'=>'- Please select -'))?>
+	<?php echo $form->dropDownList($element, $side . '_drug_id', CHtml::listData(OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order'=> 'display_order asc')),'id','name'),array('empty'=>'- Please select -'))?>
 	<?php echo $form->textField($element, $side . '_number', array('size' => '10'))?>
 	<?php echo $form->textField($element, $side . '_batch_number', array('size' => '32'))?>
 	<?php 

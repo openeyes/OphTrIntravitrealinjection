@@ -41,9 +41,9 @@
  * @property Event $event
  * @property User $user
  * @property User $usermodified
- * @property Element_OphTrIntravitrealinjection_Treatment_Drug $left_drug
+ * @property OphTrIntravitrealinjection_Treatment_Drug $left_drug
  * @property User $left_injection_given_by
- * @property Element_OphTrIntravitrealinjection_Treatment_Drug $right_drug
+ * @property OphTrIntravitrealinjection_Treatment_Drug $right_drug
  * @property User $right_injection_given_by
  */
 
@@ -104,8 +104,8 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
-			'left_drug' => array(self::BELONGS_TO, 'Element_OphTrIntravitrealinjection_Treatment_Drug', 'left_drug_id'),
-			'right_drug' => array(self::BELONGS_TO, 'Element_OphTrIntravitrealinjection_Treatment_Drug', 'right_drug_id'),
+			'left_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Treatment_Drug', 'left_drug_id'),
+			'right_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Treatment_Drug', 'right_drug_id'),
 			'left_injection_given_by' => array(self::BELONGS_TO, 'User', 'left_injection_given_by_id'),
 			'right_injection_given_by' => array(self::BELONGS_TO, 'User', 'right_injection_given_by_id'),
 		);
