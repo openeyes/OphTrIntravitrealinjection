@@ -179,7 +179,6 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 	
 	
 	public function updateComplications($side, $complication_ids) {
-		error_log($side);
 		$current_complications = array();
 		$save_complications = array();
 		
@@ -200,7 +199,6 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 				$save_complications[] = $s;
 			} else {
 				// don't want to delete later
-				error_log('unsetting' . $comp_id);
 				unset($current_complications[$comp_id]);
 			}
 		}
