@@ -3,12 +3,12 @@
 function OphTrIntravitrealinjection_side_check(side) {
 	if ($('#Element_OphTrIntravitrealinjection_Treatment_' + side + '_drug_id').is(":visible") &&
 			$('#Element_OphTrIntravitrealinjection_Treatment_' + side + '_drug_id').val()) {
-		showSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
-		showSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
+		//showSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
+		//showSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
 	}
 	else {
-		hideSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
-		hideSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
+		//hideSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
+		//hideSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
 	}
 }
 
