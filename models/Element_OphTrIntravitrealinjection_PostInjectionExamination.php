@@ -66,7 +66,6 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		// will receive user inputs.
 		return array(
 			array('event_id, eye_id, left_cra, left_iop_instrument_id, left_iop_reading_id, right_cra, right_iop_instrument_id, right_iop_reading_id', 'safe'),
-			array('eye_id', 'required'),
 			array('left_cra, left_iop_instrument_id, left_iop_reading_id', 'requiredIfSide', 'side' => 'left'),
 			array('right_cra, right_iop_instrument_id, right_iop_reading_id', 'requiredIfSide', 'side' => 'right'),
 			// The following rule is used by search().
