@@ -30,4 +30,4 @@
 	}
 	?>
 	<?php echo $form->datePicker($element, $side . '_batch_expiry_date', $expiry_date_params, array('style'=>'width: 110px;'))?>
-	<?php echo $form->dropDownList($element, $side . '_injection_given_by_id', CHtml::listData(User::getSurgeons(),'id','ReversedFullName'),array('empty'=>'- Please select -'))?>
+	<?php echo $form->dropDownList($element, $side . '_injection_given_by_id', CHtml::listData(User::model()->getSurgeons(),'id','ReversedFullName'),array('empty'=>'- Please select -'))?>
