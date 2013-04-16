@@ -18,6 +18,11 @@
  */
 ?>
 
+<?php  
+	$injection_api = Yii::app()->moduleAPI->get('OphTrIntravitrealinjection');
+	$current_episode = $this->patient->getEpisodeForCurrentSubspecialty();
+?>
+
 <div class="element <?php echo $element->elementType->class_name?>"
 	data-element-type-id="<?php echo $element->elementType->id?>"
 	data-element-type-class="<?php echo $element->elementType->class_name?>"
@@ -33,7 +38,7 @@
 			<div class="activeForm">
 				<a href="#" class="removeSide">-</a>
 				<?php $this->renderPartial('form_' . get_class($element) . '_fields',
-					array('side' => 'right', 'element' => $element, 'form' => $form, 'data' => $data)); ?>
+					array('side' => 'right', 'element' => $element, 'form' => $form, 'data' => $data, 'injection_api' => $injection_api, 'episode' => $current_episode)); ?>
 			</div>
 			<div class="inactiveForm">
 				<a href="#">Add right side</a>
@@ -46,7 +51,7 @@
 			<div class="activeForm">
 				<a href="#" class="removeSide">-</a>
 				<?php $this->renderPartial('form_' . get_class($element) . '_fields',
-					array('side' => 'left', 'element' => $element, 'form' => $form, 'data' => $data)); ?>
+					array('side' => 'left', 'element' => $element, 'form' => $form, 'data' => $data, 'injection_api' => $injection_api, 'episode' => $current_episode)); ?>
 			</div>
 			<div class="inactiveForm">
 				<a href="#">Add left side</a>

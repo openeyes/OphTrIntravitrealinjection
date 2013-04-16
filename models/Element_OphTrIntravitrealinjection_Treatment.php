@@ -80,8 +80,8 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 				'right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id', 'safe'),
 			array('left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ', 'requiredIfSide', 'side' => 'left'),
 			array('right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, ', 'requiredIfSide', 'side' => 'right'),
-			array('left_batch_expiry_date', 'todayOrFutureValidation', 'message' => 'Left {attribute} cannot be in the past.'),
-			array('right_batch_expiry_date', 'todayOrFutureValidation', 'message' => 'Right {attribute} cannot be in the past.'),
+			array('left_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'left', 'message' => 'Left {attribute} cannot be in the past.'),
+			array('right_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'right', 'message' => 'Right {attribute} cannot be in the past.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, event_id, eye_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' .
@@ -165,8 +165,6 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		));
 	}
 
-
-
 	protected function beforeSave()
 	{
 		return parent::beforeSave();
@@ -180,12 +178,26 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 
 	protected function beforeValidate()
 	{
+		// Need to clear any "sided" fields if that side isn't active to prevent
+		if($this->eye->name != 'Both') {
+			foreach($this->sidedFields() as $field_suffix) {
+				if($this->eye->name == 'Left') {
+					$clear_field = 'right_'.$field_suffix;
+				} else { // Right
+					$clear_field = 'left_'.$field_suffix;
+				}
+				$this->$clear_field = null;
+			}
+		}
+	
 		return parent::beforeValidate();
 	}
 	
-	/*
-	 * Validator ripe for refactoring up the tree, checks if the given date attribute is in the future
+	/**
+	 * checks if the given attribute on the element is today or in the future
 	 * 
+	 * @param string $attribute
+	 * @param array $params
 	 */
 	public function todayOrFutureValidation($attribute, $params) {
 		$min_date = $this->id ? date('Y-m-d', strtotime($this->created_date)) : date('Y-m-d');  
@@ -198,7 +210,42 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		if ($this->$attribute < $min_date) {
 			$this->addError($attribute, strtr($params['message'], $params) );
 		}
-
+	}
+	
+	/**
+	 * wrapper around the todayOrFutureValidation that only checks the attribute if the element is for 
+	 * the given side
+	 * 
+	 * @param string $attribute
+	 * @param array $params
+	 */
+	public function todayOrFutureValidationIfSide($attribute, $params) {
+		if (($params['side'] == 'left' && $this->eye_id != 2) || ($params['side'] == 'right' && $this->eye_id != 1)) {
+			$this->todayOrFutureValidation($attribute, $params);
+		}
+	}
+	
+	/** 
+	 * returns information text summarising the event (eye and drug used)
+	 *  
+	 * @return string $info_text
+	 */
+	public function getInfoText() {
+		if ($this->eye_id == SplitEventTypeElement::LEFT) {
+			return $this->eye->name . ": " . $this->left_drug->name;
+		}
+		else if ($this->eye_id == SplitEventTypeElement::RIGHT) {
+			return $this->eye->name . ": " . $this->right_drug->name;
+		}
+		else {
+			if ($this->right_drug_id == $this->left_drug_id) {
+				return $this->eye->name . ": " . $this->left_drug->name;
+			}
+			else {
+				return "L: " . $this->left_drug->name . " / R: " . $this->right_drug->name;
+			}
+		}
 	}
 }
+
 ?>

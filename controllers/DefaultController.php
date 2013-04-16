@@ -44,7 +44,20 @@ class DefaultController extends BaseEventTypeController {
 				if ($this->episode && $this->episode->eye_id) {	
 					$element->eye_id = $this->episode->eye_id;
 				}
+				
+				if (get_class($element) == 'Element_OphTrIntravitrealinjection_Treatment') {
+					if ($api = Yii::app()->moduleAPI->get('OphCoTherapyapplication')) {
+						// get the latest drug that has been applied for and set it as default (for the appropriate eye)
+						if ($drug = $api->getLatestApplicationDrug($this->patient, $this->episode, 'left')) {
+							$element->left_drug_id = $drug->id;
+						}
+						if ($drug = $api->getLatestApplicationDrug($this->patient, $this->episode, 'right')) {
+							$element->right_drug_id = $drug->id;
+						}
+					}
+				}
 			}
+			
 		}
 		
 		return $elements;

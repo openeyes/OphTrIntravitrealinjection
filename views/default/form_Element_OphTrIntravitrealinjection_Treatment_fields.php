@@ -18,16 +18,33 @@
  */
 ?>
 
-	<?php echo $form->dropDownList($element, $side . '_drug_id', CHtml::listData(OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order'=> 'display_order asc')),'id','name'),array('empty'=>'- Please select -'))?>
-	<?php echo $form->textField($element, $side . '_number', array('size' => '10'))?>
-	<?php echo $form->textField($element, $side . '_batch_number', array('size' => '32'))?>
-	<?php 
-	if ($element->created_date) {
-		$expiry_date_params = array('minDate' => Helper::convertDate2NHS($element->created_date) );
-	}
-	else {
-		$expiry_date_params = array('minDate' => 'yesterday');
-	}
-	?>
-	<?php echo $form->datePicker($element, $side . '_batch_expiry_date', $expiry_date_params, array('style'=>'width: 110px;'))?>
-	<?php echo $form->dropDownList($element, $side . '_injection_given_by_id', CHtml::listData(User::model()->getSurgeons(),'id','ReversedFullName'),array('empty'=>'- Please select -'))?>
+<?php 
+$drugs = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order'=> 'display_order asc'));
+$html_options = array(
+	'empty' => '- Please select -',
+	'options' => array(),		
+);
+// get the previous injection counts for each of the drug options for this eye
+foreach ($drugs as $drug) {
+	$previous = $injection_api->previousInjections($this->patient, $episode, $side, $drug);
+	$html_options['options'][$drug->id] = array(
+		'data-previous' => sizeof($previous),		
+	);
+}
+
+echo $form->dropDownList($element, $side . '_drug_id', CHtml::listData($drugs,'id','name'),$html_options)
+?>
+
+<?php echo $form->textField($element, $side . '_number', array('size' => '10'))?>
+<?php echo $form->textField($element, $side . '_batch_number', array('size' => '32'))?>
+<?php 
+if ($element->created_date) {
+	$expiry_date_params = array('minDate' => Helper::convertDate2NHS($element->created_date) );
+}
+else {
+	$expiry_date_params = array('minDate' => 'yesterday');
+}
+?>
+<?php echo $form->datePicker($element, $side . '_batch_expiry_date', $expiry_date_params, array('style'=>'width: 110px;'))?>
+<?php echo $form->dropDownList($element, $side . '_injection_given_by_id', CHtml::listData(User::model()->getSurgeons(),'id','ReversedFullName'),array('empty'=>'- Please select -'))?>
+
