@@ -177,7 +177,12 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 		}
 	}
 	
-	
+	/**
+	 * update the complications for the given side.
+	 * 
+	 * @param string $side
+	 * @param integer[] $complication_ids - array of complication ids to assign to the element 
+	 */
 	public function updateComplications($side, $complication_ids) {
 		$current_complications = array();
 		$save_complications = array();
