@@ -23,7 +23,6 @@ class AdminController extends ModuleAdminController
 	
 	// Treatment Drug actions
 	public function actionViewAllOphTrIntravitrealinjection_Treatment_Drug() {
-		$dataProvider=new CActiveDataProvider('OphTrIntravitrealinjection_Treatment_Drug');
 		$model_list = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order' => 'display_order asc'));
 		$this->jsVars['OphTrIntravitrealinjection_sort_url'] = $this->createUrl('sortTreatmentDrugs');
 		
