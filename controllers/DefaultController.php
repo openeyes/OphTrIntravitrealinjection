@@ -39,19 +39,27 @@ class DefaultController extends BaseEventTypeController {
 	
 		if ($action == 'create' && empty($_POST)) {
 			// set any calculated defaults on the elements
+			$therapy_api = Yii::app()->moduleAPI->get('OphCoTherapyapplication');
+			$default_eye = SplitEventTypeElement::BOTH;
+			if ($therapy_api && $side = $therapy_api->getLatestApplicationSide($this->patient, $this->episode)) {
+				$default_eye = $side;
+			}
+			// get the side of the episode diagnosis and use that as the default for the elements
+			elseif ($this->episode && $this->episode->eye_id) {
+				$default_eye = $this->episode->eye_id;
+			}
+				
 			foreach ($elements as $element) {
-				// get the side of the episode diagnosis and use that as the default for the elements
-				if ($this->episode && $this->episode->eye_id) {	
-					$element->eye_id = $this->episode->eye_id;
-				}
+			
+				$element->eye_id = $default_eye;
 				
 				if (get_class($element) == 'Element_OphTrIntravitrealinjection_Treatment') {
-					if ($api = Yii::app()->moduleAPI->get('OphCoTherapyapplication')) {
+					if ($therapy_api) {
 						// get the latest drug that has been applied for and set it as default (for the appropriate eye)
-						if ($drug = $api->getLatestApplicationDrug($this->patient, $this->episode, 'left')) {
+						if ($drug = $therapy_api->getLatestApplicationDrug($this->patient, $this->episode, 'left')) {
 							$element->left_drug_id = $drug->id;
 						}
-						if ($drug = $api->getLatestApplicationDrug($this->patient, $this->episode, 'right')) {
+						if ($drug = $therapy_api->getLatestApplicationDrug($this->patient, $this->episode, 'right')) {
 							$element->right_drug_id = $drug->id;
 						}
 					}
