@@ -88,7 +88,6 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
-			// TODO: determine whether this can be altered to be a MANY_MANY when testing
 			'complication_assignments' => array(self::HAS_MANY, 'OphTrIntravitrealinjection_ComplicationAssignment' , 'element_id' ),
 			'left_complications' => array(self::HAS_MANY, 'OphTrIntravitrealinjection_Complication', 'complication_id', 'through' => 'complication_assignments', 'on' => 'complication_assignments.eye_id = ' . SplitEventTypeElement::LEFT),
 			'right_complications' => array(self::HAS_MANY, 'OphTrIntravitrealinjection_Complication', 'complication_id', 'through' => 'complication_assignments' , 'on' => 'complication_assignments.eye_id = ' . SplitEventTypeElement::RIGHT),

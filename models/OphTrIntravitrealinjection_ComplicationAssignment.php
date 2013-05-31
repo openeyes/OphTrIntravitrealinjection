@@ -90,7 +90,6 @@ class OphTrIntravitrealinjection_ComplicationAssignment extends BaseActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
 		);
 	}
 
@@ -100,13 +99,9 @@ class OphTrIntravitrealinjection_ComplicationAssignment extends BaseActiveRecord
 	 */
 	public function search()
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
 		$criteria = new CDbCriteria;
 
 		$criteria->compare('id', $this->id, true);
-		$criteria->compare('name', $this->name, true);
 
 		return new CActiveDataProvider(get_class($this), array(
 				'criteria' => $criteria,
