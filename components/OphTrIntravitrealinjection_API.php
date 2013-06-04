@@ -38,7 +38,9 @@ class OphTrIntravitrealinjection_API extends BaseAPI {
 			$events = $this->getEventsInEpisode($patient, $episode);
 			$previous = array();
 			foreach ($events as $event) {
-				$previous[] = Element_OphTrIntravitrealinjection_Treatment::model()->find('event_id = :event_id', array(':event_id' => $event->id));
+				if ($treat = Element_OphTrIntravitrealinjection_Treatment::model()->find('event_id = :event_id', array(':event_id' => $event->id))) {;
+					$previous[] = $treat;
+				}
 			}
 			$this->previous_treatments = $previous;
 		}
@@ -58,6 +60,7 @@ class OphTrIntravitrealinjection_API extends BaseAPI {
 		
 		$res = array();
 		foreach ($previous as $prev) {
+			error_log(print_r($previous, true));
 			if (in_array($prev->eye_id,$eye_ids)) {
 				if ($drug == null || $prev->{$side . '_drug_id'} == $drug->id) {
 					$res[] = $prev;

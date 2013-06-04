@@ -23,10 +23,12 @@ function OphTrIntravitrealinjection_setInjectionNumber(side) {
 function OphTrIntravitrealinjection_sideCheck(side) {
 	if ($('#Element_OphTrIntravitrealinjection_Treatment_' + side + '_drug_id').is(":visible") &&
 			$('#Element_OphTrIntravitrealinjection_Treatment_' + side + '_drug_id').val()) {
+		showSplitElementSide('Element_OphTrIntravitrealinjection_AnteriorSegment', side);
 		showSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
 		showSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
 	}
 	else {
+		hideSplitElementSide('Element_OphTrIntravitrealinjection_AnteriorSegment', side);
 		hideSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
 		hideSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
 	}
@@ -116,6 +118,7 @@ $(document).ready(function() {
 		if (side == 'left') {
 			other_side = 'right';
 		}
+		hideSplitElementSide('Element_OphTrIntravitrealinjection_AnteriorSegment', side);
 		hideSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
 		hideSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
 		// if the other side has been revealed by this, need to check whether the dependent elements should also be shown.

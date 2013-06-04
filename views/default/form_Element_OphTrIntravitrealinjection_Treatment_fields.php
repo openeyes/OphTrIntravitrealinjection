@@ -19,6 +19,7 @@
 ?>
 
 <?php 
+
 $drugs = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order'=> 'display_order asc'));
 $html_options = array(
 	'empty' => '- Please select -',
@@ -46,5 +47,5 @@ else {
 }
 ?>
 <?php echo $form->datePicker($element, $side . '_batch_expiry_date', $expiry_date_params, array('style'=>'width: 110px;'))?>
-<?php echo $form->dropDownList($element, $side . '_injection_given_by_id', CHtml::listData(User::model()->getSurgeons(),'id','ReversedFullName'),array('empty'=>'- Please select -'))?>
+<?php echo $form->dropDownList($element, $side . '_injection_given_by_id', CHtml::listData(OphTrIntravitrealinjection_InjectionUser::model()->getUsers(),'id','ReversedFullName'),array('empty'=>'- Please select -'))?>
 

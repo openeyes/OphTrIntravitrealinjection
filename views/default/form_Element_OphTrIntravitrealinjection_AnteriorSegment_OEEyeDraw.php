@@ -17,29 +17,22 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 ?>
+<?php
+$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+		'doodleToolBarArray' => array('InjectionSite',),
+		'onReadyCommandArray' => array(
+				array('addDoodle', array('AntSeg')),
+				array('addDoodle', array('InjectionSite')),
+				array('deselectDoodles', array()),
+		),
+		'scale' => 0.5,
+		'idSuffix' => $side.'_'.$element->elementType->id,
+		'side' => ($side == 'right') ? 'R' : 'L',
+		'mode' => 'edit',
+		'width' => 300,
+		'height' => 300,
+		'model' => $element,
+		'attribute' => $side.'_eyedraw',
+));
+?>
 
-<h4 class="elementTypeName"><?php echo $element->elementType->name?></h4>
-
-<div class="eventDetail aligned">
-	<div class="label"><?php echo $element->getAttributeLabel('site_id') ?>:</div>
-	<div class="data"><?php echo $element->{'site'}->name ?></div>
-</div>
-
-	<div class="cols2 clearfix">
-		<div class="left eventDetail">
-			<?php if($element->hasRight()) {
-				$this->renderPartial('view_' . get_class($element) . '_fields',
-					array('side' => 'right', 'element' => $element));
-			} else { ?>
-			Not recorded
-			<?php } ?>
-		</div>
-		<div class="right eventDetail">
-			<?php if($element->hasLeft()) {
-				$this->renderPartial('view_' . get_class($element) . '_fields',
-					array('side' => 'left', 'element' => $element));
-			} else { ?>
-			Not recorded
-			<?php } ?>
-		</div>
-	</div>

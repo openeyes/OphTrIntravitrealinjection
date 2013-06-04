@@ -17,13 +17,12 @@
  */
 
 /**
- * This is the model class for table "ophtrintravitinjection_complicat".
+ * This is the model class for table "ophtrintravitinjection_lens_status".
  *
  * The followings are the available columns in table:
  * @property string $id
  * @property string $name
  * @property integer $display_order
- * @property boolean $description_required
  *
  * The followings are the available model relations:
  *
@@ -31,7 +30,7 @@
  * @property User $usermodified
  */
 
-class OphTrIntravitrealinjection_Complication extends BaseActiveRecord
+class OphTrIntravitrealinjection_LensStatus extends BaseActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -47,7 +46,7 @@ class OphTrIntravitrealinjection_Complication extends BaseActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'ophtrintravitinjection_complicat';
+		return 'ophtrintravitinjection_lens_status';
 	}
 
 	/**
@@ -55,11 +54,9 @@ class OphTrIntravitrealinjection_Complication extends BaseActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
 		return array(
-			array('name', 'safe'),
-			array('name', 'required'),
+			array('name, display_order', 'safe'),
+			array('name, display_order', 'required'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name', 'safe', 'on' => 'search'),

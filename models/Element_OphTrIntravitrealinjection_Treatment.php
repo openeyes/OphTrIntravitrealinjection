@@ -76,7 +76,7 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, eye_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' .
+			array('event_id, site_id, eye_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' .
 				'right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id', 'safe'),
 			array('left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ', 'requiredIfSide', 'side' => 'left'),
 			array('right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, ', 'requiredIfSide', 'side' => 'right'),
@@ -103,6 +103,7 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			'event' => array(self::BELONGS_TO, 'Event', 'event_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
+			'site' => array(self::BELONGS_TO, 'Site', 'site_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
 			'left_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Treatment_Drug', 'left_drug_id'),
 			'right_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Treatment_Drug', 'right_drug_id'),
