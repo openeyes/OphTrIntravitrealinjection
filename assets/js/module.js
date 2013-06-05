@@ -62,6 +62,14 @@ function OphTrIntravitrealinjection_otherComplicationsCheck(side) {
 	}
 }
 
+function OphTrIntravitrealinjection_iopCheck(side) {
+	if ($('input[name="Element_OphTrIntravitrealinjection_PostInjectionExamination['+side+'_iop_checked]"]:radio:checked').val() == "1") {
+		$('#Element_OphTrIntravitrealinjection_PostInjectionExamination_'+side+'_iop').show().find('select').removeAttr('disabled');;
+	} else {
+		$('#Element_OphTrIntravitrealinjection_PostInjectionExamination_'+side+'_iop').hide().find('select').attr('disabled', 'disabled');
+	} 
+}
+
 $(document).ready(function() {
 			handleButton($('#et_save'),function() {
 					});
@@ -133,8 +141,13 @@ $(document).ready(function() {
 	
 	$('.Element_OphTrIntravitrealinjection_Complications').delegate('select.MultiSelectList', 'MultiSelectChanged', function(e) {
 		var side = getSplitElementSide($(this));
-		console.log(side);
 		OphTrIntravitrealinjection_otherComplicationsCheck(side);
+	});
+	
+	$('.Element_OphTrIntravitrealinjection_PostInjectionExamination').delegate('input[name="Element_OphTrIntravitrealinjection_PostInjectionExamination[right_iop_checked]"], ' +
+			'input[name="Element_OphTrIntravitrealinjection_PostInjectionExamination[left_iop_checked]"]', 'change', function(e) {
+		var side = getSplitElementSide($(this));
+		OphTrIntravitrealinjection_iopCheck(side);
 	});
 	
 	OphTrIntravitrealinjection_setInjectionNumber('left');
@@ -142,6 +155,9 @@ $(document).ready(function() {
 	// check the form is showing correctly when loaded
 	OphTrIntravitrealinjection_sideCheck('left');
 	OphTrIntravitrealinjection_sideCheck('right');
+	
+	OphTrIntravitrealinjection_iopCheck('left');
+	OphTrIntravitrealinjection_iopCheck('right');
 	// ensure we are only displaying the 'other' description if its required
 	OphTrIntravitrealinjection_otherComplicationsCheck('left');
 	OphTrIntravitrealinjection_otherComplicationsCheck('right');

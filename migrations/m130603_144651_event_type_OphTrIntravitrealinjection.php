@@ -4,7 +4,7 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 	public function up() {
 
 		// --- EVENT TYPE ENTRIES ---
-
+		
 		// create an event_type entry for this event type name if one doesn't already exist
 		if (!$this->dbConnection->createCommand()->select('id')->from('event_type')->where('class_name=:class_name', array(':class_name'=>'OphTrIntravitrealinjection'))->queryRow()) {
 			$group = $this->dbConnection->createCommand()->select('id')->from('event_group')->where('name=:name',array(':name'=>'Treatment events'))->queryRow();
@@ -37,7 +37,7 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		// get the id for both eyes
 		$both_eyes_id = Eye::model()->find("name = 'Both'")->id;
 		
-		/*
+		
 		$this->createTable('ophtrintravitinjection_injectionuser', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'user_id' => 'int(10) unsigned NOT NULL',
@@ -45,7 +45,7 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'KEY `ophtrintravitinjection_injectionuser_ui_fk` (`user_id`)',
 				'CONSTRAINT `ophtrintravitinjection_injectionuser_ui_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)',
 			), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		*/
+		
 		
 		$users = $this->dbConnection->createCommand()->selectDistinct('id')->from('user')->where('is_doctor = :doc or is_surgeon = :sur', array(':doc' => true, ':sur' => true));
 		foreach ($users->queryAll() as $user) {
@@ -208,13 +208,15 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		$this->insert('ophtrintravitinjection_iop_instrument', array('name' => 'Dynamic Contour Tonometry', 'display_order' => 50));
 		$this->insert('ophtrintravitinjection_iop_instrument', array('name' => 'Other', 'display_order' => 1000));
 		
-		// create the table for this element type: et_modulename_elementtypename
+		// create the table for this element type: Element_OphTrIntravitrealinjection_PostInjectionExamination
 		$this->createTable('et_ophtrintravitinjection_postinject', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'event_id' => 'int(10) unsigned NOT NULL',
 				'eye_id' => 'int(10) unsigned NOT NULL',
-				'left_cra' => 'tinyint(1) unsigned DEFAULT 0', // CRA
-				'right_cra' => 'tinyint(1) unsigned DEFAULT 0', // CRA
+				'left_cra' => 'tinyint(1) unsigned DEFAULT 0', 
+				'right_cra' => 'tinyint(1) unsigned DEFAULT 0', 
+				'left_iop_checked' => 'tinyint(1) unsigned DEFAULT 0', 
+				'right_iop_checked' => 'tinyint(1) unsigned DEFAULT 0',
 				'left_iop_reading_id' => 'int(10) unsigned',
 				'right_iop_reading_id' => 'int(10) unsigned',
 				'left_iop_instrument_id' => 'int(10) unsigned',

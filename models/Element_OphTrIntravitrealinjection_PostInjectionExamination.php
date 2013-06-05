@@ -65,10 +65,12 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, eye_id, left_cra, left_iop_instrument_id, left_iop_reading_id, right_cra, right_iop_instrument_id, right_iop_reading_id', 'safe'),
+			array('event_id, eye_id, left_cra, left_iop_checked, left_iop_instrument_id, left_iop_reading_id, right_cra, right_iop_checked, right_iop_instrument_id, right_iop_reading_id', 'safe'),
 			array('eye_id', 'required'),
-			array('left_cra, left_iop_instrument_id, left_iop_reading_id', 'requiredIfSide', 'side' => 'left'),
-			array('right_cra, right_iop_instrument_id, right_iop_reading_id', 'requiredIfSide', 'side' => 'right'),
+			array('left_cra, left_iop_checked', 'requiredIfSide', 'side' => 'left'),
+			array('left_iop_checked', 'iop_checkedValidation', 'side' => 'left'),
+			array('right_cra, right_iop_checked', 'requiredIfSide', 'side' => 'right'),
+			array('right_iop_checked', 'iop_checkedValidation', 'side' => 'right'),
 			// The following rule is used by search().
 			array('id, event_id, eye_id, left_cra, right_cra, ', 'safe', 'on' => 'search'),
 		);
@@ -107,8 +109,10 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		return array(
 			'id' => 'ID',
 			'event_id' => 'Event',
-			'left_cra' => 'CRA',
-			'right_cra' => 'CRA',
+			'left_cra' => 'Central Artery Perfused Checked?',
+			'right_cra' => 'Central Artery Perfused Checked?',
+			'left_iop_checked' => 'IOP Checked?',
+			'right_iop_checked' => 'IOP Checked?',
 			'left_iop_instrument' => 'Instrument',
 			'right_iop_instrument' => 'Instrument',
 			'left_iop_reading' => 'IOP Reading',
@@ -163,5 +167,18 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		return CHtml::listData(OphTrIntravitrealinjection_Instrument::model()->findAll(array('order' => 'display_order')), 'id', 'name') ;
 	}
 	
+	/*
+	 * iop reading values only required if the iop has been checked
+	 * 
+	*/
+	public function iop_checkedValidation($attribute, $params) {
+		$side = $params['side'];
+		if ($this->$attribute == "1" && ( 
+				($side == 'left' && $this->eye_id != SplitEventTypeElement::RIGHT) || ($side == 'right' && $this->eye_id != SplitEventTypeElement::LEFT)
+			)) {
+			$v = CValidator::createValidator('required', $this, array($side . '_iop_reading_id', $side . '_iop_instrument_id'));
+			$v->validate($this);
+		}
+	}
 }
 ?>

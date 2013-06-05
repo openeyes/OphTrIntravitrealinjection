@@ -20,6 +20,8 @@
 
 <?php echo $form->radioBoolean($element, $side . '_cra')?>
 
+<?php echo $form->radioBoolean($element, $side . '_iop_checked')?>
+
 <div id="Element_OphTrIntravitrealinjection_PostInjectionExamination_<?php echo $side ?>_iop" class="eventDetail">
 	<div class="label">IOP:</div>
 	<div class="data">
