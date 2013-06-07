@@ -41,7 +41,7 @@ class DefaultController extends BaseEventTypeController {
 			// set any calculated defaults on the elements
 			$therapy_api = Yii::app()->moduleAPI->get('OphCoTherapyapplication');
 			$default_eye = SplitEventTypeElement::BOTH;
-			if ($therapy_api && $side = $therapy_api->getLatestApplicationSide($this->patient, $this->episode)) {
+			if ($this->episode && $therapy_api && $side = $therapy_api->getLatestApplicationSide($this->patient, $this->episode)) {
 				$default_eye = $side;
 			}
 			// get the side of the episode diagnosis and use that as the default for the elements
