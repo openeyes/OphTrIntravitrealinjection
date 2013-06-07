@@ -48,7 +48,7 @@ class DefaultController extends BaseEventTypeController {
 			elseif ($this->episode && $this->episode->eye_id) {
 				$default_eye = $this->episode->eye_id;
 			}
-			error_log($default_eye);
+			
 			foreach ($elements as $element) {
 				error_log(get_class($element) . ":" . $element->eye_id);
 				$element->eye_id = $default_eye;
