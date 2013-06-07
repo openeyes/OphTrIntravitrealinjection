@@ -19,6 +19,16 @@
 ?>
 
 <div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_anaesthetictype_id') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_anaesthetictype'}->name ?></div>
+</div>
+
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_anaestheticagent_id') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_anaestheticagent'}->name ?></div>
+</div>
+
+<div class="eventDetail aligned">
 	<div class="label"><?php echo $element->getAttributeLabel($side . '_drug_id') ?>:</div>
 	<div class="data"><?php echo $element->{$side . '_drug'}->name ?></div>
 </div>

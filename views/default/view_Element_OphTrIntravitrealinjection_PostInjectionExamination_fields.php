@@ -19,8 +19,8 @@
 ?>
 
 <div class="eventDetail aligned">
-	<div class="label"><?php echo $element->getAttributeLabel($side . '_cra') ?>:</div>
-	<div class="data"><?php echo $element->{$side . '_cra'} ? 'Yes' : 'No'?></div>
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_finger_count') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_finger_count'} ? 'Yes' : 'No'?></div>
 </div>
 <div class="eventDetail aligned">
 	<div class="label">IOP:</div>

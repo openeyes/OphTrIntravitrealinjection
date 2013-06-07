@@ -20,6 +20,10 @@
 
 <?php 
 
+echo $form->radioButtons($element, $side . '_anaesthetictype_id', 'ophtrintravitinjection_anaesthetictype');
+
+echo $form->dropDownList($element, $side . '_anaestheticagent_id', CHtml::listData(AnaestheticAgent::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), array('empty' => '- Please select -'));
+
 $drugs = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order'=> 'display_order asc'));
 $html_options = array(
 	'empty' => '- Please select -',

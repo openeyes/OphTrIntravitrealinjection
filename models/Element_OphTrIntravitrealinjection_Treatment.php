@@ -23,11 +23,16 @@
  * The followings are the available columns in table:
  * @property string $id
  * @property integer $event_id
+ * @property integer $site_id
+ * @property integer $left_anaesthetictype_id
+ * @property integer $left_anaestheticagent_id
  * @property integer $left_drug_id
  * @property integer $left_number
  * @property string $left_batch_number
  * @property string $left_batch_expiry_date
  * @property integer $left_injection_given_by_id
+ * @property integer $right_anaesthetictype_id
+ * @property integer $right_anaestheticagent_id
  * @property integer $right_drug_id
  * @property integer $right_number
  * @property string $right_batch_number
@@ -43,8 +48,12 @@
  * @property User $usermodified
  * @property OphTrIntravitrealinjection_Treatment_Drug $left_drug
  * @property User $left_injection_given_by
+ * @property AnaestheticType $left_anaesthetictype
+ * @property AnaestheticAgent $left_anaestheticagent
  * @property OphTrIntravitrealinjection_Treatment_Drug $right_drug
  * @property User $right_injection_given_by
+ * @property AnaestheticType $right_anaesthetictype
+ * @property AnaestheticAgent $right_anaestheticagent
  */
 
 class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
@@ -77,9 +86,13 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		// will receive user inputs.
 		return array(
 			array('event_id, site_id, eye_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' .
-				'right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id', 'safe'),
-			array('left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ', 'requiredIfSide', 'side' => 'left'),
-			array('right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, ', 'requiredIfSide', 'side' => 'right'),
+				'left_anaesthetictype_id, left_anaestheticagent_id' . 
+				'right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id' . 
+				'right_anaesthetictype_id, right_anaestheticagent_id', 'safe'),
+			array('left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' . 
+				'left_anaesthetictype_id, left_anaestheticagent_id', 'requiredIfSide', 'side' => 'left'),
+			array('right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, ' . 
+				'right_anaesthetictype_id, right_anaestheticagent_id', 'requiredIfSide', 'side' => 'right'),
 			array('left_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'left', 'message' => 'Left {attribute} cannot be in the past.'),
 			array('right_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'right', 'message' => 'Right {attribute} cannot be in the past.'),
 			// The following rule is used by search().
@@ -106,9 +119,13 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			'site' => array(self::BELONGS_TO, 'Site', 'site_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
 			'left_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Treatment_Drug', 'left_drug_id'),
+			'left_anaesthetictype' => array(self::BELONGS_TO, 'AnaestheticType', 'left_anaesthetictype_id'),
+			'left_anaestheticagent' => array(self::BELONGS_TO, 'AnaestheticAgent', 'left_anaestheticagent_id'),
 			'right_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Treatment_Drug', 'right_drug_id'),
 			'left_injection_given_by' => array(self::BELONGS_TO, 'User', 'left_injection_given_by_id'),
 			'right_injection_given_by' => array(self::BELONGS_TO, 'User', 'right_injection_given_by_id'),
+			'right_anaesthetictype' => array(self::BELONGS_TO, 'AnaestheticType', 'right_anaesthetictype_id'),
+			'right_anaestheticagent' => array(self::BELONGS_TO, 'AnaestheticAgent', 'right_anaestheticagent_id'),
 		);
 	}
 
@@ -124,16 +141,21 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		return array(
 			'id' => 'ID',
 			'event_id' => 'Event',
+			'site_id' => 'Site',
 			'left_drug_id' => 'Drug',
 			'left_number' => 'Number of Injections',
 			'left_batch_number' => 'Batch Number',
 			'left_batch_expiry_date' => 'Batch Expiry Date',
 			'left_injection_given_by_id' => 'Injection Given By',
+			'left_anaesthetictype_id' => 'Anaesthetic Type',
+			'left_anaestheticagent_id' => 'Anaesthetic Agent',
 			'right_drug_id' => 'Drug',
 			'right_number' => 'Number of Injections',
 			'right_batch_number' => 'Batch Number',
 			'right_batch_expiry_date' => 'Batch Expiry Date',
 			'right_injection_given_by_id' => 'Injection Given By',
+			'right_anaesthetictype_id' => 'Anaesthetic Type',
+			'right_anaestheticagent_id' => 'Anaesthetic Agent',
 		);
 	}
 
@@ -155,11 +177,15 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		$criteria->compare('left_batch_number', $this->left_batch_number);
 		$criteria->compare('left_batch_expiry_date', $this->left_batch_expiry_date);
 		$criteria->compare('left_injection_given_by_id', $this->left_injection_given_by_id);
+		$criteria->compare('left_anaesthetictype_id', $this->left_anaesthetictype_id);
+		$criteria->compare('left_anaestheticagent_id', $this->left_anaestheticagent_id);
 		$criteria->compare('right_drug_id', $this->right_drug_id);
 		$criteria->compare('right_number', $this->right_number);
 		$criteria->compare('right_batch_number', $this->right_batch_number);
 		$criteria->compare('right_batch_expiry_date', $this->right_batch_expiry_date);
 		$criteria->compare('right_injection_given_by_id', $this->right_injection_given_by_id);
+		$criteria->compare('right_anaesthetictype_id', $this->right_anaesthetictype_id);
+		$criteria->compare('right_anaestheticagent_id', $this->right_anaestheticagent_id);
 		
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,
@@ -246,6 +272,17 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 				return "L: " . $this->left_drug->name . " / R: " . $this->right_drug->name;
 			}
 		}
+	}
+	
+	public function getFormOptions($table) {
+		if ($table == 'ophtrintravitinjection_anaesthetictype') {
+			$options = array();
+			foreach (OphTrIntravitrealinjection_AnaestheticType::model()->with('anaesthetic_type')->findAll(array('order' => 'display_order asc')) as $ad) {
+				$options[$ad->anaesthetic_type->id] = $ad->anaesthetic_type->name;
+			}
+			return $options;
+		}
+		else return parent::getFormOptions($table);
 	}
 }
 

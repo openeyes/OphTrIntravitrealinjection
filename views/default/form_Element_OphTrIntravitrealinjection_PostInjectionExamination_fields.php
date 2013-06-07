@@ -18,7 +18,7 @@
  */
 ?>
 
-<?php echo $form->radioBoolean($element, $side . '_cra')?>
+<?php echo $form->radioBoolean($element, $side . '_finger_count')?>
 
 <?php echo $form->radioBoolean($element, $side . '_iop_checked')?>
 

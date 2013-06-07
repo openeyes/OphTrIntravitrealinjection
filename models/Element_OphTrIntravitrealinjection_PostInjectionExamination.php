@@ -24,8 +24,8 @@
  * @property string $id
  * @property integer $event_id
  * @property integer $eye_id
- * @property integer $left_cra
- * @property string $right_cra
+ * @property integer $left_finger_count
+ * @property string $right_finger_count
  *
  * The followings are the available model relations:
  *
@@ -65,14 +65,14 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, eye_id, left_cra, left_iop_checked, left_iop_instrument_id, left_iop_reading_id, right_cra, right_iop_checked, right_iop_instrument_id, right_iop_reading_id', 'safe'),
+			array('event_id, eye_id, left_finger_count, left_iop_checked, left_iop_instrument_id, left_iop_reading_id, right_finger_count, right_iop_checked, right_iop_instrument_id, right_iop_reading_id', 'safe'),
 			array('eye_id', 'required'),
-			array('left_cra, left_iop_checked', 'requiredIfSide', 'side' => 'left'),
+			array('left_finger_count, left_iop_checked', 'requiredIfSide', 'side' => 'left'),
 			array('left_iop_checked', 'iop_checkedValidation', 'side' => 'left'),
-			array('right_cra, right_iop_checked', 'requiredIfSide', 'side' => 'right'),
+			array('right_finger_count, right_iop_checked', 'requiredIfSide', 'side' => 'right'),
 			array('right_iop_checked', 'iop_checkedValidation', 'side' => 'right'),
 			// The following rule is used by search().
-			array('id, event_id, eye_id, left_cra, right_cra, ', 'safe', 'on' => 'search'),
+			array('id, event_id, eye_id, left_finger_count, right_finger_count, ', 'safe', 'on' => 'search'),
 		);
 	}
 	
@@ -98,7 +98,7 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 	}
 
 	public function sidedFields() {
-		return array('cra', 'iop_instrument', 'iop_reading');
+		return array('finger_count', 'iop_instrument', 'iop_reading');
 	}
 	
 	/**
@@ -109,8 +109,8 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		return array(
 			'id' => 'ID',
 			'event_id' => 'Event',
-			'left_cra' => 'Central Artery Perfused Checked?',
-			'right_cra' => 'Central Artery Perfused Checked?',
+			'left_finger_count' => 'Counting Fingers Checked?',
+			'right_finger_count' => 'Counting Fingers Checked?',
 			'left_iop_checked' => 'IOP Checked?',
 			'right_iop_checked' => 'IOP Checked?',
 			'left_iop_instrument' => 'Instrument',
@@ -133,8 +133,8 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 
 		$criteria->compare('id', $this->id, true);
 		$criteria->compare('event_id', $this->event_id, true);
-		$criteria->compare('left_cra', $this->left_cra);
-		$criteria->compare('right_cra', $this->right_cra);
+		$criteria->compare('left_finger_count', $this->left_finger_count);
+		$criteria->compare('right_finger_count', $this->right_finger_count);
 		$criteria->compare('left_iop_reading_id', $this->left_iop_reading_id);
 		$criteria->compare('right_iop_reading_id', $this->right_iop_reading_id);
 		$criteria->compare('left_iop_instrument_id', $this->left_iop_instrument_id);
