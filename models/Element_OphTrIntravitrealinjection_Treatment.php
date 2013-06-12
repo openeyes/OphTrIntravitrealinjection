@@ -23,21 +23,24 @@
  * The followings are the available columns in table:
  * @property string $id
  * @property integer $event_id
- * @property integer $site_id
- * @property integer $left_anaesthetictype_id
- * @property integer $left_anaestheticagent_id
+ * @property integer $left_pre_antisept_drug_id
+ * @property integer $left_pre_skin_drug_id
  * @property integer $left_drug_id
  * @property integer $left_number
  * @property string $left_batch_number
  * @property string $left_batch_expiry_date
  * @property integer $left_injection_given_by_id
- * @property integer $right_anaesthetictype_id
- * @property integer $right_anaestheticagent_id
+ * @property integer $left_post_antisept_drug_id
+ * @property integer $left_post_skin_drug_id
+ * @property integer $right_pre_antisept_drug_id
+ * @property integer $right_pre_skin_drug_id
  * @property integer $right_drug_id
  * @property integer $right_number
  * @property string $right_batch_number
  * @property string $right_batch_expiry_date
  * @property integer $right_injection_given_by_id
+ * @property integer $right_post_antisept_drug_id
+ * @property integer $right_post_skin_drug_id
  *
  * The followings are the available model relations:
  *
@@ -46,14 +49,18 @@
  * @property Event $event
  * @property User $user
  * @property User $usermodified
+ * @property OphTrIntravitrealinjection_AntiSepticDrug $left_pre_antisept_drug
+ * @property OphTrIntravitrealinjection_SkinDrug $left_pre_skin_drug
  * @property OphTrIntravitrealinjection_Treatment_Drug $left_drug
  * @property User $left_injection_given_by
- * @property AnaestheticType $left_anaesthetictype
- * @property AnaestheticAgent $left_anaestheticagent
+ * @property OphTrIntravitrealinjection_AntiSepticDrug $left_post_antisept_drug
+ * @property OphTrIntravitrealinjection_SkinDrug $left_post_skin_drug
+ * @property OphTrIntravitrealinjection_AntiSepticDrug $right_pre_antisept_drug
+ * @property OphTrIntravitrealinjection_SkinDrug $right_pre_skin_drug
  * @property OphTrIntravitrealinjection_Treatment_Drug $right_drug
  * @property User $right_injection_given_by
- * @property AnaestheticType $right_anaesthetictype
- * @property AnaestheticAgent $right_anaestheticagent
+ * @property OphTrIntravitrealinjection_AntiSepticDrug $right_post_antisept_drug
+ * @property OphTrIntravitrealinjection_SkinDrug $right_post_skin_drug
  */
 
 class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
@@ -85,21 +92,22 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, site_id, eye_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' .
-				'left_anaesthetictype_id, left_anaestheticagent_id' . 
-				'right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id' . 
-				'right_anaesthetictype_id, right_anaestheticagent_id', 'safe'),
-			array('left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' . 
-				'left_anaesthetictype_id, left_anaestheticagent_id', 'requiredIfSide', 'side' => 'left'),
-			array('right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, ' . 
-				'right_anaesthetictype_id, right_anaestheticagent_id', 'requiredIfSide', 'side' => 'right'),
+			array('event_id, site_id, eye_id, left_pre_antisept_drug_id, left_pre_skin_drug_id, left_drug_id, left_number, left_batch_number, ' .
+				'left_batch_expiry_date, left_injection_given_by_id, left_post_antisept_drug_id, left_post_skin_drug_id, ' .
+				'right_pre_antisept_drug_id, right_pre_skin_drug_id, right_drug_id, right_number, right_batch_number, right_batch_expiry_date, ' . 
+				'right_injection_given_by_id, right_post_antisept_drug_id, right_post_skin_drug_id', 'safe'),
+			array('left_pre_antisept_drug_id, left_pre_skin_drug_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, ' . 
+				'left_injection_given_by_id, left_post_antisept_drug_id, left_post_skin_drug_id', 'requiredIfSide', 'side' => 'left'),
+			array('right_pre_antisept_drug_id, right_pre_skin_drug_id, right_drug_id, right_number, right_batch_number, right_batch_expiry_date, ' . 
+				'right_injection_given_by_id, right_post_antisept_drug_id, right_post_skin_drug_id,', 'requiredIfSide', 'side' => 'right'),
 			array('left_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'left', 'message' => 'Left {attribute} cannot be in the past.'),
 			array('right_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'right', 'message' => 'Right {attribute} cannot be in the past.'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, event_id, eye_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, left_injection_given_by_id, ' .
-				'right_drug_id, right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id', 'safe', 'on' => 'search'),
 			array('left_number, right_number', 'numerical', 'integerOnly' => true, 'min' => 1, 'message' => 'Number of Injections must be higher or equal to 1'),
+			// The following rule is used by search().
+			array('id, event_id, eye_id, left_pre_antisept_drug_id, left_pre_skin_drug_id, left_drug_id, left_number, left_batch_number, ' . 
+				'left_batch_expiry_date, left_injection_given_by_id, left_post_antisept_drug_id, left_post_skin_drug_id, ' .
+				'right_pre_antisept_drug_id, right_pre_skin_drug_id, right_drug_id, right_number, right_batch_number, right_batch_expiry_date, ' . 
+				'right_injection_given_by_id, right_post_antisept_drug_id, right_post_skin_drug_id', 'safe', 'on' => 'search'),
 		);
 	}
 	
@@ -119,13 +127,17 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			'site' => array(self::BELONGS_TO, 'Site', 'site_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
 			'left_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Treatment_Drug', 'left_drug_id'),
-			'left_anaesthetictype' => array(self::BELONGS_TO, 'AnaestheticType', 'left_anaesthetictype_id'),
-			'left_anaestheticagent' => array(self::BELONGS_TO, 'AnaestheticAgent', 'left_anaestheticagent_id'),
 			'right_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Treatment_Drug', 'right_drug_id'),
+			'left_pre_antisept_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_AntiSepticDrug', 'left_pre_antisept_drug_id'),
+			'left_post_antisept_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_AntiSepticDrug', 'left_post_antisept_drug_id'),
+			'right_pre_antisept_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_AntiSepticDrug', 'right_pre_antisept_drug_id'),
+			'right_post_antisept_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_AntiSepticDrug', 'right_post_antisept_drug_id'),
+			'left_pre_skin_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_SkinDrug', 'left_pre_skin_drug_id'),
+			'left_post_skin_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_SkinDrug', 'left_post_skin_drug_id'),
+			'right_pre_skin_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_SkinDrug', 'right_pre_skin_drug_id'),
+			'right_post_skin_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_SkinDrug', 'right_post_skin_drug_id'),
 			'left_injection_given_by' => array(self::BELONGS_TO, 'User', 'left_injection_given_by_id'),
 			'right_injection_given_by' => array(self::BELONGS_TO, 'User', 'right_injection_given_by_id'),
-			'right_anaesthetictype' => array(self::BELONGS_TO, 'AnaestheticType', 'right_anaesthetictype_id'),
-			'right_anaestheticagent' => array(self::BELONGS_TO, 'AnaestheticAgent', 'right_anaestheticagent_id'),
 		);
 	}
 
@@ -147,15 +159,19 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			'left_batch_number' => 'Batch Number',
 			'left_batch_expiry_date' => 'Batch Expiry Date',
 			'left_injection_given_by_id' => 'Injection Given By',
-			'left_anaesthetictype_id' => 'Anaesthetic Type',
-			'left_anaestheticagent_id' => 'Anaesthetic Agent',
 			'right_drug_id' => 'Drug',
 			'right_number' => 'Number of Injections',
 			'right_batch_number' => 'Batch Number',
 			'right_batch_expiry_date' => 'Batch Expiry Date',
 			'right_injection_given_by_id' => 'Injection Given By',
-			'right_anaesthetictype_id' => 'Anaesthetic Type',
-			'right_anaestheticagent_id' => 'Anaesthetic Agent',
+			'left_pre_antisept_drug_id' => 'Pre Injection Antiseptic',
+			'left_post_antisept_drug_id' => 'Post Injection Antiseptic',
+			'right_pre_antisept_drug_id' => 'Pre Injection Antiseptic',
+			'right_post_antisept_drug_id' => 'Post Injection Antiseptic',
+			'left_pre_skin_drug_id' => 'Pre Injection Skin Cleanser',
+			'left_post_skin_drug_id' => 'Post Injection Skin Cleanser',
+			'right_pre_skin_drug_id' => 'Pre Injection Skin Cleanser',
+			'right_post_skin_drug_id' => 'Post Injection Skin Cleanser',
 		);
 	}
 
@@ -186,6 +202,15 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		$criteria->compare('right_injection_given_by_id', $this->right_injection_given_by_id);
 		$criteria->compare('right_anaesthetictype_id', $this->right_anaesthetictype_id);
 		$criteria->compare('right_anaestheticagent_id', $this->right_anaestheticagent_id);
+		
+		$criteria->compare('left_pre_antisept_drug_id', $this->left_pre_antisept_drug_id);
+		$criteria->compare('left_post_antisept_drug_id', $this->left_post_antisept_drug_id);
+		$criteria->compare('right_pre_antisept_drug_id', $this->right_pre_antisept_drug_id);
+		$criteria->compare('right_post_antisept_drug_id', $this->right_post_antisept_drug_id);
+		$criteria->compare('left_pre_skin_drug_id', $this->left_pre_skin_drug_id);
+		$criteria->compare('left_post_skin_drug_id', $this->left_post_skin_drug_id);
+		$criteria->compare('right_pre_skin_drug_id', $this->right_pre_skin_drug_id);
+		$criteria->compare('right_post_skin_drug_id', $this->right_post_skin_drug_id);
 		
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,
@@ -274,16 +299,6 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		}
 	}
 	
-	public function getFormOptions($table) {
-		if ($table == 'ophtrintravitinjection_anaesthetictype') {
-			$options = array();
-			foreach (OphTrIntravitrealinjection_AnaestheticType::model()->with('anaesthetic_type')->findAll(array('order' => 'display_order asc')) as $ad) {
-				$options[$ad->anaesthetic_type->id] = $ad->anaesthetic_type->name;
-			}
-			return $options;
-		}
-		else return parent::getFormOptions($table);
-	}
 }
 
 ?>

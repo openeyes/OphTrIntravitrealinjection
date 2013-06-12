@@ -50,8 +50,9 @@ class DefaultController extends BaseEventTypeController {
 			}
 			
 			foreach ($elements as $element) {
-				error_log(get_class($element) . ":" . $element->eye_id);
-				$element->eye_id = $default_eye;
+				if (property_exists($element, 'eye_id') ) {
+					$element->eye_id = $default_eye;
+				}
 				
 				if (get_class($element) == 'Element_OphTrIntravitrealinjection_Treatment') {
 					if ($therapy_api) {
@@ -63,9 +64,11 @@ class DefaultController extends BaseEventTypeController {
 							$element->right_drug_id = $drug->id;
 						}
 					}
-					$element->site_id = $this->selectedSiteId;
 					$element->left_injection_given_by_id = Yii::app()->user->id;
 					$element->right_injection_given_by_id = Yii::app()->user->id;
+				}
+				if (get_class($element) == 'Element_OphTrIntravitrealinjection_Site') {
+					$element->site_id = $this->selectedSiteId;
 				}
 			}
 			

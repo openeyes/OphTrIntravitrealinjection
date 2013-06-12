@@ -126,7 +126,6 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 
 		$criteria->compare('id', $this->id, true);
 		$criteria->compare('event_id', $this->event_id, true);
-		$criteria->compare('complicat', $this->complicat);
 		$criteria->compare('oth_descrip', $this->oth_descrip);
 		
 		return new CActiveDataProvider(get_class($this), array(

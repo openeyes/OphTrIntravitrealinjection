@@ -18,23 +18,12 @@
  */
 ?>
 
-<h4 class="elementTypeName"><?php echo $element->elementType->name?></h4>
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_anaesthetictype_id') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_anaesthetictype'}->name ?></div>
+</div>
 
-<div class="cols2 clearfix">
-	<div class="left eventDetail">
-		<?php if($element->hasRight()) {
-			$this->renderPartial('view_' . get_class($element) . '_fields',
-				array('side' => 'right', 'element' => $element));
-		} else { ?>
-		Not recorded
-		<?php } ?>
-	</div>
-	<div class="right eventDetail">
-		<?php if($element->hasLeft()) {
-			$this->renderPartial('view_' . get_class($element) . '_fields',
-				array('side' => 'left', 'element' => $element));
-		} else { ?>
-		Not recorded
-		<?php } ?>
-	</div>
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_anaestheticagent_id') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_anaestheticagent'}->name ?></div>
 </div>

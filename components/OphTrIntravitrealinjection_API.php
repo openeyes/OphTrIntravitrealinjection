@@ -60,7 +60,6 @@ class OphTrIntravitrealinjection_API extends BaseAPI {
 		
 		$res = array();
 		foreach ($previous as $prev) {
-			error_log(print_r($previous, true));
 			if (in_array($prev->eye_id,$eye_ids)) {
 				if ($drug == null || $prev->{$side . '_drug_id'} == $drug->id) {
 					$res[] = $prev;

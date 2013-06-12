@@ -18,23 +18,10 @@
  */
 ?>
 
-<h4 class="elementTypeName"><?php echo $element->elementType->name?></h4>
+<?php 
 
-<div class="cols2 clearfix">
-	<div class="left eventDetail">
-		<?php if($element->hasRight()) {
-			$this->renderPartial('view_' . get_class($element) . '_fields',
-				array('side' => 'right', 'element' => $element));
-		} else { ?>
-		Not recorded
-		<?php } ?>
-	</div>
-	<div class="right eventDetail">
-		<?php if($element->hasLeft()) {
-			$this->renderPartial('view_' . get_class($element) . '_fields',
-				array('side' => 'left', 'element' => $element));
-		} else { ?>
-		Not recorded
-		<?php } ?>
-	</div>
-</div>
+echo $form->radioButtons($element, $side . '_anaesthetictype_id', 'ophtrintravitinjection_anaesthetictype');
+
+echo $form->dropDownList($element, $side . '_anaestheticagent_id', CHtml::listData(AnaestheticAgent::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), array('empty' => '- Please select -'));
+
+?>

@@ -14,7 +14,17 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		$event_type = $this->dbConnection->createCommand()->select('id')->from('event_type')->where('class_name=:class_name', array(':class_name'=>'OphTrIntravitrealinjection'))->queryRow();
 
 		// --- ELEMENT TYPE ENTRIES ---
-
+		
+		// create an element_type entry for this element type name if one doesn't already exist
+		if (!$this->dbConnection->createCommand()->select('id')->from('element_type')->where('name=:name and event_type_id=:eventTypeId', array(':name'=>'Site',':eventTypeId'=>$event_type['id']))->queryRow()) {
+			$this->insert('element_type', array('name' => 'Site','class_name' => 'Element_OphTrIntravitrealinjection_Site', 'event_type_id' => $event_type['id'], 'display_order' => 1));
+		}
+		
+		// create an element_type entry for this element type name if one doesn't already exist
+		if (!$this->dbConnection->createCommand()->select('id')->from('element_type')->where('name=:name and event_type_id=:eventTypeId', array(':name'=>'Anaesthetic',':eventTypeId'=>$event_type['id']))->queryRow()) {
+			$this->insert('element_type', array('name' => 'Anaesthetic','class_name' => 'Element_OphTrIntravitrealinjection_Anaesthetic', 'event_type_id' => $event_type['id'], 'display_order' => 1));
+		}
+		
 		// create an element_type entry for this element type name if one doesn't already exist
 		if (!$this->dbConnection->createCommand()->select('id')->from('element_type')->where('name=:name and event_type_id=:eventTypeId', array(':name'=>'Treatment',':eventTypeId'=>$event_type['id']))->queryRow()) {
 			$this->insert('element_type', array('name' => 'Treatment','class_name' => 'Element_OphTrIntravitrealinjection_Treatment', 'event_type_id' => $event_type['id'], 'display_order' => 1));
@@ -36,7 +46,6 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		
 		// get the id for both eyes
 		$both_eyes_id = Eye::model()->find("name = 'Both'")->id;
-		
 		
 		$this->createTable('ophtrintravitinjection_injectionuser', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -78,6 +87,26 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Intravitreal triamcinolone','display_order'=>7));
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Illuvien','display_order'=>8));
 		
+		// Site table
+		$this->createTable('et_ophtrintravitinjection_site', array(
+				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
+				'event_id' => 'int(10) unsigned NOT NULL',
+				'site_id' => 'int(10) unsigned NOT NULL',
+				'last_modified_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'last_modified_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
+				'created_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'created_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
+				'PRIMARY KEY (`id`)',
+				'KEY `et_ophtrintravitinjection_site_lmui_fk` (`last_modified_user_id`)',
+				'KEY `et_ophtrintravitinjection_site_cui_fk` (`created_user_id`)',
+				'KEY `et_ophtrintravitinjection_site_ev_fk` (`event_id`)',
+				'KEY `et_ophtrintravitinjection_site_site_id_fk` (`site_id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_site_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_site_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_site_ev_fk` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_site_site_id_fk` FOREIGN KEY (`site_id`) REFERENCES `site` (`id`)',
+		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+		
 		// element lookup table ophtrintravitinjection_anaesthetictype
 		$this->createTable('ophtrintravitinjection_anaesthetictype', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -93,6 +122,38 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		
 		$this->insert('ophtrintravitinjection_anaesthetictype',array('anaesthetic_type_id'=>$to['id'],'display_order'=>1));
 		$this->insert('ophtrintravitinjection_anaesthetictype',array('anaesthetic_type_id'=>$la['id'],'display_order'=>2));
+		
+		// create the table for Anaesthetic
+		$this->createTable('et_ophtrintravitinjection_anaesthetic', array(
+				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
+				'event_id' => 'int(10) unsigned NOT NULL',
+				'eye_id' => 'int(10) unsigned NOT NULL DEFAULT ' . $both_eyes_id,
+				'left_anaesthetictype_id' => 'int(10) unsigned',
+				'left_anaestheticagent_id' => 'int(10) unsigned',
+				'right_anaesthetictype_id' => 'int(10) unsigned',
+				'right_anaestheticagent_id' => 'int(10) unsigned',
+				'last_modified_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'last_modified_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
+				'created_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'created_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
+				'PRIMARY KEY (`id`)',
+				'KEY `et_ophtrintravitinjection_anaesthetic_lmui_fk` (`last_modified_user_id`)',
+				'KEY `et_ophtrintravitinjection_anaesthetic_cui_fk` (`created_user_id`)',
+				'KEY `et_ophtrintravitinjection_anaesthetic_ev_fk` (`event_id`)',
+				'KEY `et_ophtrintravitinjection_anaesthetic_eye_id_fk` (`eye_id`)',
+				'KEY `et_ophtrintravitinjection_anaesthetic_lad_id_fk` (`left_anaesthetictype_id`)',
+				'KEY `et_ophtrintravitinjection_anaesthetic_laa_id_fk` (`left_anaestheticagent_id`)',
+				'KEY `et_ophtrintravitinjection_anaesthetic_rad_id_fk` (`right_anaesthetictype_id`)',
+				'KEY `et_ophtrintravitinjection_anaesthetic_raa_id_fk` (`right_anaestheticagent_id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_anaesthetic_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_anaesthetic_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_anaesthetic_ev_fk` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_anaesthetic_eye_id_fk` FOREIGN KEY (`eye_id`) REFERENCES `eye` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_anaesthetic_lad_id_fk` FOREIGN KEY (`left_anaesthetictype_id`) REFERENCES `anaesthetic_type` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_anaesthetic_laa_id_fk` FOREIGN KEY (`left_anaestheticagent_id`) REFERENCES `anaesthetic_agent` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_anaesthetic_rad_id_fk` FOREIGN KEY (`right_anaesthetictype_id`) REFERENCES `anaesthetic_type` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_anaesthetic_raa_id_fk` FOREIGN KEY (`right_anaestheticagent_id`) REFERENCES `anaesthetic_agent` (`id`)',
+		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
 		
 		// create the table(s) for Anterior Segment
 		$this->createTable('ophtrintravitinjection_lens_status', array(
@@ -111,8 +172,8 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
 		
 		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Phakic','display_order'=>1));
-		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Aphakic','display_order'=>1));
-		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Psuedophakic','display_order'=>1));
+		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Aphakic','display_order'=>2));
+		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Psuedophakic','display_order'=>3));
 		
 		$this->createTable('et_ophtrintravitinjection_anteriorseg', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -138,27 +199,67 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `et_ophtrintravitinjection_anteriorseg_llsi_fk` FOREIGN KEY (`left_lens_status_id`) REFERENCES `ophtrintravitinjection_lens_status` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_anteriorseg_rlsi_fk` FOREIGN KEY (`right_lens_status_id`) REFERENCES `ophtrintravitinjection_lens_status` (`id`)',
 			), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-				
+		
+		// Treatment lookup tables
+		$this->createTable('ophtrintravitinjection_antiseptic_drug', array(
+				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
+				'name' => 'varchar(128) COLLATE utf8_bin NOT NULL',
+				'display_order' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'last_modified_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'last_modified_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
+				'created_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'created_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
+				'PRIMARY KEY (`id`)',
+				'KEY `ophtrintravitinjection_antiseptic_drug_lmui_fk` (`last_modified_user_id`)',
+				'KEY `ophtrintravitinjection_antiseptic_drug_cui_fk` (`created_user_id`)',
+				'CONSTRAINT `ophtrintravitinjection_antiseptic_drug_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)',
+				'CONSTRAINT `ophtrintravitinjection_antiseptic_drug_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
+		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+		
+		$this->insert('ophtrintravitinjection_antiseptic_drug',array('name'=>'Iodine 5%','display_order'=>1));
+		$this->insert('ophtrintravitinjection_antiseptic_drug',array('name'=>'Chlorhexidine','display_order'=>2));
+		
+		$this->createTable('ophtrintravitinjection_skin_drug', array(
+				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
+				'name' => 'varchar(128) COLLATE utf8_bin NOT NULL',
+				'display_order' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'last_modified_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'last_modified_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
+				'created_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'created_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
+				'PRIMARY KEY (`id`)',
+				'KEY `ophtrintravitinjection_skin_drug_lmui_fk` (`last_modified_user_id`)',
+				'KEY `ophtrintravitinjection_skin_drug_cui_fk` (`created_user_id`)',
+				'CONSTRAINT `ophtrintravitinjection_skin_drug_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)',
+				'CONSTRAINT `ophtrintravitinjection_skin_drug_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
+		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+		
+		$this->insert('ophtrintravitinjection_skin_drug',array('name'=>'Iodine 10%','display_order'=>1));
+		$this->insert('ophtrintravitinjection_skin_drug',array('name'=>'Chlorhexidine','display_order'=>2));
+		
 		// create the table for Treatment
 		$this->createTable('et_ophtrintravitinjection_treatment', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'event_id' => 'int(10) unsigned NOT NULL',
-				'site_id' => 'int(10) unsigned NOT NULL',
 				'eye_id' => 'int(10) unsigned NOT NULL DEFAULT ' . $both_eyes_id,
+				'left_pre_antisept_drug_id' => 'int(10) unsigned',
+				'left_pre_skin_drug_id' => 'int(10) unsigned',
 				'left_drug_id' => 'int(10) unsigned', // Drug
 				'right_drug_id' => 'int(10) unsigned', // Drug
 				'left_number' => 'int(10) unsigned', // Number of Injections
-				'right_number' => 'int(10) unsigned', // Number of Injections
 				'left_batch_number' => 'varchar(255) DEFAULT \'\'', // Batch Number
-				'right_batch_number' => 'varchar(255) DEFAULT \'\'', // Batch Number
 				'left_batch_expiry_date' => 'date DEFAULT NULL', // Batch Expiry Date
-				'left_anaesthetictype_id' => 'int(10) unsigned',
-				'left_anaestheticagent_id' => 'int(10) unsigned',
-				'right_batch_expiry_date' => 'date DEFAULT NULL', // Batch Expiry Date
 				'left_injection_given_by_id' => 'int(10) unsigned', // Injection Given By
+				'left_post_antisept_drug_id' => 'int(10) unsigned',
+				'left_post_skin_drug_id' => 'int(10) unsigned',
+				'right_pre_antisept_drug_id' => 'int(10) unsigned',
+				'right_pre_skin_drug_id' => 'int(10) unsigned',
+				'right_number' => 'int(10) unsigned', // Number of Injections
+				'right_batch_number' => 'varchar(255) DEFAULT \'\'', // Batch Number
+				'right_batch_expiry_date' => 'date DEFAULT NULL', // Batch Expiry Date
 				'right_injection_given_by_id' => 'int(10) unsigned', // Injection Given By
-				'right_anaesthetictype_id' => 'int(10) unsigned',
-				'right_anaestheticagent_id' => 'int(10) unsigned',
+				'right_post_antisept_drug_id' => 'int(10) unsigned',
+				'right_post_skin_drug_id' => 'int(10) unsigned',
 				'last_modified_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
 				'last_modified_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
 				'created_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
@@ -167,32 +268,38 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'KEY `et_ophtrintravitinjection_treatment_lmui_fk` (`last_modified_user_id`)',
 				'KEY `et_ophtrintravitinjection_treatment_cui_fk` (`created_user_id`)',
 				'KEY `et_ophtrintravitinjection_treatment_ev_fk` (`event_id`)',
-				'KEY `et_ophtrintravitinjection_treatment_site_fk` (`site_id`)',
 				'KEY `et_ophtrintravitinjection_treatment_eye_id_fk` (`eye_id`)',
+				'KEY `et_ophtrintravitinjection_treatment_lprad_id_fk` (`left_pre_antisept_drug_id`)',
+				'KEY `et_ophtrintravitinjection_treatment_lprsd_id_fk` (`left_pre_skin_drug_id`)',
 				'KEY `ophtrintravitinjection_treatment_ldrug_fk` (`left_drug_id`)',
 				'KEY `et_ophtrintravitinjection_treatment_linjection_given_by_id_fk` (`left_injection_given_by_id`)',
-				'KEY `et_ophtrintravitinjection_treatment_lad_id_fk` (`left_anaesthetictype_id`)',
-				'KEY `et_ophtrintravitinjection_treatment_laa_id_fk` (`left_anaestheticagent_id`)',
+				'KEY `et_ophtrintravitinjection_treatment_lpoad_id_fk` (`left_post_antisept_drug_id`)',
+				'KEY `et_ophtrintravitinjection_treatment_lposd_id_fk` (`left_post_skin_drug_id`)',
+				'KEY `et_ophtrintravitinjection_treatment_rprad_id_fk` (`right_pre_antisept_drug_id`)',
+				'KEY `et_ophtrintravitinjection_treatment_rprsd_id_fk` (`right_pre_skin_drug_id`)',
 				'KEY `ophtrintravitinjection_treatment_rdrug_fk` (`right_drug_id`)',
 				'KEY `et_ophtrintravitinjection_treatment_rinjection_given_by_id_fk` (`right_injection_given_by_id`)',
-				'KEY `et_ophtrintravitinjection_treatment_rad_id_fk` (`right_anaesthetictype_id`)',
-				'KEY `et_ophtrintravitinjection_treatment_raa_id_fk` (`right_anaestheticagent_id`)',
+				'KEY `et_ophtrintravitinjection_treatment_rpoad_id_fk` (`right_post_antisept_drug_id`)',
+				'KEY `et_ophtrintravitinjection_treatment_rposd_id_fk` (`right_post_skin_drug_id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_treatment_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_treatment_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
-				'CONSTRAINT `et_ophtrintravitinjection_treatment_site_fk` FOREIGN KEY (`site_id`) REFERENCES `site` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_treatment_ev_fk` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_treatment_eye_id_fk` FOREIGN KEY (`eye_id`) REFERENCES `eye` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_treatment_lprad_id_fk` FOREIGN KEY (`left_pre_antisept_drug_id`) REFERENCES `ophtrintravitinjection_antiseptic_drug` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_treatment_lprsd_id_fk` FOREIGN KEY (`left_pre_skin_drug_id`) REFERENCES `ophtrintravitinjection_skin_drug` (`id`)',
 				'CONSTRAINT `ophtrintravitinjection_treatment_ldrug_fk` FOREIGN KEY (`left_drug_id`) REFERENCES `ophtrintravitinjection_treatment_drug` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_treatment_linjection_given_by_id_fk` FOREIGN KEY (`left_injection_given_by_id`) REFERENCES `user` (`id`)',
-				'CONSTRAINT `et_ophtrintravitinjection_treatment_lad_id_fk` FOREIGN KEY (`left_anaesthetictype_id`) REFERENCES `anaesthetic_type` (`id`)',
-				'CONSTRAINT `et_ophtrintravitinjection_treatment_laa_id_fk` FOREIGN KEY (`left_anaestheticagent_id`) REFERENCES `anaesthetic_agent` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_treatment_lpoad_id_fk` FOREIGN KEY (`left_post_antisept_drug_id`) REFERENCES `ophtrintravitinjection_antiseptic_drug` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_treatment_lposd_id_fk` FOREIGN KEY (`left_post_skin_drug_id`) REFERENCES `ophtrintravitinjection_skin_drug` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_treatment_rprad_id_fk` FOREIGN KEY (`right_pre_antisept_drug_id`) REFERENCES `ophtrintravitinjection_antiseptic_drug` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_treatment_rprsd_id_fk` FOREIGN KEY (`right_pre_skin_drug_id`) REFERENCES `ophtrintravitinjection_skin_drug` (`id`)',
 				'CONSTRAINT `ophtrintravitinjection_treatment_rdrug_fk` FOREIGN KEY (`right_drug_id`) REFERENCES `ophtrintravitinjection_treatment_drug` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_treatment_rinjection_given_by_id_fk` FOREIGN KEY (`right_injection_given_by_id`) REFERENCES `user` (`id`)',
-				'CONSTRAINT `et_ophtrintravitinjection_treatment_rad_id_fk` FOREIGN KEY (`right_anaesthetictype_id`) REFERENCES `anaesthetic_type` (`id`)',
-				'CONSTRAINT `et_ophtrintravitinjection_treatment_raa_id_fk` FOREIGN KEY (`right_anaestheticagent_id`) REFERENCES `anaesthetic_agent` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_treatment_rpoad_id_fk` FOREIGN KEY (`right_post_antisept_drug_id`) REFERENCES `ophtrintravitinjection_antiseptic_drug` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_treatment_rposd_id_fk` FOREIGN KEY (`right_post_skin_drug_id`) REFERENCES `ophtrintravitinjection_skin_drug` (`id`)',
 			), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
 
-		
+		//Post-injection tables
 		$this->createTable('ophtrintravitinjection_iop_reading', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'name' => 'varchar(3)',
@@ -236,6 +343,24 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		$this->insert('ophtrintravitinjection_iop_instrument', array('name' => 'Dynamic Contour Tonometry', 'display_order' => 50));
 		$this->insert('ophtrintravitinjection_iop_instrument', array('name' => 'Other', 'display_order' => 1000));
 		
+		$this->createTable('ophtrintravitinjection_postinjection_drops', array(
+				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
+				'name' => 'varchar(128) COLLATE utf8_bin NOT NULL',
+				'display_order' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'last_modified_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'last_modified_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
+				'created_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'created_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
+				'PRIMARY KEY (`id`)',
+				'KEY `ophtrintravitinjection_postinjection_drops_lmui_fk` (`last_modified_user_id`)',
+				'KEY `ophtrintravitinjection_postinjection_drops_cui_fk` (`created_user_id`)',
+				'CONSTRAINT `ophtrintravitinjection_postinjection_drops_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)',
+				'CONSTRAINT `ophtrintravitinjection_postinjection_drops_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
+		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+		
+		$this->insert('ophtrintravitinjection_postinjection_drops',array('name'=>'G. Levofloxacin four times daily for 5 days','display_order'=>1));
+		$this->insert('ophtrintravitinjection_postinjection_drops',array('name'=>'G. Chloramphenicol 0.5%  four times daily for 5 days','display_order'=>2));
+		
 		// create the table for this element type: Element_OphTrIntravitrealinjection_PostInjectionExamination
 		$this->createTable('et_ophtrintravitinjection_postinject', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -249,6 +374,8 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'right_iop_reading_id' => 'int(10) unsigned',
 				'left_iop_instrument_id' => 'int(10) unsigned',
 				'right_iop_instrument_id' => 'int(10) unsigned',
+				'left_drops_id' => 'int(10) unsigned',
+				'right_drops_id' => 'int(10) unsigned',
 				'last_modified_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
 				'last_modified_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
 				'created_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
@@ -262,6 +389,8 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'KEY `et_ophtrintravitinjection_postinject_riop_id_fk` (`right_iop_reading_id`)',
 				'KEY `et_ophtrintravitinjection_postinject_linst_id_fk` (`left_iop_instrument_id`)',
 				'KEY `et_ophtrintravitinjection_postinject_rinst_id_fk` (`right_iop_instrument_id`)',
+				'KEY `et_ophtrintravitinjection_postinject_ldrops_id_fk` (`left_drops_id`)',
+				'KEY `et_ophtrintravitinjection_postinject_rdrops_id_fk` (`right_drops_id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_postinject_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_postinject_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_postinject_ev_fk` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`)',
@@ -270,6 +399,8 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `et_ophtrintravitinjection_postinject_riop_id_fk` FOREIGN KEY (`right_iop_reading_id`) REFERENCES `ophtrintravitinjection_iop_reading` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_postinject_linst_id_fk` FOREIGN KEY (`left_iop_instrument_id`) REFERENCES `ophtrintravitinjection_iop_instrument` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_postinject_rinst_id_fk` FOREIGN KEY (`right_iop_instrument_id`) REFERENCES `ophtrintravitinjection_iop_instrument` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_postinject_ldrops_id_fk` FOREIGN KEY (`left_drops_id`) REFERENCES `ophtrintravitinjection_postinjection_drops` (`id`)',
+				'CONSTRAINT `et_ophtrintravitinjection_postinject_rdrops_id_fk` FOREIGN KEY (`right_drops_id`) REFERENCES `ophtrintravitinjection_postinjection_drops` (`id`)',
 			), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
 
 		// element lookup table 
@@ -348,14 +479,20 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		// --- drop any element related tables ---
 		// --- drop element tables ---
 
+		
 		$this->dropTable('ophtrintravitinjection_injectionuser');
 		$this->dropTable('ophtrintravitinjection_anaesthetictype');
+		
+		$this->dropTable('et_ophtrintravitinjection_site');
+		$this->dropTable('et_ophtrintravitinjection_anaesthetic');
 		
 		$this->dropTable('et_ophtrintravitinjection_treatment');
 
 
 		$this->dropTable('ophtrintravitinjection_treatment_drug');
-
+		$this->dropTable('ophtrintravitinjection_antiseptic_drug');
+		$this->dropTable('ophtrintravitinjection_skin_drug');
+		
 		$this->dropTable('et_ophtrintravitinjection_postinject');
 		
 		$this->dropTable('et_ophtrintravitinjection_anteriorseg');

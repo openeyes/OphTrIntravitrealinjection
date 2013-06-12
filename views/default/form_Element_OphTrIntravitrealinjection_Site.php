@@ -18,23 +18,12 @@
  */
 ?>
 
-<h4 class="elementTypeName"><?php echo $element->elementType->name?></h4>
-
-<div class="cols2 clearfix">
-	<div class="left eventDetail">
-		<?php if($element->hasRight()) {
-			$this->renderPartial('view_' . get_class($element) . '_fields',
-				array('side' => 'right', 'element' => $element));
-		} else { ?>
-		Not recorded
-		<?php } ?>
-	</div>
-	<div class="right eventDetail">
-		<?php if($element->hasLeft()) {
-			$this->renderPartial('view_' . get_class($element) . '_fields',
-				array('side' => 'left', 'element' => $element));
-		} else { ?>
-		Not recorded
-		<?php } ?>
-	</div>
+<div class="element <?php echo $element->elementType->class_name?>"
+	data-element-type-id="<?php echo $element->elementType->id?>"
+	data-element-type-class="<?php echo $element->elementType->class_name?>"
+	data-element-type-name="<?php echo $element->elementType->name?>"
+	data-element-display-order="<?php echo $element->elementType->display_order?>">
+	<h4 class="elementTypeName"><?php echo $element->elementType->name; ?></h4>
+	
+	<?php echo $form->dropDownList($element, 'site_id', CHtml::listData(Site::model()->findAll(array('order' => 'name asc')), 'id', 'name')); ?>
 </div>

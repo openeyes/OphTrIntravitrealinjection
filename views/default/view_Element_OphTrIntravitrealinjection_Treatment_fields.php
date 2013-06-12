@@ -19,13 +19,13 @@
 ?>
 
 <div class="eventDetail aligned">
-	<div class="label"><?php echo $element->getAttributeLabel($side . '_anaesthetictype_id') ?>:</div>
-	<div class="data"><?php echo $element->{$side . '_anaesthetictype'}->name ?></div>
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_pre_antisept_drug_id') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_pre_antisept_drug'}->name ?></div>
 </div>
 
 <div class="eventDetail aligned">
-	<div class="label"><?php echo $element->getAttributeLabel($side . '_anaestheticagent_id') ?>:</div>
-	<div class="data"><?php echo $element->{$side . '_anaestheticagent'}->name ?></div>
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_pre_skin_drug_id') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_pre_skin_drug'}->name ?></div>
 </div>
 
 <div class="eventDetail aligned">
@@ -51,4 +51,14 @@
 <div class="eventDetail aligned">
 	<div class="label"><?php echo $element->getAttributeLabel($side . '_injection_given_by_id') ?>:</div>
 	<div class="data"><?php echo $element->{$side . '_injection_given_by'}->ReversedFullName ?></div>
+</div>
+
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_post_antisept_drug_id') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_post_antisept_drug'}->name ?></div>
+</div>
+
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_post_skin_drug_id') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_post_skin_drug'}->name ?></div>
 </div>
