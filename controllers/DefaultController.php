@@ -63,6 +63,9 @@ class DefaultController extends BaseEventTypeController {
 							$element->right_drug_id = $drug->id;
 						}
 					}
+					$element->site_id = $this->selectedSiteId;
+					$element->left_injection_given_by_id = Yii::app()->user->id;
+					$element->right_injection_given_by_id = Yii::app()->user->id;
 				}
 			}
 			
