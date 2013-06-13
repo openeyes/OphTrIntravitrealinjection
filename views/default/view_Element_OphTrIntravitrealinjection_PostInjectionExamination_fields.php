@@ -40,3 +40,11 @@
 	} ?>
 	</div>
 </div>
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_drops_id') ?>:</div>
+	<div class="data"><?php if ($element->{$side . '_drops'}) {
+		echo $element->{$side . '_drops'}->name;
+	} else { ?>
+		Not Recorded
+	<?php }?></div>
+</div>

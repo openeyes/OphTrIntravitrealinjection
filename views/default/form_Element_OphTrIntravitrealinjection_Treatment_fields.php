@@ -33,8 +33,12 @@ $html_options = array(
 foreach ($drugs as $drug) {
 	$previous = $injection_api->previousInjections($this->patient, $episode, $side, $drug);
 	$html_options['options'][$drug->id] = array(
-		'data-previous' => sizeof($previous),		
+		'data-previous' => sizeof($previous),
 	);
+	// if this is an edit, we want to know what the original count was so that we don't replace it
+	if ($element->{$side . '_drug_id'} && $element->{$side . '_drug_id'} == $drug->id) {
+		$html_options['options'][$drug->id]['data-original-count'] = $element->{$side . '_number'};
+	}
 }
 
 echo $form->dropDownList($element, $side . '_drug_id', CHtml::listData($drugs,'id','name'),$html_options)

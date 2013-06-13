@@ -30,3 +30,5 @@
 		<?php echo $form->dropDownList($element, $side . '_iop_instrument_id', $element->getInstrumentValues(), array('class' => 'iopInstrument', 'nowrapper'=>true)) ?>
 	</div>
 </div>
+
+<?php echo $form->dropDownList($element, $side . '_drops_id', CHtml::listData(OphTrIntravitrealinjection_PostInjectionDrops::model()->findAll(array('order' => 'display_order')), 'id', 'name'), array('empty' => '- Please Select -'))?>

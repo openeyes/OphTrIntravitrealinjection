@@ -10,7 +10,12 @@ function OphTrIntravitrealinjection_setInjectionNumber(side) {
 		// get the previous count of this drug for this side
 		el.find('option').each(function() {
 			if ($(this).val() == drug_id) {
-				count += $(this).data('previous');
+				if ($(this).data('original-count')) {
+					count = $(this).data('original-count');
+				}
+				else {
+					count += $(this).data('previous');
+				}
 				return false;
 			}
 		});
@@ -19,15 +24,17 @@ function OphTrIntravitrealinjection_setInjectionNumber(side) {
 	$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_number').val(count);
 }
 
-// check whether the patient suitability elements should be shown for the given eye side
+// check whether the elements should be shown for the given eye side
 function OphTrIntravitrealinjection_sideCheck(side) {
 	if ($('#Element_OphTrIntravitrealinjection_Treatment_' + side + '_drug_id').is(":visible") &&
 			$('#Element_OphTrIntravitrealinjection_Treatment_' + side + '_drug_id').val()) {
+		showSplitElementSide('Element_OphTrIntravitrealinjection_Anaesthetic', side);
 		showSplitElementSide('Element_OphTrIntravitrealinjection_AnteriorSegment', side);
 		showSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
 		showSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
 	}
 	else {
+		hideSplitElementSide('Element_OphTrIntravitrealinjection_Anaesthetic', side);
 		hideSplitElementSide('Element_OphTrIntravitrealinjection_AnteriorSegment', side);
 		hideSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
 		hideSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);

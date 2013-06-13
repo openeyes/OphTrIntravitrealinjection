@@ -24,8 +24,16 @@
  * @property string $id
  * @property integer $event_id
  * @property integer $eye_id
- * @property integer $left_finger_count
- * @property string $right_finger_count
+ * @property boolean $left_finger_count
+ * @property boolean $right_finger_count
+ * @property boolean $left_iop_checked
+ * @property boolean $right_iop_checked
+ * @property integer $left_iop_instrument_id
+ * @property integer $right_iop_instrument_id
+ * @property integer $left_iop_reading_id
+ * @property integer $right_iop_reading_id
+ * @property integer $left_drops_id
+ * @property integer $right_drops_id
  *
  * The followings are the available model relations:
  *
@@ -34,6 +42,13 @@
  * @property Event $event
  * @property User $user
  * @property User $usermodified
+ * @property OphTrIntravitrealinjection_Instrument $left_iop_instrument
+ * @property OphTrIntravitrealinjection_Instrument $right_iop_instrument
+ * @property OphTrIntravitrealinjection_IntraocularPressure_Reading $left_iop_reading
+ * @property OphTrIntravitrealinjection_IntraocularPressure_Reading $right_iop_reading
+ * @property OphTrIntravitrealinjection_PostInjectionDrops $left_drops
+ * @property OphTrIntravitrealinjection_PostInjectionDrops $right_drops
+ * 
  */
 
 class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitEventTypeElement
@@ -65,7 +80,8 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, eye_id, left_finger_count, left_iop_checked, left_iop_instrument_id, left_iop_reading_id, right_finger_count, right_iop_checked, right_iop_instrument_id, right_iop_reading_id', 'safe'),
+			array('event_id, eye_id, left_finger_count, left_iop_checked, left_iop_instrument_id, left_iop_reading_id, left_drops_id,' . 
+				'right_finger_count, right_iop_checked, right_iop_instrument_id, right_iop_reading_id, right_drops_id', 'safe'),
 			array('eye_id', 'required'),
 			array('left_finger_count, left_iop_checked', 'requiredIfSide', 'side' => 'left'),
 			array('left_iop_checked', 'iop_checkedValidation', 'side' => 'left'),
@@ -94,6 +110,8 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 			'right_iop_instrument' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Instrument', 'right_iop_instrument_id'),
 			'left_iop_reading' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_IntraocularPressure_Reading', 'left_iop_reading_id'),
 			'right_iop_reading' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_IntraocularPressure_Reading', 'right_iop_reading_id'),
+			'left_drops' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_PostInjectionDrops', 'left_drops_id'),
+			'right_drops' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_PostInjectionDrops', 'right_drops_id'),
 		);
 	}
 
@@ -117,6 +135,8 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 			'right_iop_instrument' => 'Instrument',
 			'left_iop_reading' => 'IOP Reading',
 			'right_iop_reading' => 'IOP Reading',
+			'left_drops_id' => 'Post Injection Drops',
+			'right_drops_id' => 'Post Injection Drops',
 		);
 	}
 
@@ -139,6 +159,8 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		$criteria->compare('right_iop_reading_id', $this->right_iop_reading_id);
 		$criteria->compare('left_iop_instrument_id', $this->left_iop_instrument_id);
 		$criteria->compare('right_iop_instrument_id', $this->right_iop_instrument_id);
+		$criteria->compare('left_drops_id', $this->left_drops_id);
+		$criteria->compare('right_drops_id', $this->right_drops_id);
 				
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,
