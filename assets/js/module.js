@@ -24,21 +24,18 @@ function OphTrIntravitrealinjection_setInjectionNumber(side) {
 	$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_number').val(count);
 }
 
-// check whether the elements should be shown for the given eye side
-function OphTrIntravitrealinjection_sideCheck(side) {
-	if ($('#Element_OphTrIntravitrealinjection_Treatment_' + side + '_drug_id').is(":visible") &&
-			$('#Element_OphTrIntravitrealinjection_Treatment_' + side + '_drug_id').val()) {
-		showSplitElementSide('Element_OphTrIntravitrealinjection_Anaesthetic', side);
-		showSplitElementSide('Element_OphTrIntravitrealinjection_AnteriorSegment', side);
-		showSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
-		showSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
-	}
-	else {
-		hideSplitElementSide('Element_OphTrIntravitrealinjection_Anaesthetic', side);
-		hideSplitElementSide('Element_OphTrIntravitrealinjection_AnteriorSegment', side);
-		hideSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
-		hideSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
-	}
+function OphTrIntravitrealinjection_hide(side) {
+	hideSplitElementSide('Element_OphTrIntravitrealinjection_Anaesthetic', side);
+	hideSplitElementSide('Element_OphTrIntravitrealinjection_AnteriorSegment', side);
+	hideSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
+	hideSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
+}
+
+function OphTrIntravitrealinjection_show(side) {
+	showSplitElementSide('Element_OphTrIntravitrealinjection_Anaesthetic', side);
+	showSplitElementSide('Element_OphTrIntravitrealinjection_AnteriorSegment', side);
+	showSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
+	showSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
 }
 
 // check whether the description field should be shown for the complications on the given side
@@ -122,8 +119,6 @@ $(document).ready(function() {
 		var side = getSplitElementSide($(this));
 
 		OphTrIntravitrealinjection_setInjectionNumber(side);
-		
-		OphTrIntravitrealinjection_sideCheck(side);
 	});
 	
 	// extend the removal behaviour for treatment drug to affect the dependent elements
@@ -133,17 +128,15 @@ $(document).ready(function() {
 		if (side == 'left') {
 			other_side = 'right';
 		}
-		hideSplitElementSide('Element_OphTrIntravitrealinjection_AnteriorSegment', side);
-		hideSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
-		hideSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
-		// if the other side has been revealed by this, need to check whether the dependent elements should also be shown.
-		OphTrIntravitrealinjection_sideCheck(other_side);
+		OphTrIntravitrealinjection_hide(side);
+		OphTrIntravitrealinjection_show(other_side);
+		
 	});
 
 	// extend the adding behaviour for treatment drug to affect dependent elements
 	$(this).delegate('#event_content .side .inactiveForm a', 'click', function(e) {
 		side = getSplitElementSide($(this));
-		OphTrIntravitrealinjection_sideCheck(side);
+		OphTrIntravitrealinjection_show(side);
 	});
 	
 	$('.Element_OphTrIntravitrealinjection_Complications').delegate('select.MultiSelectList', 'MultiSelectChanged', function(e) {
@@ -159,9 +152,6 @@ $(document).ready(function() {
 	
 	OphTrIntravitrealinjection_setInjectionNumber('left');
 	OphTrIntravitrealinjection_setInjectionNumber('right');
-	// check the form is showing correctly when loaded
-	OphTrIntravitrealinjection_sideCheck('left');
-	OphTrIntravitrealinjection_sideCheck('right');
 	
 	OphTrIntravitrealinjection_iopCheck('left');
 	OphTrIntravitrealinjection_iopCheck('right');
