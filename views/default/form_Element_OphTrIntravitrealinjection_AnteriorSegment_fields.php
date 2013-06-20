@@ -18,4 +18,11 @@
  */
 ?>
 
-<?php echo $form->dropDownList($element, $side . '_lens_status_id', CHtml::listData(OphTrIntravitrealinjection_LensStatus::model()->findAll(),'id','name'),array('empty'=>'- Please select -'))?>
+<?php 
+$values = array();
+$options = array();
+foreach (OphTrIntravitrealinjection_LensStatus::model()->findAll() as $lens_status) {
+	$values[] = $lens_status;
+	$options[$lens_status->id]['data-default-distance'] = $lens_status->default_distance;
+}
+echo $form->dropDownList($element, $side . '_lens_status_id', CHtml::listData($values,'id','name'),array('empty'=>'- Please select -', 'options' => $options) )?>

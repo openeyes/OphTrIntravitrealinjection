@@ -25,6 +25,16 @@ $this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
 				array('addDoodle', array('InjectionSite')),
 				array('deselectDoodles', array()),
 		),
+		/*
+		'bindingArray' => array(
+			'InjectionSite' => array(
+				'gauge' => array(
+					'id' => 'Element_OphTrIntravitrealinjection_AnteriorSegment_' + $side +' _lens_status_id', 
+					'attribute' => 'data-default-distance'
+				),
+			),
+		),
+		*/
 		'scale' => 0.5,
 		'idSuffix' => $side.'_'.$element->elementType->id,
 		'side' => ($side == 'right') ? 'R' : 'L',

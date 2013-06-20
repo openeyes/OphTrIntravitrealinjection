@@ -23,6 +23,7 @@
  * @property string $id
  * @property string $name
  * @property integer $display_order
+ * @property float $default_distance
  *
  * The followings are the available model relations:
  *
@@ -55,11 +56,12 @@ class OphTrIntravitrealinjection_LensStatus extends BaseActiveRecord
 	public function rules()
 	{
 		return array(
-			array('name, display_order', 'safe'),
-			array('name, display_order', 'required'),
+			array('name, display_order, default_distance', 'safe'),
+			array('name, display_order, defualt_distance', 'required'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name', 'safe', 'on' => 'search'),
+			array('default_distance', 'numerical')
 		);
 	}
 	

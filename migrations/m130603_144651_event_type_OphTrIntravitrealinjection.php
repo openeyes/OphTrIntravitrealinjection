@@ -1,5 +1,5 @@
 <?php 
-class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
+class m130620_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 {
 	public function up() {
 
@@ -160,6 +160,7 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'name' => 'varchar(128) COLLATE utf8_bin NOT NULL',
 				'display_order' => 'int(10) unsigned NOT NULL DEFAULT 1',
+				'default_distance' => 'decimal(2,1) NOT NULL',
 				'last_modified_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
 				'last_modified_date' => 'datetime NOT NULL DEFAULT \'1901-01-01 00:00:00\'',
 				'created_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',
@@ -171,9 +172,9 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `ophtrintravitinjection_lens_status_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
 		
-		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Phakic','display_order'=>1));
-		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Aphakic','display_order'=>2));
-		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Psuedophakic','display_order'=>3));
+		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Phakic','display_order'=>1, 'default_distance' => 4));
+		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Aphakic','display_order'=>2, 'default_distance' => 3.5));
+		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Psuedophakic','display_order'=>3, 'default_distance' => 3.5));
 		
 		$this->createTable('et_ophtrintravitinjection_anteriorseg', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -365,7 +366,7 @@ class m130603_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		$this->createTable('et_ophtrintravitinjection_postinject', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'event_id' => 'int(10) unsigned NOT NULL',
-				'eye_id' => 'int(10) unsigned NOT NULL',
+				'eye_id' => 'int(10) unsigned DEFAULT ' . $both_eyes_id,
 				'left_finger_count' => 'tinyint(1) unsigned DEFAULT 0', 
 				'right_finger_count' => 'tinyint(1) unsigned DEFAULT 0', 
 				'left_iop_checked' => 'tinyint(1) unsigned DEFAULT 0', 
