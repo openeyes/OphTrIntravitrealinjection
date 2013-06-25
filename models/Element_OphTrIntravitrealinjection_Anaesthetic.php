@@ -24,8 +24,10 @@
  * @property string $id
  * @property integer $event_id
  * @property integer $left_anaesthetictype_id
+ * @property integer $left_anaestheticdelivery_id
  * @property integer $left_anaestheticagent_id
  * @property integer $right_anaesthetictype_id
+ * @property integer $right_anaestheticdelivery_id
  * @property integer $right_anaestheticagent_id
  *
  * The followings are the available model relations:
@@ -36,9 +38,11 @@
  * @property User $user
  * @property User $usermodified
  * @property AnaestheticType $left_anaesthetictype
+ * @property AnaestheticDelivery $left_anaestheticdelivery
  * @property AnaestheticAgent $left_anaestheticagent
  * @property AnaestheticType $right_anaesthetictype
  * @property AnaestheticAgent $right_anaestheticagent
+ * @property AnaestheticDelivery $right_anaestheticdelivery
  */
 
 class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeElement
@@ -70,13 +74,15 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, eye_id, left_anaesthetictype_id, left_anaestheticagent_id, right_anaesthetictype_id, right_anaestheticagent_id', 'safe'),
+			array('event_id, eye_id, left_anaesthetictype_id, left_anaestheticdelivery_id, left_anaestheticagent_id, ' . 
+					'right_anaesthetictype_id, right_anaestheticdelivery_id, right_anaestheticagent_id', 'safe'),
 			array('eye_id', 'required'),
-			array('left_anaesthetictype_id, left_anaestheticagent_id', 'requiredIfSide', 'side' => 'left'),
-			array('right_anaesthetictype_id, right_anaestheticagent_id', 'requiredIfSide', 'side' => 'right'),
+			array('left_anaesthetictype_id, left_anaestheticagent_id, left_anaestheticagent_id', 'requiredIfSide', 'side' => 'left'),
+			array('right_anaesthetictype_id, right_anaestheticagent_id, right_anaestheticagent_id', 'requiredIfSide', 'side' => 'right'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, event_id, eye_id, left_anaesthetictype_id, left_anaestheticagent_id, right_anaesthetictype_id, right_anaestheticagent_id', 'safe', 'on' => 'search'),
+			array('id, event_id, eye_id, left_anaesthetictype_id, left_anaestheticagent_id, left_anaestheticagent_id, ' .
+					'right_anaesthetictype_id, right_anaestheticdelivery_id, right_anaestheticagent_id', 'safe', 'on' => 'search'),
 		);
 	}
 	
@@ -95,14 +101,16 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
 			'left_anaesthetictype' => array(self::BELONGS_TO, 'AnaestheticType', 'left_anaesthetictype_id'),
+			'left_anaestheticdelivery' => array(self::BELONGS_TO, 'AnaestheticDelivery', 'left_anaestheticdelivery_id'),
 			'left_anaestheticagent' => array(self::BELONGS_TO, 'AnaestheticAgent', 'left_anaestheticagent_id'),
 			'right_anaesthetictype' => array(self::BELONGS_TO, 'AnaestheticType', 'right_anaesthetictype_id'),
+			'right_anaestheticdelivery' => array(self::BELONGS_TO, 'AnaestheticDelivery', 'right_anaestheticdelivery_id'),
 			'right_anaestheticagent' => array(self::BELONGS_TO, 'AnaestheticAgent', 'right_anaestheticagent_id'),
 		);
 	}
 	
 	public function sidedFields() {
-		return array('anaesthetictype_id', 'anaestheticagent_id');
+		return array('anaesthetictype_id', 'anaestheticdelivery_id', 'anaestheticagent_id');
 	}
 	
 	/**
@@ -114,8 +122,10 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 			'id' => 'ID',
 			'event_id' => 'Event',
 			'left_anaesthetictype_id' => 'Anaesthetic Type',
+			'left_anaestheticdelivery_id' => 'Anaesthetic Delivery',
 			'left_anaestheticagent_id' => 'Anaesthetic Agent',
 			'right_anaesthetictype_id' => 'Anaesthetic Type',
+			'right_anaestheticdelivery_id' => 'Anaesthetic Delivery',
 			'right_anaestheticagent_id' => 'Anaesthetic Agent',
 		);
 	}
@@ -134,8 +144,10 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 		$criteria->compare('id', $this->id, true);
 		$criteria->compare('event_id', $this->event_id, true);
 		$criteria->compare('left_anaesthetictype_id', $this->left_anaesthetictype_id);
+		$criteria->compare('left_anaestheticdelivery_id', $this->left_anaestheticdelivery_id);
 		$criteria->compare('left_anaestheticagent_id', $this->left_anaestheticagent_id);
 		$criteria->compare('right_anaesthetictype_id', $this->right_anaesthetictype_id);
+		$criteria->compare('right_anaestheticdelivery_id', $this->right_anaestheticdelivery_id);
 		$criteria->compare('right_anaestheticagent_id', $this->right_anaestheticagent_id);
 		
 		return new CActiveDataProvider(get_class($this), array(
@@ -164,6 +176,13 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 			$options = array();
 			foreach (OphTrIntravitrealinjection_AnaestheticType::model()->with('anaesthetic_type')->findAll(array('order' => 'display_order asc')) as $ad) {
 				$options[$ad->anaesthetic_type->id] = $ad->anaesthetic_type->name;
+			}
+			return $options;
+		}
+		if ($table == 'ophtrintravitinjection_anaestheticdelivery') {
+			$options = array();
+			foreach (OphTrIntravitrealinjection_AnaestheticDelivery::model()->with('anaesthetic_delivery')->findAll(array('order' => 't.display_order asc')) as $ad) {
+				$options[$ad->anaesthetic_delivery->id] = $ad->anaesthetic_delivery->name;
 			}
 			return $options;
 		}

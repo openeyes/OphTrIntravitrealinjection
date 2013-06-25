@@ -29,6 +29,18 @@
 </div>
 
 <div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_pre_ioplowering_required') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_pre_ioplowering_required'} ? 'Yes' : 'No' ?></div>
+</div>
+
+<?php if ($element->{$side . '_pre_ioplowering_required'}) { ?>
+<div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_pre_ioplowering_id') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_pre_ioplowering'}->name ?></div>
+</div>
+<?php } ?>
+
+<div class="eventDetail aligned">
 	<div class="label"><?php echo $element->getAttributeLabel($side . '_drug_id') ?>:</div>
 	<div class="data"><?php echo $element->{$side . '_drug'}->name ?></div>
 </div>
@@ -54,11 +66,13 @@
 </div>
 
 <div class="eventDetail aligned">
-	<div class="label"><?php echo $element->getAttributeLabel($side . '_post_antisept_drug_id') ?>:</div>
-	<div class="data"><?php echo $element->{$side . '_post_antisept_drug'}->name ?></div>
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_post_ioplowering_required') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_post_ioplowering_required'} ? 'Yes' : 'No' ?></div>
 </div>
 
+<?php if ($element->{$side . '_post_ioplowering_required'}) { ?>
 <div class="eventDetail aligned">
-	<div class="label"><?php echo $element->getAttributeLabel($side . '_post_skin_drug_id') ?>:</div>
-	<div class="data"><?php echo $element->{$side . '_post_skin_drug'}->name ?></div>
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_post_ioplowering_id') ?>:</div>
+	<div class="data"><?php echo $element->{$side . '_post_ioplowering'}->name ?></div>
 </div>
+<?php } ?>

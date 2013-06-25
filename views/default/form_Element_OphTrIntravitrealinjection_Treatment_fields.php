@@ -22,6 +22,20 @@
 
 <?php echo $form->dropDownList($element, $side . '_pre_skin_drug_id', CHtml::listData(OphTrIntravitrealinjection_SkinDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), array('empty' => '- Please select -')); ?>
 
+<div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_pre_ioplowering_required"
+	class="eventDetail">
+	<div class="label">
+		<?php echo $element->getAttributeLabel($side . '_pre_ioplowering_required') ?>:
+	</div>
+	<div class="data">
+		<?php
+			echo $form->checkbox($element, $side . '_pre_ioplowering_required', array('nowrapper' => true)); 
+		?> 
+	</div>
+</div>
+
+<?php echo $form->dropDownList($element, $side . '_pre_ioplowering_id', CHtml::listData(OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), array('empty' => '- Please select -')); ?>
+
 <?php 
 
 $drugs = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order'=> 'display_order asc'));
@@ -57,6 +71,16 @@ else {
 <?php echo $form->datePicker($element, $side . '_batch_expiry_date', $expiry_date_params, array('style'=>'width: 110px;'))?>
 <?php echo $form->dropDownList($element, $side . '_injection_given_by_id', CHtml::listData(OphTrIntravitrealinjection_InjectionUser::model()->getUsers(),'id','ReversedFullName'),array('empty'=>'- Please select -'))?>
 
-<?php echo $form->dropDownList($element, $side . '_post_antisept_drug_id', CHtml::listData(OphTrIntravitrealinjection_AntiSepticDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), array('empty' => '- Please select -')); ?>
+<div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_post_ioplowering_required"
+	class="eventDetail">
+	<div class="label">
+		<?php echo $element->getAttributeLabel($side . '_post_ioplowering_required') ?>:
+	</div>
+	<div class="data">
+		<?php
+			echo $form->checkbox($element, $side . '_post_ioplowering_required', array('nowrapper' => true)); 
+		?> 
+	</div>
+</div>
 
-<?php echo $form->dropDownList($element, $side . '_post_skin_drug_id', CHtml::listData(OphTrIntravitrealinjection_SkinDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), array('empty' => '- Please select -')); ?>
+<?php echo $form->dropDownList($element, $side . '_post_ioplowering_id', CHtml::listData(OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), array('empty' => '- Please select -')); ?>
