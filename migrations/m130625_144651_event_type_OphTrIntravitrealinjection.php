@@ -46,7 +46,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		
 		// get the id for both eyes
 		$both_eyes_id = Eye::model()->find("name = 'Both'")->id;
-		/*
+		
 		$this->createTable('ophtrintravitinjection_injectionuser', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'user_id' => 'int(10) unsigned NOT NULL',
@@ -86,8 +86,8 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Ozurdex','display_order'=>6));
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Intravitreal triamcinolone','display_order'=>7));
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Illuvien','display_order'=>8));
-		*/
-		/*
+		
+		
 		// Site table
 		$this->createTable('et_ophtrintravitinjection_site', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -107,6 +107,23 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `et_ophtrintravitinjection_site_ev_fk` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_site_site_id_fk` FOREIGN KEY (`site_id`) REFERENCES `site` (`id`)',
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+		
+		// element lookup table ophtrintravitinjection_anaestheticagent
+		$this->createTable('ophtrintravitinjection_anaestheticagent', array(
+				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
+				'anaesthetic_agent_id' => 'int(10) unsigned NOT NULL',
+				'display_order' => 'int(10) unsigned NOT NULL',
+				'PRIMARY KEY (`id`)',
+				'KEY `ophtrintravitinjection_anaestheticagent_ti_fk` (`anaesthetic_agent_id`)',
+				'CONSTRAINT `ophtrintravitinjection_anaestheticagent_ti_fk` FOREIGN KEY (`anaesthetic_agent_id`) REFERENCES `anaesthetic_agent` (`id`)',
+		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+		
+		$all = $this->dbConnection->createCommand()->select(array('id', 'name', 'display_order'))->from('anaesthetic_agent')->queryAll();
+		foreach ($all as $aa) {
+			if ($aa['name'] != 'Hyalase') {
+				$this->insert('ophtrintravitinjection_anaestheticagent', array('anaesthetic_agent_id' => $aa['id'], 'display_order' => $aa['display_order']));
+			}
+		}
 		
 		// element lookup table ophtrintravitinjection_anaesthetictype
 		$this->createTable('ophtrintravitinjection_anaesthetictype', array(
@@ -136,7 +153,6 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		
 		$all = $this->dbConnection->createCommand()->select(array('id', 'display_order'))->from('anaesthetic_delivery')->queryAll();
 		foreach ($all as $ad) {
-			print_r($ad);
 			$this->insert('ophtrintravitinjection_anaestheticdelivery', array('anaesthetic_delivery_id' => $ad['id'], 'display_order' => $ad['display_order']));
 		}
 		
@@ -278,7 +294,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		
 		$this->insert('ophtrintravitinjection_ioplowering',array('name'=>'Iopidine 0.5%','display_order'=>1));
 		$this->insert('ophtrintravitinjection_ioplowering',array('name'=>'Iopidine 1.0%','display_order'=>2));
-		*/
+		
 		// create the table for Treatment
 		$this->createTable('et_ophtrintravitinjection_treatment', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -527,6 +543,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 
 		
 		$this->dropTable('ophtrintravitinjection_injectionuser');
+		$this->dropTable('ophtrintravitinjection_anaestheticagent');
 		$this->dropTable('ophtrintravitinjection_anaesthetictype');
 		$this->dropTable('ophtrintravitinjection_anaestheticdelivery');
 		$this->dropTable('et_ophtrintravitinjection_site');
@@ -534,9 +551,10 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		
 		$this->dropTable('et_ophtrintravitinjection_treatment');
 		
-		//$this->dropTable('ophtrintravitinjection_treatment_drug');
+		$this->dropTable('ophtrintravitinjection_treatment_drug');
 		$this->dropTable('ophtrintravitinjection_antiseptic_drug');
 		$this->dropTable('ophtrintravitinjection_skin_drug');
+		$this->dropTable('ophtrintravitinjection_ioplowering');
 		
 		$this->dropTable('et_ophtrintravitinjection_postinject');
 		$this->dropTable('ophtrintravitinjection_postinjection_drops');

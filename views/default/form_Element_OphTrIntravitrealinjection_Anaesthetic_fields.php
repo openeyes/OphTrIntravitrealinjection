@@ -24,6 +24,6 @@ echo $form->radioButtons($element, $side . '_anaesthetictype_id', 'ophtrintravit
 
 echo $form->radioButtons($element, $side . '_anaestheticdelivery_id', 'ophtrintravitinjection_anaestheticdelivery');
 
-echo $form->dropDownList($element, $side . '_anaestheticagent_id', CHtml::listData(AnaestheticAgent::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), array('empty' => '- Please select -'));
+echo $form->dropDownList($element, $side . '_anaestheticagent_id', CHtml::listData($element->getAnaestheticAgentsForSide($side), 'id', 'name'), array('empty' => '- Please select -'));
 
 ?>

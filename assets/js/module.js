@@ -121,6 +121,33 @@ $(document).ready(function() {
 		OphTrIntravitrealinjection_setInjectionNumber(side);
 	});
 	
+	// deal with the ioplowering show/hide
+	$('.Element_OphTrIntravitrealinjection_Treatment').delegate(
+			'#Element_OphTrIntravitrealinjection_Treatment_right_pre_ioplowering_required, ' +
+			'#Element_OphTrIntravitrealinjection_Treatment_left_pre_ioplowering_required', 'change', function() {
+		var side = getSplitElementSide($(this));
+		if ($(this).attr('checked')) {
+			$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioplowering_id').removeClass('hidden');
+			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioplowering_id').removeAttr('disabled');
+		} else {
+			$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioplowering_id').addClass('hidden');
+			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioplowering_id').attr('disabled', 'disabled');
+		}
+	});
+	
+	$('.Element_OphTrIntravitrealinjection_Treatment').delegate(
+			'#Element_OphTrIntravitrealinjection_Treatment_right_post_ioplowering_required, ' +
+			'#Element_OphTrIntravitrealinjection_Treatment_left_post_ioplowering_required', 'change', function() {
+		var side = getSplitElementSide($(this));
+		if ($(this).attr('checked')) {
+			$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioplowering_id').removeClass('hidden');
+			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioplowering_id').removeAttr('disabled');
+		} else {
+			$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioplowering_id').addClass('hidden');
+			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioplowering_id').attr('disabled', 'disabled');
+		}
+	});
+	
 	// extend the removal behaviour for treatment drug to affect the dependent elements
 	$(this).delegate('#event_content .side .activeForm a.removeSide', 'click', function(e) {
 		side = getSplitElementSide($(this));

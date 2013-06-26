@@ -93,6 +93,10 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 				'left_injection_given_by_id, left_pre_ioplowering_required, left_post_ioplowering_required', 'requiredIfSide', 'side' => 'left'),
 			array('right_pre_antisept_drug_id, right_pre_skin_drug_id, right_drug_id, right_number, right_batch_number, right_batch_expiry_date, ' . 
 				'right_injection_given_by_id, right_pre_ioplowering_required, right_post_ioplowering_required', 'requiredIfSide', 'side' => 'right'),
+			array('left_pre_ioplowering_id', 'requiredIfBoolean', 'side' => 'left', 'dependent' => 'left_pre_ioplowering_required'),
+			array('left_post_ioplowering_id', 'requiredIfBoolean', 'side' => 'left', 'dependent' => 'left_post_ioplowering_required'),
+			array('right_pre_ioplowering_id', 'requiredIfBoolean', 'side' => 'right', 'dependent' => 'right_pre_ioplowering_required'),
+			array('right_pre_ioplowering_id', 'requiredIfBoolean', 'side' => 'right', 'dependent' => 'right_post_ioplowering_required'),
 			array('left_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'left', 'message' => 'Left {attribute} cannot be in the past.'),
 			array('right_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'right', 'message' => 'Right {attribute} cannot be in the past.'),
 			array('left_number, right_number', 'numerical', 'integerOnly' => true, 'min' => 1, 'message' => 'Number of Injections must be higher or equal to 1'),
@@ -247,6 +251,13 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		}
 	
 		return parent::beforeValidate();
+	}
+	
+	public function requiredIfBoolean($attribute, $params) {
+		$dependent = $params['dependent'];
+		if ($this->$dependent && $this->$attribute == null) {
+			$this->addError($attribute, ucfirst($params['side'])." ".$this->getAttributeLabel($attribute)." must be selected.");
+		}
 	}
 	
 	/**

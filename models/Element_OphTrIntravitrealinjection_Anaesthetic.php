@@ -171,7 +171,14 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 		return parent::beforeValidate();
 	}
 	
-	public function getFormOptions($table) {
+	/** 
+	 * extending this function for the radio button interface, which has a slightly different way of doing things
+	 * would be nice to change if we get the chance (to be consistent with how options are defined for other form
+	 * input types)
+	 * 
+	 */
+	public function getFormOptions($table) 
+	{
 		if ($table == 'ophtrintravitinjection_anaesthetictype') {
 			$options = array();
 			foreach (OphTrIntravitrealinjection_AnaestheticType::model()->with('anaesthetic_type')->findAll(array('order' => 'display_order asc')) as $ad) {
@@ -187,6 +194,31 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 			return $options;
 		}
 		else return parent::getFormOptions($table);
+	}
+	
+	/**
+	 * Get the the agent options for side
+	 * 
+	 * @param string $side
+	 * @return multitype:NULL unknown
+	 */
+	public function getAnaestheticAgentsForSide($side) 
+	{
+		$i_agents = OphTrIntravitrealinjection_AnaestheticAgent::model()->with('anaesthetic_agent')->findAll(array('order' => 't.display_order asc'));
+		$agents = array();
+		$found = false;
+		foreach ($i_agents as $ia) {
+			$agents[] = $ia->anaesthetic_agent;
+			if ($this->{$side . '_anaestheticagent_id'} == $ia->anaesthetic_agent_id) {
+				$found = true;
+			}
+		}
+		// ensure that if the agent for this element is not available anymore, its still available as an option
+		if ($id = $this->{$side . '_anaestheticagent_id'} && !$found) {
+			$agents[] = $this->{$side . '_anaestheticagent'};
+		}
+		
+		return $agents;
 	}
 }
 ?>

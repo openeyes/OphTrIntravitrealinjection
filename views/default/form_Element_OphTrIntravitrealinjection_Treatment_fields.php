@@ -34,7 +34,17 @@
 	</div>
 </div>
 
-<?php echo $form->dropDownList($element, $side . '_pre_ioplowering_id', CHtml::listData(OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), array('empty' => '- Please select -')); ?>
+<div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_pre_ioplowering_id"
+	class="eventDetail<?php if (!$element->{ $side . '_pre_ioplowering_required'}) { echo " hidden"; } ?>">
+	<div class="label">
+		<?php echo $element->getAttributeLabel($side . '_pre_ioplowering_id') ?>:
+	</div>
+	<div class="data">
+		<?php echo $form->dropDownList($element, $side . '_pre_ioplowering_id', 
+				CHtml::listData(OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), 
+				array('empty' => '- Please select -', 'nowrapper' => true)); ?>
+	</div>
+</div>
 
 <?php 
 
@@ -83,4 +93,14 @@ else {
 	</div>
 </div>
 
-<?php echo $form->dropDownList($element, $side . '_post_ioplowering_id', CHtml::listData(OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), array('empty' => '- Please select -')); ?>
+<div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_post_ioplowering_id"
+	class="eventDetail<?php if (!$element->{ $side . '_post_ioplowering_required'}) { echo " hidden"; } ?>">
+	<div class="label">
+		<?php echo $element->getAttributeLabel($side . '_post_ioplowering_id') ?>:
+	</div>
+	<div class="data">
+		<?php echo $form->dropDownList($element, $side . '_post_ioplowering_id', 
+				CHtml::listData(OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), 
+				array('empty' => '- Please select -', 'nowrapper' => true)); ?>
+	</div>
+</div>
