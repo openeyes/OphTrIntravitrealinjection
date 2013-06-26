@@ -164,13 +164,13 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			'left_pre_skin_drug_id' => 'Pre Injection Skin Cleanser',
 			'right_pre_skin_drug_id' => 'Pre Injection Skin Cleanser',
 			'left_pre_ioplowering_id' => 'Pre Injection IOP Lowering Drops',
-			'left_post_ioplowering_id' => 'Pre Injection IOP Lowering Drops',
+			'left_post_ioplowering_id' => 'Post Injection IOP Lowering Drops',
 			'right_pre_ioplowering_id' => 'Pre Injection IOP Lowering Drops',
-			'right_post_ioplowering_id' => 'Pre Injection IOP Lowering Drops',
+			'right_post_ioplowering_id' => 'Post Injection IOP Lowering Drops',
 			'left_pre_ioplowering_required' => 'Pre Injection IOP Lowering Drops Required',
-			'left_post_ioplowering_required' => 'Pre Injection IOP Lowering Drops Required',
+			'left_post_ioplowering_required' => 'Post Injection IOP Lowering Drops Required',
 			'right_pre_ioplowering_required' => 'Pre Injection IOP Lowering Drops Required',
-			'right_post_ioplowering_required' => 'Pre Injection IOP Lowering Drops Required',
+			'right_post_ioplowering_required' => 'Post Injection IOP Lowering Drops Required',
 		);
 	}
 
