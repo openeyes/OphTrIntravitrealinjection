@@ -98,7 +98,7 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			array('left_pre_ioplowering_id', 'requiredIfBoolean', 'side' => 'left', 'dependent' => 'left_pre_ioplowering_required'),
 			array('left_post_ioplowering_id', 'requiredIfBoolean', 'side' => 'left', 'dependent' => 'left_post_ioplowering_required'),
 			array('right_pre_ioplowering_id', 'requiredIfBoolean', 'side' => 'right', 'dependent' => 'right_pre_ioplowering_required'),
-			array('right_pre_ioplowering_id', 'requiredIfBoolean', 'side' => 'right', 'dependent' => 'right_post_ioplowering_required'),
+			array('right_post_ioplowering_id', 'requiredIfBoolean', 'side' => 'right', 'dependent' => 'right_post_ioplowering_required'),
 			array('left_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'left', 'message' => 'Left {attribute} cannot be in the past.'),
 			array('right_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'right', 'message' => 'Right {attribute} cannot be in the past.'),
 			array('left_number, right_number', 'numerical', 'integerOnly' => true, 'min' => 1, 'message' => 'Number of Injections must be higher or equal to 1'),
