@@ -92,15 +92,17 @@ OphTrIntravitrealinjection_antSegListener.prototype.callback = function(_message
 		}
 	}
 	// we get parameter change noticed for changes initiated by our object, so we don't want to unsync those sites
-	else if (_messageArray.eventName == "parameterChanged" && _messageArray.object.parameter == "distance") {
+	else if (_messageArray.eventName == "parameterChanged"
+		&& _messageArray.object.doodle.className == "InjectionSite"
+		&& _messageArray.object.parameter == "distance") {
 		if (_messageArray.object.value != self._default_distance) {
 			// unsync this injection from future changes to lens status
 			for (var i = 0; i <= self._unsynced.length; i++) {
-				if (self._unsynced[i] == _messageArray.selectedDoodle.id) {
+				if (self._unsynced[i] == _messageArray.object.doodle.id) {
 					return;
 				}
 			}
-			self._unsynced.push(_messageArray.selectedDoodle.id);
+			self._unsynced.push(_messageArray.object.doodle.id);
 		}
 	}
 	 
