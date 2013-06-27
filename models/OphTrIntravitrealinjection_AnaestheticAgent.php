@@ -70,7 +70,7 @@ class OphTrIntravitrealinjection_AnaestheticAgent extends BaseActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'anaesthetic_agent' => array(self::BELONGS_TO, 'anaestheticagent', 'anaesthetic_agent_id'),
+			'anaesthetic_agent' => array(self::BELONGS_TO, 'AnaestheticAgent', 'anaesthetic_agent_id'),
 		);
 	}
 
