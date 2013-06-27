@@ -90,7 +90,7 @@ else {
 	</div>
 	<div class="data">
 		<?php
-			echo CHtml::textField(get_class($element) . "[".$side."_injection_time", date('H:i',strtotime($element->{$side . '_injection_time'})), array('size' => 6)); 
+			echo CHtml::textField(get_class($element) . "[".$side."_injection_time]", date('H:i',strtotime($element->{$side . '_injection_time'})), array('size' => 6)); 
 		?> 
 	</div>
 </div>

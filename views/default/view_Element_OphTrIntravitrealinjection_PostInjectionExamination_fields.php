@@ -26,18 +26,14 @@
 	<div class="label">IOP:</div>
 
 	<div class="data">
-	<?php if (!$element->{$side . '_iop_checked'}) {?>
-		Not Checked
-	<?php } else {
-		if ($element->{$side . '_iop_reading'}->name != 'NR') { ?>
-			<?php echo $element->{$side . '_iop_reading'}->name ?> mmHg
-			<?php if($element->{$side . '_iop_instrument'}) { 
-					echo '('.$element->{$side . '_iop_instrument'}->name.')';
-			} ?>
-			<?php } else { ?>
-			Not Recorded
-		<?php }
-	} ?>
+	<?php if ($element->{$side . '_iop_check'}) {?>
+		IOP should be checked
+		<?php if (Yii::app()->hasModule('OphCiPhasing')) { ?>
+		- Please add a Phasing event.
+		<?php } ?>
+	<?php } else {?>
+		IOP does not need to be checked.
+	<?php } ?>
 	</div>
 </div>
 <div class="eventDetail aligned">

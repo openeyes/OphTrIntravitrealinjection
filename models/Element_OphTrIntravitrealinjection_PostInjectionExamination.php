@@ -26,8 +26,8 @@
  * @property integer $eye_id
  * @property boolean $left_finger_count
  * @property boolean $right_finger_count
- * @property boolean $left_iop_checked
- * @property boolean $right_iop_checked
+ * @property boolean $left_iop_check
+ * @property boolean $right_iop_check
  * @property integer $left_iop_instrument_id
  * @property integer $right_iop_instrument_id
  * @property integer $left_iop_reading_id
@@ -80,15 +80,13 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, eye_id, left_finger_count, left_iop_checked, left_iop_instrument_id, left_iop_reading_id, left_drops_id,' . 
-				'right_finger_count, right_iop_checked, right_iop_instrument_id, right_iop_reading_id, right_drops_id', 'safe'),
+			array('event_id, eye_id, left_finger_count, left_iop_check, left_iop_instrument_id, left_iop_reading_id, left_drops_id,' . 
+				'right_finger_count, right_iop_check, right_iop_instrument_id, right_iop_reading_id, right_drops_id', 'safe'),
 			array('eye_id', 'required'),
-			array('left_finger_count, left_iop_checked', 'requiredIfSide', 'side' => 'left'),
-			array('left_iop_checked', 'iop_checkedValidation', 'side' => 'left'),
-			array('right_finger_count, right_iop_checked', 'requiredIfSide', 'side' => 'right'),
-			array('right_iop_checked', 'iop_checkedValidation', 'side' => 'right'),
+			array('left_finger_count, left_iop_check', 'requiredIfSide', 'side' => 'left'),
+			array('right_finger_count, right_iop_check', 'requiredIfSide', 'side' => 'right'),
 			// The following rule is used by search().
-			array('id, event_id, eye_id, left_finger_count, right_finger_count, ', 'safe', 'on' => 'search'),
+			array('id, event_id, eye_id, left_finger_count, right_finger_count, left_iop_check, right_iop_check', 'safe', 'on' => 'search'),
 		);
 	}
 	
@@ -106,17 +104,13 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
-			'left_iop_instrument' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Instrument', 'left_iop_instrument_id'),
-			'right_iop_instrument' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Instrument', 'right_iop_instrument_id'),
-			'left_iop_reading' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_IntraocularPressure_Reading', 'left_iop_reading_id'),
-			'right_iop_reading' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_IntraocularPressure_Reading', 'right_iop_reading_id'),
 			'left_drops' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_PostInjectionDrops', 'left_drops_id'),
 			'right_drops' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_PostInjectionDrops', 'right_drops_id'),
 		);
 	}
 
 	public function sidedFields() {
-		return array('finger_count', 'iop_instrument', 'iop_reading');
+		return array('finger_count', 'iop_check');
 	}
 	
 	/**
@@ -129,12 +123,8 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 			'event_id' => 'Event',
 			'left_finger_count' => 'Counting Fingers Checked?',
 			'right_finger_count' => 'Counting Fingers Checked?',
-			'left_iop_checked' => 'IOP Checked?',
-			'right_iop_checked' => 'IOP Checked?',
-			'left_iop_instrument' => 'Instrument',
-			'right_iop_instrument' => 'Instrument',
-			'left_iop_reading' => 'IOP Reading',
-			'right_iop_reading' => 'IOP Reading',
+			'left_iop_check' => 'IOP Needs to be Checked?',
+			'right_iop_check' => 'IOP Needs to be Checked?',
 			'left_drops_id' => 'Post Injection Drops',
 			'right_drops_id' => 'Post Injection Drops',
 		);
@@ -155,10 +145,8 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		$criteria->compare('event_id', $this->event_id, true);
 		$criteria->compare('left_finger_count', $this->left_finger_count);
 		$criteria->compare('right_finger_count', $this->right_finger_count);
-		$criteria->compare('left_iop_reading_id', $this->left_iop_reading_id);
-		$criteria->compare('right_iop_reading_id', $this->right_iop_reading_id);
-		$criteria->compare('left_iop_instrument_id', $this->left_iop_instrument_id);
-		$criteria->compare('right_iop_instrument_id', $this->right_iop_instrument_id);
+		$criteria->compare('left_iop_check', $this->left_iop_check);
+		$criteria->compare('right_iop_check', $this->right_iop_check);
 		$criteria->compare('left_drops_id', $this->left_drops_id);
 		$criteria->compare('right_drops_id', $this->right_drops_id);
 				
@@ -183,24 +171,6 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 	protected function beforeValidate()
 	{
 		return parent::beforeValidate();
-	}
-	
-	public function getInstrumentValues() {
-		return CHtml::listData(OphTrIntravitrealinjection_Instrument::model()->findAll(array('order' => 'display_order')), 'id', 'name') ;
-	}
-	
-	/*
-	 * iop reading values only required if the iop has been checked
-	 * 
-	*/
-	public function iop_checkedValidation($attribute, $params) {
-		$side = $params['side'];
-		if ($this->$attribute == "1" && ( 
-				($side == 'left' && $this->eye_id != SplitEventTypeElement::RIGHT) || ($side == 'right' && $this->eye_id != SplitEventTypeElement::LEFT)
-			)) {
-			$v = CValidator::createValidator('required', $this, array($side . '_iop_reading_id', $side . '_iop_instrument_id'));
-			$v->validate($this);
-		}
 	}
 }
 ?>
