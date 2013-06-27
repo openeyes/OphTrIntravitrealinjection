@@ -34,8 +34,16 @@
 	</div>
 </div>
 
+<?php 
+$show = $element->{ $side . '_pre_ioplowering_required'};
+if (isset($_POST[get_class($element)])) {
+	$show = $_POST[get_class($element)][$side . '_pre_ioplowering_required'];
+}
+?>
+
+
 <div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_pre_ioplowering_id"
-	class="eventDetail<?php if (!$element->{ $side . '_pre_ioplowering_required'}) { echo " hidden"; } ?>">
+	class="eventDetail<?php if (!$show) { echo " hidden"; } ?>">
 	<div class="label">
 		<?php echo $element->getAttributeLabel($side . '_pre_ioplowering_id') ?>:
 	</div>
@@ -90,7 +98,11 @@ else {
 	</div>
 	<div class="data">
 		<?php
-			echo CHtml::textField(get_class($element) . "[".$side."_injection_time]", date('H:i',strtotime($element->{$side . '_injection_time'})), array('size' => 6)); 
+			$val = date('H:i',strtotime($element->{$side . '_injection_time'}));
+			if (isset($_POST[get_class($element)])) {
+				$val = $_POST[get_class($element)][$side . '_injection_time'];
+			}
+			echo CHtml::textField(get_class($element) . "[".$side."_injection_time]", $val, array('size' => 6)); 
 		?> 
 	</div>
 </div>
@@ -107,8 +119,16 @@ else {
 	</div>
 </div>
 
+<?php 
+$show = $element->{ $side . '_post_ioplowering_required'};
+if (isset($_POST[get_class($element)])) {
+	$show = $_POST[get_class($element)][$side . '_post_ioplowering_required'];
+}
+?>
+
 <div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_post_ioplowering_id"
-	class="eventDetail<?php if (!$element->{ $side . '_post_ioplowering_required'}) { echo " hidden"; } ?>">
+	class="eventDetail
+	<?php if (!$show) { echo " hidden"; } ?>">
 	<div class="label">
 		<?php echo $element->getAttributeLabel($side . '_post_ioplowering_id') ?>:
 	</div>

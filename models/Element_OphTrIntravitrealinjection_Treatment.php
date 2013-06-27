@@ -243,8 +243,8 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 	}
 
 	public function setDefaultOptions() {
-		$this->left_injection_time = date('H:i');
-		$this->right_injection_time = date('H:i');
+		$this->left_injection_time = date('H:i:s');
+		$this->right_injection_time = date('H:i:s');
 	}
 	
 	protected function beforeValidate()
@@ -275,7 +275,7 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 	public function requiredIfBoolean($attribute, $params) 
 	{
 		$dependent = $params['dependent'];
-		if ($this->$dependent && $this->$attribute == null) {
+		if ($this->$dependent && ($this->$attribute == null) ) {
 			$this->addError($attribute, ucfirst($params['side'])." ".$this->getAttributeLabel($attribute)." must be selected.");
 		}
 	}
