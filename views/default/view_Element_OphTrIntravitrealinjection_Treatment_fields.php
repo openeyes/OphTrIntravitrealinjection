@@ -66,6 +66,11 @@
 </div>
 
 <div class="eventDetail aligned">
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_injection_time') ?>:</div>
+	<div class="data"><?php echo date('g:ia',strtotime($element->{$side . '_injection_time'})); ?></div>
+</div>
+
+<div class="eventDetail aligned">
 	<div class="label"><?php echo $element->getAttributeLabel($side . '_post_ioplowering_required') ?>:</div>
 	<div class="data"><?php echo $element->{$side . '_post_ioplowering_required'} ? 'Yes' : 'No' ?></div>
 </div>

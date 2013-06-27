@@ -78,8 +78,22 @@ else {
 	$expiry_date_params = array('minDate' => 'yesterday');
 }
 ?>
+
 <?php echo $form->datePicker($element, $side . '_batch_expiry_date', $expiry_date_params, array('style'=>'width: 110px;'))?>
+
 <?php echo $form->dropDownList($element, $side . '_injection_given_by_id', CHtml::listData(OphTrIntravitrealinjection_InjectionUser::model()->getUsers(),'id','ReversedFullName'),array('empty'=>'- Please select -'))?>
+
+<div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_injection_time"
+	class="eventDetail">
+	<div class="label">
+		<?php echo $element->getAttributeLabel($side . '_injection_time') ?>:
+	</div>
+	<div class="data">
+		<?php
+			echo CHtml::textField(get_class($element) . "[".$side."_injection_time", date('H:i',strtotime($element->{$side . '_injection_time'})), array('size' => 6)); 
+		?> 
+	</div>
+</div>
 
 <div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_post_ioplowering_required"
 	class="eventDetail">

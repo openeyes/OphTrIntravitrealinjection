@@ -310,6 +310,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'left_batch_number' => 'varchar(255) DEFAULT \'\'', // Batch Number
 				'left_batch_expiry_date' => 'date DEFAULT NULL', // Batch Expiry Date
 				'left_injection_given_by_id' => 'int(10) unsigned', // Injection Given By
+				'left_injection_time' => 'time',
 				'left_post_ioplowering_required' => 'boolean',
 				'left_post_ioplowering_id' => 'int(10) unsigned',
 				'right_pre_antisept_drug_id' => 'int(10) unsigned',
@@ -320,6 +321,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'right_batch_number' => 'varchar(255) DEFAULT \'\'', // Batch Number
 				'right_batch_expiry_date' => 'date DEFAULT NULL', // Batch Expiry Date
 				'right_injection_given_by_id' => 'int(10) unsigned', // Injection Given By
+				'right_injection_time' => 'time',
 				'right_post_ioplowering_required' => 'boolean',
 				'right_post_ioplowering_id' => 'int(10) unsigned',
 				'last_modified_user_id' => 'int(10) unsigned NOT NULL DEFAULT 1',

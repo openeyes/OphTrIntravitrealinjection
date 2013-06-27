@@ -85,14 +85,16 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		// will receive user inputs.
 		return array(
 			array('event_id, site_id, eye_id, left_pre_antisept_drug_id, left_pre_skin_drug_id, left_drug_id, left_number, left_batch_number, ' .
-				'left_batch_expiry_date, left_injection_given_by_id, right_pre_antisept_drug_id, right_pre_skin_drug_id, right_drug_id, ' .
-				'right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, ' . 
+				'left_batch_expiry_date, left_injection_given_by_id, left_injection_time, right_pre_antisept_drug_id, right_pre_skin_drug_id, right_drug_id, ' .
+				'right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, right_injection_time, ' . 
 				'left_pre_ioplowering_required, left_pre_ioplowering_id, left_post_ioplowering_required, left_post_ioplowering_id, ' .
 				'right_pre_ioplowering_required, right_pre_ioplowering_id, right_post_ioplowering_required, right_post_ioplowering_id', 'safe'),
 			array('left_pre_antisept_drug_id, left_pre_skin_drug_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, ' . 
-				'left_injection_given_by_id, left_pre_ioplowering_required, left_post_ioplowering_required', 'requiredIfSide', 'side' => 'left'),
+				'left_injection_given_by_id, left_injection_time, left_pre_ioplowering_required, left_post_ioplowering_required', 'requiredIfSide', 'side' => 'left'),
 			array('right_pre_antisept_drug_id, right_pre_skin_drug_id, right_drug_id, right_number, right_batch_number, right_batch_expiry_date, ' . 
-				'right_injection_given_by_id, right_pre_ioplowering_required, right_post_ioplowering_required', 'requiredIfSide', 'side' => 'right'),
+				'right_injection_given_by_id, right_injection_time, right_pre_ioplowering_required, right_post_ioplowering_required', 'requiredIfSide', 'side' => 'right'),
+			array('left_injection_time', 'typeIfSide', 'type' => 'time', 'side' => 'left'),
+			array('right_injection_time', 'typeIfSide', 'type' => 'time', 'side' => 'right'),
 			array('left_pre_ioplowering_id', 'requiredIfBoolean', 'side' => 'left', 'dependent' => 'left_pre_ioplowering_required'),
 			array('left_post_ioplowering_id', 'requiredIfBoolean', 'side' => 'left', 'dependent' => 'left_post_ioplowering_required'),
 			array('right_pre_ioplowering_id', 'requiredIfBoolean', 'side' => 'right', 'dependent' => 'right_pre_ioplowering_required'),
@@ -102,8 +104,8 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			array('left_number, right_number', 'numerical', 'integerOnly' => true, 'min' => 1, 'message' => 'Number of Injections must be higher or equal to 1'),
 			// The following rule is used by search().
 			array('id, event_id, eye_id, left_pre_antisept_drug_id, left_pre_skin_drug_id, left_drug_id, left_number, left_batch_number, ' . 
-				'left_batch_expiry_date, left_injection_given_by_id, right_pre_antisept_drug_id, right_pre_skin_drug_id, right_drug_id, ' .
-				'right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, ' .
+				'left_batch_expiry_date, left_injection_given_by_id, left_injection_time, right_pre_antisept_drug_id, right_pre_skin_drug_id, right_drug_id, ' .
+				'right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, right_injection_time, ' .
 				'left_pre_ioplowering_required, left_pre_ioplowering_id, left_post_ioplowering_required, left_post_ioplowering_id, ' .
 				'right_pre_ioplowering_required, right_pre_ioplowering_id, right_post_ioplowering_required, right_post_ioplowering_id', 'safe', 'on' => 'search'),
 		);
@@ -158,11 +160,13 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			'left_batch_number' => 'Batch Number',
 			'left_batch_expiry_date' => 'Batch Expiry Date',
 			'left_injection_given_by_id' => 'Injection Given By',
+			'left_injection_time' => 'Injection Time',
 			'right_drug_id' => 'Drug',
 			'right_number' => 'Number of Injections',
 			'right_batch_number' => 'Batch Number',
 			'right_batch_expiry_date' => 'Batch Expiry Date',
 			'right_injection_given_by_id' => 'Injection Given By',
+			'right_injection_time' => 'Injection Time',
 			'left_pre_antisept_drug_id' => 'Pre Injection Antiseptic',
 			'right_pre_antisept_drug_id' => 'Pre Injection Antiseptic',
 			'left_pre_skin_drug_id' => 'Pre Injection Skin Cleanser',
@@ -196,6 +200,7 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		$criteria->compare('left_batch_number', $this->left_batch_number);
 		$criteria->compare('left_batch_expiry_date', $this->left_batch_expiry_date);
 		$criteria->compare('left_injection_given_by_id', $this->left_injection_given_by_id);
+		$criteria->compare('left_injection_time', $this->left_injection_time);
 		$criteria->compare('left_anaesthetictype_id', $this->left_anaesthetictype_id);
 		$criteria->compare('left_anaestheticagent_id', $this->left_anaestheticagent_id);
 		$criteria->compare('right_drug_id', $this->right_drug_id);
@@ -203,6 +208,7 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		$criteria->compare('right_batch_number', $this->right_batch_number);
 		$criteria->compare('right_batch_expiry_date', $this->right_batch_expiry_date);
 		$criteria->compare('right_injection_given_by_id', $this->right_injection_given_by_id);
+		$criteria->compare('right_injection_time', $this->right_injection_time);
 		$criteria->compare('right_anaesthetictype_id', $this->right_anaesthetictype_id);
 		$criteria->compare('right_anaestheticagent_id', $this->right_anaestheticagent_id);
 		
@@ -236,6 +242,11 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		return parent::afterSave();
 	}
 
+	public function setDefaultOptions() {
+		$this->left_injection_time = date('H:i');
+		$this->right_injection_time = date('H:i');
+	}
+	
 	protected function beforeValidate()
 	{
 		// Need to clear any "sided" fields if that side isn't active to prevent
@@ -253,7 +264,16 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		return parent::beforeValidate();
 	}
 	
-	public function requiredIfBoolean($attribute, $params) {
+	public function typeIfSide($attribute, $params)
+	{
+		if (($params['side'] == 'left' && $this->eye_id != Eye::RIGHT) || ($params['side'] == 'right' && $this->eye_id != Eye::LEFT)) {
+			unset($params['side']);
+			$validator = CValidator::createValidator('type', $this, $attribute, $params);
+			$validator->validate($this);
+		}
+	}
+	public function requiredIfBoolean($attribute, $params) 
+	{
 		$dependent = $params['dependent'];
 		if ($this->$dependent && $this->$attribute == null) {
 			$this->addError($attribute, ucfirst($params['side'])." ".$this->getAttributeLabel($attribute)." must be selected.");
