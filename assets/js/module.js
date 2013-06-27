@@ -1,3 +1,110 @@
+// listener to handle setting the injection depth for different lens status
+function OphTrIntravitrealinjection_antSegListener(_drawing) {
+	var self = this;
+	
+	self.drawing = _drawing;
+	self._default_distance = null;
+	
+	var side = 'right';
+	if (self.drawing.eye) {
+		side = 'left';
+	}
+	self.side = side;
+	self._injectionDoodles = {};
+	self._unsynced = new Array();
+	// state flag to track whether we are updating the doodle or not
+	self._updating = false;
+	self.init();
+}
+
+OphTrIntravitrealinjection_antSegListener.prototype.init = function()
+{
+	var self = this;
+	
+	self.drawing.registerForNotifications(self, 'callback', ['doodleAdded', 'doodleDeleted', 'parameterChanged']);
+	self.getDefaultDistance();
+	
+	$('#Element_OphTrIntravitrealinjection_AnteriorSegment_' + self.side + '_lens_status_id').bind('change', function() {
+		self.getDefaultDistance();
+	});	
+}
+
+// get the default distance from the lens status
+OphTrIntravitrealinjection_antSegListener.prototype.getDefaultDistance = function() {
+	var self = this;
+	
+	var selVal = $('#Element_OphTrIntravitrealinjection_AnteriorSegment_' + self.side + '_lens_status_id').val();
+	if (selVal) {
+		$('#Element_OphTrIntravitrealinjection_AnteriorSegment_' + self.side + '_lens_status_id').find('option').each(function() {
+			if ($(this).val() == selVal) {
+				self._default_distance = $(this).attr('data-default-distance');
+				return false;
+			}
+		});
+		self.updateDistances();
+	}
+	else {
+		self.default_distance = null;
+	}
+}
+
+// update individual injection distance
+OphTrIntravitrealinjection_antSegListener.prototype.updateDoodleDistance = function(doodle, distance)
+{
+	validityArray = doodle.validateParameter('distance', distance.toString());
+	if (validityArray.valid) {
+		doodle.setParameterWithAnimation('distance', validityArray.value);
+	}
+	else { console.log('SYNC ERROR: invalid distance from lens status for doodle'); }
+}
+
+// iterate through all registered injection site doodles, and update those that have not been manually altered
+OphTrIntravitrealinjection_antSegListener.prototype.updateDistances = function()
+{
+	var self = this;
+	for (var id in self._injectionDoodles) {
+		var obj = self._injectionDoodles[id];
+		skip = false;
+		for (var j = 0; j <= self._unsynced.length; j++) {
+			if (self._unsynced[j] == id) {
+				skip = true;
+				break;
+			}
+		}
+		// it's not synced
+		if (skip) {
+			continue;
+		}
+		self.updateDoodleDistance(obj, self._default_distance);
+	}
+}
+
+// listener callback function for eyedraw
+OphTrIntravitrealinjection_antSegListener.prototype.callback = function(_messageArray) {
+	var self = this;
+	
+	
+	if (_messageArray.eventName == "doodleAdded" && _messageArray.object.className == 'InjectionSite') {
+		// set the distance to the default value from the lens status
+		self._injectionDoodles[_messageArray.object.id] = _messageArray.object;
+		if (self._default_distance) {
+			self.updateDoodleDistance(_messageArray.object, self._default_distance);
+		}
+	}
+	// we get parameter change noticed for changes initiated by our object, so we don't want to unsync those sites
+	else if (_messageArray.eventName == "parameterChanged" && _messageArray.object.parameter == "distance") {
+		if (_messageArray.object.value != self._default_distance) {
+			// unsync this injection from future changes to lens status
+			for (var i = 0; i <= self._unsynced.length; i++) {
+				if (self._unsynced[i] == _messageArray.selectedDoodle.id) {
+					return;
+				}
+			}
+			self._unsynced.push(_messageArray.selectedDoodle.id);
+		}
+	}
+	 
+};
 
 function OphTrIntravitrealinjection_setInjectionNumber(side) {
 	var el = $('#Element_OphTrIntravitrealinjection_Treatment_' + side + '_drug_id');

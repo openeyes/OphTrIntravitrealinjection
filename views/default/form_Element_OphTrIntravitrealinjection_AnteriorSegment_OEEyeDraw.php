@@ -35,6 +35,7 @@ $this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
 			),
 		),
 		*/
+		'listenerArray' => array('OphTrIntravitrealinjection_antSegListener'),
 		'scale' => 0.5,
 		'idSuffix' => $side.'_'.$element->elementType->id,
 		'side' => ($side == 'right') ? 'R' : 'L',

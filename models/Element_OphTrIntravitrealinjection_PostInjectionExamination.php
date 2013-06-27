@@ -28,10 +28,6 @@
  * @property boolean $right_finger_count
  * @property boolean $left_iop_check
  * @property boolean $right_iop_check
- * @property integer $left_iop_instrument_id
- * @property integer $right_iop_instrument_id
- * @property integer $left_iop_reading_id
- * @property integer $right_iop_reading_id
  * @property integer $left_drops_id
  * @property integer $right_drops_id
  *
@@ -42,10 +38,6 @@
  * @property Event $event
  * @property User $user
  * @property User $usermodified
- * @property OphTrIntravitrealinjection_Instrument $left_iop_instrument
- * @property OphTrIntravitrealinjection_Instrument $right_iop_instrument
- * @property OphTrIntravitrealinjection_IntraocularPressure_Reading $left_iop_reading
- * @property OphTrIntravitrealinjection_IntraocularPressure_Reading $right_iop_reading
  * @property OphTrIntravitrealinjection_PostInjectionDrops $left_drops
  * @property OphTrIntravitrealinjection_PostInjectionDrops $right_drops
  * 
