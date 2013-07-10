@@ -94,7 +94,8 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 		);
 	}
 
-	public function sidedFields() {
+	public function sidedFields() 
+	{
 		return array('oth_descrip');
 	}
 	
@@ -134,7 +135,8 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 	}
 
 
-	public function getophtrintravitinjection_complication_defaults() {
+	public function getophtrintravitinjection_complication_defaults() 
+	{
 		$ids = array();
 		foreach (OphTrIntravitrealinjection_Complication::model()->findAll('`default` = ?',array(1)) as $item) {
 			$ids[] = $item->id;
@@ -160,7 +162,8 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 	/*
 	 * only need a text "other" description for complications that are flagged "other"
 	*/
-	public function complicationsOtherValidation($attribute, $params) {
+	public function complicationsOtherValidation($attribute, $params) 
+	{
 		$other_comp = null;
 		$complications = $this->{$params['side'] . '_complications'};
 		foreach ($complications as $comp) {
@@ -181,7 +184,8 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 	 * @param string $side
 	 * @param integer[] $complication_ids - array of complication ids to assign to the element 
 	 */
-	public function updateComplications($side, $complication_ids) {
+	public function updateComplications($side, $complication_ids) 
+	{
 		$current_complications = array();
 		$save_complications = array();
 		
