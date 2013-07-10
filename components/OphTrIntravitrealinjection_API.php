@@ -18,7 +18,34 @@
  */
 
 class OphTrIntravitrealinjection_API extends BaseAPI {
-	private $previous_treatments;
+	private $previous_treatments = array();
+	
+	/**
+	 * caching method for previous injections store
+	 * 
+	 * @param Patient $patient
+	 * @param Episode $episode
+	 * 
+	 * @return Element_OphTrIntravitrealinjection_Treatment[]
+	 */
+	protected function previousInjectionsForPatientEpisode($patient, $episode)
+	{
+		if (!isset($this->previous_treatments[$patient->id])) {
+			$this->previous_treatments[$patient->id] = array();
+		}
+		
+		if (!isset($this->previous_treatments[$patient->id][$episode->id])) {
+			$events = $this->getEventsInEpisode($patient, $episode);
+			$previous = array();
+			foreach ($events as $event) {
+				if ($treat = Element_OphTrIntravitrealinjection_Treatment::model()->find('event_id = :event_id', array(':event_id' => $event->id))) {
+				$previous[] = $treat;
+				}
+			}
+			$this->previous_treatments[$patient->id][$episode->id] = $previous;
+		}
+		return $this->previous_treatments[$patient->id][$episode->id];
+	}
 	
 	/**
 	 * return the set of treatment elements from previous injection events
@@ -31,19 +58,9 @@ class OphTrIntravitrealinjection_API extends BaseAPI {
 	 * 
 	 * @return Element_OphTrIntravitrealinjection_Treatment[] - array of treatment elements for the eye and optional drug
 	 */
-	public function previousInjections($patient, $episode, $side, $drug = null) {
-		$previous = $this->previous_treatments;
-		if (!$previous) {
-			// get all the previous events
-			$events = $this->getEventsInEpisode($patient, $episode);
-			$previous = array();
-			foreach ($events as $event) {
-				if ($treat = Element_OphTrIntravitrealinjection_Treatment::model()->find('event_id = :event_id', array(':event_id' => $event->id))) {;
-					$previous[] = $treat;
-				}
-			}
-			$this->previous_treatments = $previous;
-		}
+	public function previousInjections($patient, $episode, $side, $drug = null) 
+	{
+		$previous = $this->previousInjectionsForPatientEpisode($patient, $episode);
 		
 		switch($side)
 		{

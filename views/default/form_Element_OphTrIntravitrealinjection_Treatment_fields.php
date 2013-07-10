@@ -64,8 +64,12 @@ $html_options = array(
 // get the previous injection counts for each of the drug options for this eye
 foreach ($drugs as $drug) {
 	$previous = $injection_api->previousInjections($this->patient, $episode, $side, $drug);
-	$html_options['options'][$drug->id] = array(
-		'data-previous' => sizeof($previous),
+	$count = 0;
+	if (sizeof($previous)) {
+		$count = $previous[0]->{$side . '_number'};
+	}
+ 	$html_options['options'][$drug->id] = array(
+		'data-previous' => $count,
 	);
 	// if this is an edit, we want to know what the original count was so that we don't replace it
 	if ($element->{$side . '_drug_id'} && $element->{$side . '_drug_id'} == $drug->id) {
