@@ -18,7 +18,7 @@
  */
 ?>
 
-<?php 
+<?php
 
 echo $form->radioButtons($element, $side . '_anaesthetictype_id', 'ophtrintravitinjection_anaesthetictype');
 

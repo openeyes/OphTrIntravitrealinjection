@@ -18,15 +18,15 @@
  */
 ?>
 
-<?php 
+<?php
 	$html_options = array(
-		'options' => array(),	
+		'options' => array(),
 		'empty' => '- Please select -',
 		'div_id' =>  get_class($element) . '_' . $side . '_complications',
 		'label' => 'Complications');
 	$complications = OphTrIntravitrealinjection_Complication::model()->findAll(array('order'=>'display_order asc'));
 	foreach ($complications as $complication) {
-		$html_options['options'][(string)$complication->id] = array('data-order' => $complication->display_order, 'data-description_required' => $complication->description_required); 
+		$html_options['options'][(string) $complication->id] = array('data-order' => $complication->display_order, 'data-description_required' => $complication->description_required);
 	}
 	echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_complications]', $side . '_complications', 'id', CHtml::listData($complications,'id','name'), $element->ophtrintravitinjection_complication_defaults, $html_options)
 ?>

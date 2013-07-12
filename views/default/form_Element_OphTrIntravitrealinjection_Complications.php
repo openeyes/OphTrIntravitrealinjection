@@ -24,11 +24,11 @@
 	data-element-type-name="<?php echo $element->elementType->name?>"
 	data-element-display-order="<?php echo $element->elementType->display_order?>">
 	<h4 class="elementTypeName"><?php echo $element->elementType->name; ?></h4>
-	
+
 	<div class="cols2 clearfix">
 		<?php echo $form->hiddenInput($element, 'eye_id', false, array('class' => 'sideField')); ?>
 		<div
-			class="side left eventDetail<?php if(!$element->hasRight()) { ?> inactive<?php } ?>"
+			class="side left eventDetail<?php if (!$element->hasRight()) { ?> inactive<?php } ?>"
 			data-side="right">
 			<div class="activeForm">
 				<?php $this->renderPartial('form_' . get_class($element) . '_fields',
@@ -38,9 +38,9 @@
 				Set right side treatment drug
 			</div>
 		</div>
-	
+
 		<div
-			class="side right eventDetail<?php if(!$element->hasLeft()) { ?> inactive<?php } ?>"
+			class="side right eventDetail<?php if (!$element->hasLeft()) { ?> inactive<?php } ?>"
 			data-side="left">
 			<div class="activeForm">
 				<?php $this->renderPartial('form_' . get_class($element) . '_fields',
@@ -50,6 +50,6 @@
 				Set left side treatment drug
 			</div>
 		</div>
-	
+
 	</div>
 </div>

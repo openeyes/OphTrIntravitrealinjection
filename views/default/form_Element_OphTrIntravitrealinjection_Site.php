@@ -24,6 +24,6 @@
 	data-element-type-name="<?php echo $element->elementType->name?>"
 	data-element-display-order="<?php echo $element->elementType->display_order?>">
 	<h4 class="elementTypeName"><?php echo $element->elementType->name; ?></h4>
-	
+
 	<?php echo $form->dropDownList($element, 'site_id', CHtml::listData(Site::model()->findAll(array('order' => 'name asc')), 'id', 'name')); ?>
 </div>

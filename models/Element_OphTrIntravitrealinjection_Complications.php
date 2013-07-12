@@ -73,7 +73,7 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 			array('id, event_id, eye_id, left_oth_descrip, right_oth_descrip', 'safe', 'on' => 'search'),
 		);
 	}
-	
+
 	/**
 	 * @return array relational rules.
 	 */
@@ -94,11 +94,11 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 		);
 	}
 
-	public function sidedFields() 
+	public function sidedFields()
 	{
 		return array('oth_descrip');
 	}
-	
+
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -128,14 +128,14 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 		$criteria->compare('id', $this->id, true);
 		$criteria->compare('event_id', $this->event_id, true);
 		$criteria->compare('oth_descrip', $this->oth_descrip);
-		
+
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,
 		));
 	}
 
 
-	public function getophtrintravitinjection_complication_defaults() 
+	public function getophtrintravitinjection_complication_defaults()
 	{
 		$ids = array();
 		foreach (OphTrIntravitrealinjection_Complication::model()->findAll('`default` = ?',array(1)) as $item) {
@@ -158,11 +158,11 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 	{
 		return parent::beforeValidate();
 	}
-	
+
 	/*
 	 * only need a text "other" description for complications that are flagged "other"
 	*/
-	public function complicationsOtherValidation($attribute, $params) 
+	public function complicationsOtherValidation($attribute, $params)
 	{
 		$other_comp = null;
 		$complications = $this->{$params['side'] . '_complications'};
@@ -172,29 +172,29 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 			}
 		}
 		if ($other_comp) {
- 			$v = CValidator::createValidator('requiredIfSide', $this, array($params['side'] . '_oth_descrip'), 
+ 			$v = CValidator::createValidator('requiredIfSide', $this, array($params['side'] . '_oth_descrip'),
  					array('side' => $params['side'], 'message' => ucfirst($params['side']) . ' {attribute} required when ' . $other_comp->name . ' is selected'));
 			$v->validate($this);
 		}
 	}
-	
+
 	/**
 	 * update the complications for the given side.
-	 * 
+	 *
 	 * @param string $side
-	 * @param integer[] $complication_ids - array of complication ids to assign to the element 
+	 * @param integer[] $complication_ids - array of complication ids to assign to the element
 	 */
-	public function updateComplications($side, $complication_ids) 
+	public function updateComplications($side, $complication_ids)
 	{
 		$current_complications = array();
 		$save_complications = array();
-		
+
 		foreach ($this->complication_assignments as $curr_comp) {
 			if ($curr_comp->eye_id == $side) {
 				$current_complications[$curr_comp->complication_id] = $curr_comp;
 			}
 		}
-		
+
 		// go through each update complication id, if it isn't assigned for this element,
 		// create assignment and store for saving
 		// if there is, remove from the current complications array

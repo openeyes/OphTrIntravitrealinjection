@@ -31,8 +31,8 @@
 		<div class="sortable">
 			<?php
 			foreach ($model_list as $i => $model) {?>
-				<li class="<?php if ($i%2 == 0) {?>even<?php }else{?>odd<?php }?>" data-attr-id="<?php echo $model->id?>">
-					<?php 
+				<li class="<?php if ($i%2 == 0) {?>even<?php } else {?>odd<?php }?>" data-attr-id="<?php echo $model->id?>">
+					<?php
 					$this->renderPartial('list_' . get_class($model), array(
 						'model' => $model,
 						));

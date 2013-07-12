@@ -23,11 +23,11 @@
  * The followings are the available columns in table 'ophtrintravitinjection_injectionuser':
  * @property string $id
  * @property integer $user_id
- * 
+ *
  * The following are the available model relations:
  *
  * @property User $user
- 
+
  */
 class OphTrIntravitrealinjection_InjectionUser extends BaseActiveRecord
 {
@@ -66,8 +66,9 @@ class OphTrIntravitrealinjection_InjectionUser extends BaseActiveRecord
 				'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 		);
 	}
-	
-	public static function getUsers() {
+
+	public static function getUsers()
+	{
 		$criteria = new CDbCriteria;
 		$criteria->compare('is_surgeon',1);
 		$criteria->compare('active',1);
@@ -80,5 +81,5 @@ class OphTrIntravitrealinjection_InjectionUser extends BaseActiveRecord
 		}
 		return $users;
 	}
-	
+
 }

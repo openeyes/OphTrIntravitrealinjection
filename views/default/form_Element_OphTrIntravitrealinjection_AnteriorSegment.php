@@ -28,30 +28,30 @@
 	<div class="cols2 clearfix">
 		<?php echo $form->hiddenInput($element, 'eye_id', false, array('class' => 'sideField')); ?>
 		<div
-			class="side left eventDetail<?php if(!$element->hasRight()) { ?> inactive<?php } ?>"
+			class="side left eventDetail<?php if (!$element->hasRight()) { ?> inactive<?php } ?>"
 			data-side="right">
 			<div class="activeForm">
-				<?php 
+				<?php
 				$this->renderPartial('form_' . get_class($element) . '_fields',
 						array('side' => 'right', 'element' => $element, 'form' => $form));
 				$this->renderPartial('form_' . get_class($element) . '_OEEyeDraw',
-					array('side' => 'right', 'element' => $element)); 
+					array('side' => 'right', 'element' => $element));
 				?>
-					
+
 			</div>
 			<div class="inactiveForm">
 				Set right side treatment drug
 			</div>
 		</div>
 		<div
-			class="side right eventDetail<?php if(!$element->hasLeft()) { ?> inactive<?php } ?>"
+			class="side right eventDetail<?php if (!$element->hasLeft()) { ?> inactive<?php } ?>"
 			data-side="left">
 			<div class="activeForm">
-				<?php 
+				<?php
 				$this->renderPartial('form_' . get_class($element) . '_fields',
 					array('side' => 'left', 'element' => $element, 'form' => $form));
 				$this->renderPartial('form_' . get_class($element) . '_OEEyeDraw',
-					array('side' => 'left', 'element' => $element)); 
+					array('side' => 'left', 'element' => $element));
 				?>
 			</div>
 			<div class="inactiveForm">

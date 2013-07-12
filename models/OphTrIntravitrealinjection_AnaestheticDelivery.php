@@ -61,7 +61,7 @@ class OphTrIntravitrealinjection_AnaestheticDelivery extends BaseActiveRecord
 			array('id, anaesthetic_delivery_id', 'safe', 'on' => 'search'),
 		);
 	}
-	
+
 	/**
 	 * @return array relational rules.
 	 */
@@ -95,7 +95,7 @@ class OphTrIntravitrealinjection_AnaestheticDelivery extends BaseActiveRecord
 
 		$criteria->compare('id', $this->id, true);
 		$criteria->compare('anaesthetic_delivery_id', $this->anaesthetic_delivery_id);
-		
+
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,
 		));

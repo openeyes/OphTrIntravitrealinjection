@@ -1,10 +1,10 @@
-<?php 
+<?php
 class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 {
-	public function up() {
-
+	public function up()
+	{
 		// --- EVENT TYPE ENTRIES ---
-		
+
 		// create an event_type entry for this event type name if one doesn't already exist
 		if (!$this->dbConnection->createCommand()->select('id')->from('event_type')->where('class_name=:class_name', array(':class_name'=>'OphTrIntravitrealinjection'))->queryRow()) {
 			$group = $this->dbConnection->createCommand()->select('id')->from('event_group')->where('name=:name',array(':name'=>'Treatment events'))->queryRow();
@@ -14,27 +14,27 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		$event_type = $this->dbConnection->createCommand()->select('id')->from('event_type')->where('class_name=:class_name', array(':class_name'=>'OphTrIntravitrealinjection'))->queryRow();
 
 		// --- ELEMENT TYPE ENTRIES ---
-		
+
 		// create an element_type entry for this element type name if one doesn't already exist
 		if (!$this->dbConnection->createCommand()->select('id')->from('element_type')->where('name=:name and event_type_id=:eventTypeId', array(':name'=>'Site',':eventTypeId'=>$event_type['id']))->queryRow()) {
 			$this->insert('element_type', array('name' => 'Site','class_name' => 'Element_OphTrIntravitrealinjection_Site', 'event_type_id' => $event_type['id'], 'display_order' => 1));
 		}
-		
+
 		// create an element_type entry for this element type name if one doesn't already exist
 		if (!$this->dbConnection->createCommand()->select('id')->from('element_type')->where('name=:name and event_type_id=:eventTypeId', array(':name'=>'Anaesthetic',':eventTypeId'=>$event_type['id']))->queryRow()) {
 			$this->insert('element_type', array('name' => 'Anaesthetic','class_name' => 'Element_OphTrIntravitrealinjection_Anaesthetic', 'event_type_id' => $event_type['id'], 'display_order' => 1));
 		}
-		
+
 		// create an element_type entry for this element type name if one doesn't already exist
 		if (!$this->dbConnection->createCommand()->select('id')->from('element_type')->where('name=:name and event_type_id=:eventTypeId', array(':name'=>'Treatment',':eventTypeId'=>$event_type['id']))->queryRow()) {
 			$this->insert('element_type', array('name' => 'Treatment','class_name' => 'Element_OphTrIntravitrealinjection_Treatment', 'event_type_id' => $event_type['id'], 'display_order' => 1));
 		}
-		
+
 		// create an element_type entry for this element type name if one doesn't already exist
 		if (!$this->dbConnection->createCommand()->select('id')->from('element_type')->where('name=:name and event_type_id=:eventTypeId', array(':name'=>'Anterior Segment',':eventTypeId'=>$event_type['id']))->queryRow()) {
 			$this->insert('element_type', array('name' => 'Anterior Segment','class_name' => 'Element_OphTrIntravitrealinjection_AnteriorSegment', 'event_type_id' => $event_type['id'], 'display_order' => 2));
 		}
-		
+
 		// create an element_type entry for this element type name if one doesn't already exist
 		if (!$this->dbConnection->createCommand()->select('id')->from('element_type')->where('name=:name and event_type_id=:eventTypeId', array(':name'=>'Post Injection Examination',':eventTypeId'=>$event_type['id']))->queryRow()) {
 			$this->insert('element_type', array('name' => 'Post Injection Examination','class_name' => 'Element_OphTrIntravitrealinjection_PostInjectionExamination', 'event_type_id' => $event_type['id'], 'display_order' => 3));
@@ -43,10 +43,10 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		if (!$this->dbConnection->createCommand()->select('id')->from('element_type')->where('name=:name and event_type_id=:eventTypeId', array(':name'=>'Complications',':eventTypeId'=>$event_type['id']))->queryRow()) {
 			$this->insert('element_type', array('name' => 'Complications','class_name' => 'Element_OphTrIntravitrealinjection_Complications', 'event_type_id' => $event_type['id'], 'display_order' => 4));
 		}
-		
+
 		// get the id for both eyes
 		$both_eyes_id = Eye::model()->find("name = 'Both'")->id;
-		
+
 		$this->createTable('ophtrintravitinjection_injectionuser', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'user_id' => 'int(10) unsigned NOT NULL',
@@ -54,13 +54,13 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'KEY `ophtrintravitinjection_injectionuser_ui_fk` (`user_id`)',
 				'CONSTRAINT `ophtrintravitinjection_injectionuser_ui_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)',
 			), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
-		
+
+
 		$users = $this->dbConnection->createCommand()->selectDistinct('id')->from('user')->where('is_doctor = :doc or is_surgeon = :sur', array(':doc' => true, ':sur' => true));
 		foreach ($users->queryAll() as $user) {
 			$this->insert('ophtrintravitinjection_injectionuser', array('user_id' => $user['id']));
 		}
-		
+
 		// element lookup table ophtrintravitinjection_treatment_drug
 		$this->createTable('ophtrintravitinjection_treatment_drug', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -86,8 +86,8 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Ozurdex','display_order'=>6));
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Intravitreal triamcinolone','display_order'=>7));
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Illuvien','display_order'=>8));
-		
-		
+
+
 		// Site table
 		$this->createTable('et_ophtrintravitinjection_site', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -107,7 +107,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `et_ophtrintravitinjection_site_ev_fk` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_site_site_id_fk` FOREIGN KEY (`site_id`) REFERENCES `site` (`id`)',
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
+
 		// element lookup table ophtrintravitinjection_anaestheticagent
 		$this->createTable('ophtrintravitinjection_anaestheticagent', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -117,14 +117,14 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'KEY `ophtrintravitinjection_anaestheticagent_ti_fk` (`anaesthetic_agent_id`)',
 				'CONSTRAINT `ophtrintravitinjection_anaestheticagent_ti_fk` FOREIGN KEY (`anaesthetic_agent_id`) REFERENCES `anaesthetic_agent` (`id`)',
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
+
 		$all = $this->dbConnection->createCommand()->select(array('id', 'name', 'display_order'))->from('anaesthetic_agent')->queryAll();
 		foreach ($all as $aa) {
 			if ($aa['name'] != 'Hyalase') {
 				$this->insert('ophtrintravitinjection_anaestheticagent', array('anaesthetic_agent_id' => $aa['id'], 'display_order' => $aa['display_order']));
 			}
 		}
-		
+
 		// element lookup table ophtrintravitinjection_anaesthetictype
 		$this->createTable('ophtrintravitinjection_anaesthetictype', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -134,13 +134,13 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'KEY `ophtrintravitinjection_anaesthetictype_ti_fk` (`anaesthetic_type_id`)',
 				'CONSTRAINT `ophtrintravitinjection_anaesthetictype_ti_fk` FOREIGN KEY (`anaesthetic_type_id`) REFERENCES `anaesthetic_type` (`id`)',
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
+
 		$to = $this->dbConnection->createCommand()->select('id')->from('anaesthetic_type')->where('code=:code',array(':code'=>'Top'))->queryRow();
 		$la = $this->dbConnection->createCommand()->select('id')->from('anaesthetic_type')->where('code=:code',array(':code'=>'LA'))->queryRow();
-		
+
 		$this->insert('ophtrintravitinjection_anaesthetictype',array('anaesthetic_type_id'=>$to['id'],'display_order'=>1));
 		$this->insert('ophtrintravitinjection_anaesthetictype',array('anaesthetic_type_id'=>$la['id'],'display_order'=>2));
-		
+
 		// element lookup table ophtrintravitinjection_anaestheticdelivery
 		$this->createTable('ophtrintravitinjection_anaestheticdelivery', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -150,12 +150,12 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'KEY `ophtrintravitinjection_anaestheticdelivery_di_fk` (`anaesthetic_delivery_id`)',
 				'CONSTRAINT `ophtrintravitinjection_anaestheticdelivery_di_fk` FOREIGN KEY (`anaesthetic_delivery_id`) REFERENCES `anaesthetic_delivery` (`id`)',
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
+
 		$all = $this->dbConnection->createCommand()->select(array('id', 'display_order'))->from('anaesthetic_delivery')->queryAll();
 		foreach ($all as $ad) {
 			$this->insert('ophtrintravitinjection_anaestheticdelivery', array('anaesthetic_delivery_id' => $ad['id'], 'display_order' => $ad['display_order']));
 		}
-		
+
 		// create the table for Anaesthetic
 		$this->createTable('et_ophtrintravitinjection_anaesthetic', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -193,7 +193,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `et_ophtrintravitinjection_anaesthetic_rad_id_fk` FOREIGN KEY (`right_anaestheticdelivery_id`) REFERENCES `anaesthetic_delivery` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_anaesthetic_raa_id_fk` FOREIGN KEY (`right_anaestheticagent_id`) REFERENCES `anaesthetic_agent` (`id`)',
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
+
 		// create the table(s) for Anterior Segment
 		$this->createTable('ophtrintravitinjection_lens_status', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -210,11 +210,11 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `ophtrintravitinjection_lens_status_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)',
 				'CONSTRAINT `ophtrintravitinjection_lens_status_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
+
 		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Phakic','display_order'=>1, 'default_distance' => 4));
 		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Aphakic','display_order'=>2, 'default_distance' => 3.5));
 		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Psuedophakic','display_order'=>3, 'default_distance' => 3.5));
-		
+
 		$this->createTable('et_ophtrintravitinjection_anteriorseg', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'event_id' => 'int(10) unsigned NOT NULL',
@@ -239,7 +239,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `et_ophtrintravitinjection_anteriorseg_llsi_fk` FOREIGN KEY (`left_lens_status_id`) REFERENCES `ophtrintravitinjection_lens_status` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_anteriorseg_rlsi_fk` FOREIGN KEY (`right_lens_status_id`) REFERENCES `ophtrintravitinjection_lens_status` (`id`)',
 			), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
+
 		// Treatment lookup tables
 		$this->createTable('ophtrintravitinjection_antiseptic_drug', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -255,10 +255,10 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `ophtrintravitinjection_antiseptic_drug_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)',
 				'CONSTRAINT `ophtrintravitinjection_antiseptic_drug_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
+
 		$this->insert('ophtrintravitinjection_antiseptic_drug',array('name'=>'Iodine 5%','display_order'=>1));
 		$this->insert('ophtrintravitinjection_antiseptic_drug',array('name'=>'Chlorhexidine','display_order'=>2));
-		
+
 		$this->createTable('ophtrintravitinjection_skin_drug', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'name' => 'varchar(128) COLLATE utf8_bin NOT NULL',
@@ -273,10 +273,10 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `ophtrintravitinjection_skin_drug_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)',
 				'CONSTRAINT `ophtrintravitinjection_skin_drug_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
+
 		$this->insert('ophtrintravitinjection_skin_drug',array('name'=>'Iodine 10%','display_order'=>1));
 		$this->insert('ophtrintravitinjection_skin_drug',array('name'=>'Chlorhexidine','display_order'=>2));
-		
+
 		$this->createTable('ophtrintravitinjection_ioplowering', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'name' => 'varchar(128) COLLATE utf8_bin NOT NULL',
@@ -291,10 +291,10 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `ophtrintravitinjection_ioplowering_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)',
 				'CONSTRAINT `ophtrintravitinjection_ioplowering_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
+
 		$this->insert('ophtrintravitinjection_ioplowering',array('name'=>'Iopidine 0.5%','display_order'=>1));
 		$this->insert('ophtrintravitinjection_ioplowering',array('name'=>'Iopidine 1.0%','display_order'=>2));
-		
+
 		// create the table for Treatment
 		$this->createTable('et_ophtrintravitinjection_treatment', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -378,18 +378,18 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `ophtrintravitinjection_postinjection_drops_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)',
 				'CONSTRAINT `ophtrintravitinjection_postinjection_drops_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)',
 		), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
+
 		$this->insert('ophtrintravitinjection_postinjection_drops',array('name'=>'G. Levofloxacin four times daily for 5 days','display_order'=>1));
 		$this->insert('ophtrintravitinjection_postinjection_drops',array('name'=>'G. Chloramphenicol 0.5%  four times daily for 5 days','display_order'=>2));
-		
+
 		// create the table for this element type: Element_OphTrIntravitrealinjection_PostInjectionExamination
 		$this->createTable('et_ophtrintravitinjection_postinject', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'event_id' => 'int(10) unsigned NOT NULL',
 				'eye_id' => 'int(10) unsigned DEFAULT ' . $both_eyes_id,
-				'left_finger_count' => 'tinyint(1) unsigned DEFAULT 0', 
-				'right_finger_count' => 'tinyint(1) unsigned DEFAULT 0', 
-				'left_iop_check' => 'tinyint(1) unsigned DEFAULT 0', 
+				'left_finger_count' => 'tinyint(1) unsigned DEFAULT 0',
+				'right_finger_count' => 'tinyint(1) unsigned DEFAULT 0',
+				'left_iop_check' => 'tinyint(1) unsigned DEFAULT 0',
 				'right_iop_check' => 'tinyint(1) unsigned DEFAULT 0',
 				'left_drops_id' => 'int(10) unsigned',
 				'right_drops_id' => 'int(10) unsigned',
@@ -412,7 +412,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `et_ophtrintravitinjection_postinject_rdrops_id_fk` FOREIGN KEY (`right_drops_id`) REFERENCES `ophtrintravitinjection_postinjection_drops` (`id`)',
 			), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
 
-		// element lookup table 
+		// element lookup table
 		$this->createTable('ophtrintravitinjection_complicat', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'name' => 'varchar(128) COLLATE utf8_bin NOT NULL',
@@ -436,7 +436,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		$this->insert('ophtrintravitinjection_complicat',array('name'=>'Lens damage','display_order'=>4));
 		$this->insert('ophtrintravitinjection_complicat',array('name'=>'Retinal damage','display_order'=>5));
 		$this->insert('ophtrintravitinjection_complicat',array('name'=>'Other','display_order'=>6, 'description_required' => true));
-		
+
 		// create the table for this element type: et_modulename_elementtypename
 		$this->createTable('et_ophtrintravitinjection_complications', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -458,7 +458,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 				'CONSTRAINT `et_ophtrintravitinjection_complicat_ev_fk` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`)',
 				'CONSTRAINT `et_ophtrintravitinjection_complicat_eye_id_fk` FOREIGN KEY (`eye_id`) REFERENCES `eye` (`id`)',
 			), 'ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		
+
 		$this->createTable('ophtrintravitinjection_complicat_assignment', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
 				'element_id' => 'int(10) unsigned NOT NULL',
@@ -483,37 +483,38 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 
 	}
 
-	public function down() {
+	public function down()
+	{
 		// --- drop any element related tables ---
 		// --- drop element tables ---
 
-		
+
 		$this->dropTable('ophtrintravitinjection_injectionuser');
 		$this->dropTable('ophtrintravitinjection_anaestheticagent');
 		$this->dropTable('ophtrintravitinjection_anaesthetictype');
 		$this->dropTable('ophtrintravitinjection_anaestheticdelivery');
 		$this->dropTable('et_ophtrintravitinjection_site');
 		$this->dropTable('et_ophtrintravitinjection_anaesthetic');
-		
+
 		$this->dropTable('et_ophtrintravitinjection_treatment');
-		
+
 		$this->dropTable('ophtrintravitinjection_treatment_drug');
 		$this->dropTable('ophtrintravitinjection_antiseptic_drug');
 		$this->dropTable('ophtrintravitinjection_skin_drug');
 		$this->dropTable('ophtrintravitinjection_ioplowering');
-		
+
 		$this->dropTable('et_ophtrintravitinjection_postinject');
 		$this->dropTable('ophtrintravitinjection_postinjection_drops');
-		
+
 		$this->dropTable('et_ophtrintravitinjection_anteriorseg');
 		$this->dropTable('ophtrintravitinjection_lens_status');
-		
+
 		$this->dropTable('ophtrintravitinjection_complicat_assignment');
-		
+
 		$this->dropTable('et_ophtrintravitinjection_complications');
-		
+
 		$this->dropTable('ophtrintravitinjection_complicat');
-		
+
 		// --- delete event entries ---
 		$event_type = $this->dbConnection->createCommand()->select('id')->from('event_type')->where('class_name=:class_name', array(':class_name'=>'OphTrIntravitrealinjection'))->queryRow();
 

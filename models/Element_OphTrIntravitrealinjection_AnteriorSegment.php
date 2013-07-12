@@ -76,7 +76,7 @@ class Element_OphTrIntravitrealinjection_AnteriorSegment extends SplitEventTypeE
 			array('id, event_id, eye_id, left_eyedraw, left_lens_status_id, right_eyedraw, right_lens_status_id', 'safe', 'on' => 'search'),
 		);
 	}
-	
+
 	/**
 	 * @return array relational rules.
 	 */
@@ -96,10 +96,11 @@ class Element_OphTrIntravitrealinjection_AnteriorSegment extends SplitEventTypeE
 		);
 	}
 
-	public function sidedFields() {
+	public function sidedFields()
+	{
 		return array('lens_status');
 	}
-	
+
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -130,7 +131,7 @@ class Element_OphTrIntravitrealinjection_AnteriorSegment extends SplitEventTypeE
 		$criteria->compare('event_id', $this->event_id, true);
 		$criteria->compare('complicat', $this->complicat);
 		$criteria->compare('oth_descrip', $this->oth_descrip);
-		
+
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,
 		));

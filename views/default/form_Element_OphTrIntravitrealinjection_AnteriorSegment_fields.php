@@ -18,7 +18,7 @@
  */
 ?>
 
-<?php 
+<?php
 $values = array();
 $options = array();
 foreach (OphTrIntravitrealinjection_LensStatus::model()->findAll() as $lens_status) {

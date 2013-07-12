@@ -17,15 +17,16 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-class OphTrIntravitrealinjection_API extends BaseAPI {
+class OphTrIntravitrealinjection_API extends BaseAPI
+{
 	private $previous_treatments = array();
-	
+
 	/**
 	 * caching method for previous injections store
-	 * 
+	 *
 	 * @param Patient $patient
 	 * @param Episode $episode
-	 * 
+	 *
 	 * @return Element_OphTrIntravitrealinjection_Treatment[]
 	 */
 	protected function previousInjectionsForPatientEpisode($patient, $episode)
@@ -33,7 +34,7 @@ class OphTrIntravitrealinjection_API extends BaseAPI {
 		if (!isset($this->previous_treatments[$patient->id])) {
 			$this->previous_treatments[$patient->id] = array();
 		}
-		
+
 		if (!isset($this->previous_treatments[$patient->id][$episode->id])) {
 			$events = $this->getEventsInEpisode($patient, $episode);
 			$previous = array();
@@ -46,24 +47,23 @@ class OphTrIntravitrealinjection_API extends BaseAPI {
 		}
 		return $this->previous_treatments[$patient->id][$episode->id];
 	}
-	
+
 	/**
 	 * return the set of treatment elements from previous injection events
-	 * 
+	 *
 	 * @param Patient $patient
 	 * @param Episode $episode
 	 * @param string $side
 	 * @param Drug $drug
 	 * @throws Exception
-	 * 
+	 *
 	 * @return Element_OphTrIntravitrealinjection_Treatment[] - array of treatment elements for the eye and optional drug
 	 */
-	public function previousInjections($patient, $episode, $side, $drug = null) 
+	public function previousInjections($patient, $episode, $side, $drug = null)
 	{
 		$previous = $this->previousInjectionsForPatientEpisode($patient, $episode);
-		
-		switch($side)
-		{
+
+		switch ($side) {
 			case 'left':
 				$eye_ids = array(SplitEventTypeElement::LEFT, SplitEventTypeElement::BOTH);
 				break;
@@ -74,7 +74,7 @@ class OphTrIntravitrealinjection_API extends BaseAPI {
 				throw new Exception('invalid side value provided: ' . $side);
 				break;
 		}
-		
+
 		$res = array();
 		foreach ($previous as $prev) {
 			if (in_array($prev->eye_id,$eye_ids)) {

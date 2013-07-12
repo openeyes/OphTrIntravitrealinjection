@@ -64,7 +64,7 @@ class OphTrIntravitrealinjection_LensStatus extends BaseActiveRecord
 			array('default_distance', 'numerical')
 		);
 	}
-	
+
 	/**
 	 * @return array relational rules.
 	 */

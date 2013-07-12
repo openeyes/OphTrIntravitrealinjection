@@ -65,7 +65,7 @@ class OphTrIntravitrealinjection_Complication extends BaseActiveRecord
 			array('id, name', 'safe', 'on' => 'search'),
 		);
 	}
-	
+
 	/**
 	 * @return array relational rules.
 	 */

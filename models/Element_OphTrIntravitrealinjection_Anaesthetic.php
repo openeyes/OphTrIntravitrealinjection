@@ -74,7 +74,7 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, eye_id, left_anaesthetictype_id, left_anaestheticdelivery_id, left_anaestheticagent_id, ' . 
+			array('event_id, eye_id, left_anaesthetictype_id, left_anaestheticdelivery_id, left_anaestheticagent_id, ' .
 					'right_anaesthetictype_id, right_anaestheticdelivery_id, right_anaestheticagent_id', 'safe'),
 			array('eye_id', 'required'),
 			array('left_anaesthetictype_id, left_anaestheticagent_id, left_anaestheticagent_id', 'requiredIfSide', 'side' => 'left'),
@@ -85,7 +85,7 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 					'right_anaesthetictype_id, right_anaestheticdelivery_id, right_anaestheticagent_id', 'safe', 'on' => 'search'),
 		);
 	}
-	
+
 	/**
 	 * @return array relational rules.
 	 */
@@ -108,11 +108,12 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 			'right_anaestheticagent' => array(self::BELONGS_TO, 'AnaestheticAgent', 'right_anaestheticagent_id'),
 		);
 	}
-	
-	public function sidedFields() {
+
+	public function sidedFields()
+	{
 		return array('anaesthetictype_id', 'anaestheticdelivery_id', 'anaestheticagent_id');
 	}
-	
+
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -149,7 +150,7 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 		$criteria->compare('right_anaesthetictype_id', $this->right_anaesthetictype_id);
 		$criteria->compare('right_anaestheticdelivery_id', $this->right_anaestheticdelivery_id);
 		$criteria->compare('right_anaestheticagent_id', $this->right_anaestheticagent_id);
-		
+
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,
 		));
@@ -170,14 +171,14 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 	{
 		return parent::beforeValidate();
 	}
-	
-	/** 
+
+	/**
 	 * extending this function for the radio button interface, which has a slightly different way of doing things
 	 * would be nice to change if we get the chance (to be consistent with how options are defined for other form
 	 * input types)
-	 * 
+	 *
 	 */
-	public function getFormOptions($table) 
+	public function getFormOptions($table)
 	{
 		if ($table == 'ophtrintravitinjection_anaesthetictype') {
 			$options = array();
@@ -192,17 +193,16 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 				$options[$ad->anaesthetic_delivery->id] = $ad->anaesthetic_delivery->name;
 			}
 			return $options;
-		}
-		else return parent::getFormOptions($table);
+		} else return parent::getFormOptions($table);
 	}
-	
+
 	/**
 	 * Get the the agent options for side
-	 * 
+	 *
 	 * @param string $side
 	 * @return multitype:NULL unknown
 	 */
-	public function getAnaestheticAgentsForSide($side) 
+	public function getAnaestheticAgentsForSide($side)
 	{
 		$i_agents = OphTrIntravitrealinjection_AnaestheticAgent::model()->with('anaesthetic_agent')->findAll(array('order' => 't.display_order asc'));
 		$agents = array();
@@ -217,7 +217,7 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 		if ($id = $this->{$side . '_anaestheticagent_id'} && !$found) {
 			$agents[] = $this->{$side . '_anaestheticagent'};
 		}
-		
+
 		return $agents;
 	}
 }

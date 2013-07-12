@@ -67,7 +67,7 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 			array('id, name, available', 'safe', 'on' => 'search'),
 		);
 	}
-	
+
 	/**
 	 * @return array relational rules.
 	 */

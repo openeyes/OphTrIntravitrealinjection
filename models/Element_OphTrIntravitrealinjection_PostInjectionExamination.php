@@ -40,7 +40,7 @@
  * @property User $usermodified
  * @property OphTrIntravitrealinjection_PostInjectionDrops $left_drops
  * @property OphTrIntravitrealinjection_PostInjectionDrops $right_drops
- * 
+ *
  */
 
 class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitEventTypeElement
@@ -72,7 +72,7 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, eye_id, left_finger_count, left_iop_check, left_iop_instrument_id, left_iop_reading_id, left_drops_id,' . 
+			array('event_id, eye_id, left_finger_count, left_iop_check, left_iop_instrument_id, left_iop_reading_id, left_drops_id,' .
 				'right_finger_count, right_iop_check, right_iop_instrument_id, right_iop_reading_id, right_drops_id', 'safe'),
 			array('eye_id', 'required'),
 			array('left_finger_count, left_iop_check', 'requiredIfSide', 'side' => 'left'),
@@ -81,7 +81,7 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 			array('id, event_id, eye_id, left_finger_count, right_finger_count, left_iop_check, right_iop_check', 'safe', 'on' => 'search'),
 		);
 	}
-	
+
 	/**
 	 * @return array relational rules.
 	 */
@@ -101,10 +101,11 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		);
 	}
 
-	public function sidedFields() {
+	public function sidedFields()
+	{
 		return array('finger_count', 'iop_check');
 	}
-	
+
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -141,7 +142,7 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		$criteria->compare('right_iop_check', $this->right_iop_check);
 		$criteria->compare('left_drops_id', $this->left_drops_id);
 		$criteria->compare('right_drops_id', $this->right_drops_id);
-				
+
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,
 		));

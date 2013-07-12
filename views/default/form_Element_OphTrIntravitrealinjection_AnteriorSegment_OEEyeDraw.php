@@ -29,7 +29,7 @@ $this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
 		'bindingArray' => array(
 			'InjectionSite' => array(
 				'gauge' => array(
-					'id' => 'Element_OphTrIntravitrealinjection_AnteriorSegment_' + $side +' _lens_status_id', 
+					'id' => 'Element_OphTrIntravitrealinjection_AnteriorSegment_' + $side +' _lens_status_id',
 					'attribute' => 'data-default-distance'
 				),
 			),
@@ -46,4 +46,3 @@ $this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
 		'attribute' => $side.'_eyedraw',
 ));
 ?>
-

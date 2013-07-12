@@ -29,12 +29,12 @@
 	</div>
 	<div class="data">
 		<?php
-			echo $form->checkbox($element, $side . '_pre_ioplowering_required', array('nowrapper' => true)); 
-		?> 
+			echo $form->checkbox($element, $side . '_pre_ioplowering_required', array('nowrapper' => true));
+		?>
 	</div>
 </div>
 
-<?php 
+<?php
 $show = $element->{ $side . '_pre_ioplowering_required'};
 if (isset($_POST[get_class($element)])) {
 	$show = $_POST[get_class($element)][$side . '_pre_ioplowering_required'];
@@ -48,18 +48,18 @@ if (isset($_POST[get_class($element)])) {
 		<?php echo $element->getAttributeLabel($side . '_pre_ioplowering_id') ?>:
 	</div>
 	<div class="data">
-		<?php echo $form->dropDownList($element, $side . '_pre_ioplowering_id', 
-				CHtml::listData(OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), 
+		<?php echo $form->dropDownList($element, $side . '_pre_ioplowering_id',
+				CHtml::listData(OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'),
 				array('empty' => '- Please select -', 'nowrapper' => true)); ?>
 	</div>
 </div>
 
-<?php 
+<?php
 
 $drugs = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order'=> 'display_order asc'));
 $html_options = array(
 	'empty' => '- Please select -',
-	'options' => array(),		
+	'options' => array(),
 );
 // get the previous injection counts for each of the drug options for this eye
 foreach ($drugs as $drug) {
@@ -82,11 +82,10 @@ echo $form->dropDownList($element, $side . '_drug_id', CHtml::listData($drugs,'i
 
 <?php echo $form->textField($element, $side . '_number', array('size' => '10'))?>
 <?php echo $form->textField($element, $side . '_batch_number', array('size' => '32'))?>
-<?php 
+<?php
 if ($element->created_date) {
 	$expiry_date_params = array('minDate' => Helper::convertDate2NHS($element->created_date) );
-}
-else {
+} else {
 	$expiry_date_params = array('minDate' => 'yesterday');
 }
 ?>
@@ -106,8 +105,8 @@ else {
 			if (isset($_POST[get_class($element)])) {
 				$val = $_POST[get_class($element)][$side . '_injection_time'];
 			}
-			echo CHtml::textField(get_class($element) . "[".$side."_injection_time]", $val, array('size' => 6)); 
-		?> 
+			echo CHtml::textField(get_class($element) . "[".$side."_injection_time]", $val, array('size' => 6));
+		?>
 	</div>
 </div>
 
@@ -118,12 +117,12 @@ else {
 	</div>
 	<div class="data">
 		<?php
-			echo $form->checkbox($element, $side . '_post_ioplowering_required', array('nowrapper' => true)); 
-		?> 
+			echo $form->checkbox($element, $side . '_post_ioplowering_required', array('nowrapper' => true));
+		?>
 	</div>
 </div>
 
-<?php 
+<?php
 $show = $element->{ $side . '_post_ioplowering_required'};
 if (isset($_POST[get_class($element)])) {
 	$show = $_POST[get_class($element)][$side . '_post_ioplowering_required'];
@@ -137,8 +136,8 @@ if (isset($_POST[get_class($element)])) {
 		<?php echo $element->getAttributeLabel($side . '_post_ioplowering_id') ?>:
 	</div>
 	<div class="data">
-		<?php echo $form->dropDownList($element, $side . '_post_ioplowering_id', 
-				CHtml::listData(OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), 
+		<?php echo $form->dropDownList($element, $side . '_post_ioplowering_id',
+				CHtml::listData(OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'),
 				array('empty' => '- Please select -', 'nowrapper' => true)); ?>
 	</div>
 </div>

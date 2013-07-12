@@ -30,7 +30,7 @@
  * @property Element_OphTrIntravitrealinjection_Complications $element
  * @property OphTrIntravitrealinjection_Complication $complication
  * @property User $user
- * @property User $usermodified 
+ * @property User $usermodified
  */
 
 class OphTrIntravitrealinjection_ComplicationAssignment extends BaseActiveRecord
@@ -67,7 +67,7 @@ class OphTrIntravitrealinjection_ComplicationAssignment extends BaseActiveRecord
 			array('id, element_id, complication_id', 'safe', 'on' => 'search'),
 		);
 	}
-	
+
 	/**
 	 * @return array relational rules.
 	 */

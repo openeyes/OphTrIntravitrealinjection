@@ -71,7 +71,7 @@ class Element_OphTrIntravitrealinjection_Site extends BaseEventTypeElement
 			array('id, event_id, site_id', 'safe', 'on' => 'search'),
 		);
 	}
-	
+
 	/**
 	 * @return array relational rules.
 	 */
@@ -88,7 +88,7 @@ class Element_OphTrIntravitrealinjection_Site extends BaseEventTypeElement
 			'site' => array(self::BELONGS_TO, 'Site', 'site_id'),
 		);
 	}
-	
+
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -115,7 +115,7 @@ class Element_OphTrIntravitrealinjection_Site extends BaseEventTypeElement
 		$criteria->compare('id', $this->id, true);
 		$criteria->compare('event_id', $this->event_id, true);
 		$criteria->compare('site_id', $this->site_id);
-		
+
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,
 		));
@@ -136,6 +136,6 @@ class Element_OphTrIntravitrealinjection_Site extends BaseEventTypeElement
 	{
 		return parent::beforeValidate();
 	}
-	
+
 }
 ?>

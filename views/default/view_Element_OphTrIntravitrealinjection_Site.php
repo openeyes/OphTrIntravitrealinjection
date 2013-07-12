@@ -24,4 +24,3 @@
 	<div class="label"><?php echo $element->getAttributeLabel('site_id') ?>:</div>
 	<div class="data"><?php echo $element->{'site'}->name ?></div>
 </div>
-
