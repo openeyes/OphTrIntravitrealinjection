@@ -86,5 +86,3 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 		return $res;
 	}
 }
-
-?>

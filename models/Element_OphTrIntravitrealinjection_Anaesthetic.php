@@ -221,4 +221,3 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 		return $agents;
 	}
 }
-?>

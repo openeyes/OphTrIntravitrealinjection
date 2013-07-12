@@ -535,4 +535,3 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 		return true;
 	}
 }
-?>

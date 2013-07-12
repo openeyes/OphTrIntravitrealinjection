@@ -325,7 +325,7 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 	{
 		if ($this->eye_id == SplitEventTypeElement::LEFT) {
 			return $this->eye->name . ": " . $this->left_drug->name;
-		} else if ($this->eye_id == SplitEventTypeElement::RIGHT) {
+		} elseif ($this->eye_id == SplitEventTypeElement::RIGHT) {
 			return $this->eye->name . ": " . $this->right_drug->name;
 		} else {
 			if ($this->right_drug_id == $this->left_drug_id) {
@@ -337,5 +337,3 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 	}
 
 }
-
-?>

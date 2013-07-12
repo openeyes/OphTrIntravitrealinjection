@@ -128,4 +128,3 @@ class OphTrIntravitrealinjection_AntiSepticDrug extends BaseActiveRecord
 		return parent::beforeValidate();
 	}
 }
-?>

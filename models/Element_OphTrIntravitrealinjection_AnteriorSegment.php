@@ -138,4 +138,3 @@ class Element_OphTrIntravitrealinjection_AnteriorSegment extends SplitEventTypeE
 	}
 
 }
-?>

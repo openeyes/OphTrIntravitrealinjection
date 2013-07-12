@@ -128,4 +128,3 @@ class OphTrIntravitrealinjection_IOPLoweringDrug extends BaseActiveRecord
 		return parent::beforeValidate();
 	}
 }
-?>

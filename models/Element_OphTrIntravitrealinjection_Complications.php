@@ -219,4 +219,3 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 		}
 	}
 }
-?>

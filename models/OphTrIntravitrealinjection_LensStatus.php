@@ -128,4 +128,3 @@ class OphTrIntravitrealinjection_LensStatus extends BaseActiveRecord
 		return parent::beforeValidate();
 	}
 }
-?>

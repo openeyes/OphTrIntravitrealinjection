@@ -128,4 +128,3 @@ class OphTrIntravitrealinjection_SkinDrug extends BaseActiveRecord
 		return parent::beforeValidate();
 	}
 }
-?>

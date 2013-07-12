@@ -130,4 +130,3 @@ class OphTrIntravitrealinjection_ComplicationAssignment extends BaseActiveRecord
 		return parent::beforeValidate();
 	}
 }
-?>

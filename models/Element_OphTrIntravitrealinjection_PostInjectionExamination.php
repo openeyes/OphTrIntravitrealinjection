@@ -166,4 +166,3 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 		return parent::beforeValidate();
 	}
 }
-?>

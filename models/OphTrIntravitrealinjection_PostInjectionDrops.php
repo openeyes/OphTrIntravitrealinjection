@@ -128,4 +128,3 @@ class OphTrIntravitrealinjection_PostInjectionDrops extends BaseActiveRecord
 		return parent::beforeValidate();
 	}
 }
-?>
