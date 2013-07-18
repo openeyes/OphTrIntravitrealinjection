@@ -66,10 +66,11 @@ foreach ($drugs as $drug) {
 	$previous = $injection_api->previousInjections($this->patient, $episode, $side, $drug);
 	$count = 0;
 	if (sizeof($previous)) {
-		$count = $previous[0]->{$side . '_number'};
+		$count = $previous[0][$side . '_number'];
 	}
  	$html_options['options'][$drug->id] = array(
 		'data-previous' => $count,
+		'data-history' => CJSON::encode($previous),
 	);
 	// if this is an edit, we want to know what the original count was so that we don't replace it
 	if ($element->{$side . '_drug_id'} && $element->{$side . '_drug_id'} == $drug->id) {

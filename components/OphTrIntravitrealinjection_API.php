@@ -20,7 +20,16 @@
 class OphTrIntravitrealinjection_API extends BaseAPI
 {
 	private $previous_treatments = array();
-
+	private $legacy_api;
+	
+	protected function getLegacyAPI()
+	{
+		if (!$this->legacy_api) {
+			$this->legacy_api = Yii::app()->moduleAPI->get('OphLeIntravitrealinjection');
+		}
+		return $this->legacy_api;
+	}
+	
 	/**
 	 * caching method for previous injections store
 	 *
@@ -57,10 +66,13 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 	 * @param Drug $drug
 	 * @throws Exception
 	 *
-	 * @return Element_OphTrIntravitrealinjection_Treatment[] - array of treatment elements for the eye and optional drug
+	 * @return {$side . '_drug_id' => integer, $side . '_number' => integer, 'date' => datetime}[] - array of treatment elements for the eye and optional drug
+	 * 
 	 */
 	public function previousInjections($patient, $episode, $side, $drug = null)
 	{
+		$res = array();
+		
 		$previous = $this->previousInjectionsForPatientEpisode($patient, $episode);
 
 		switch ($side) {
@@ -75,14 +87,24 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 				break;
 		}
 
-		$res = array();
 		foreach ($previous as $prev) {
 			if (in_array($prev->eye_id,$eye_ids)) {
 				if ($drug == null || $prev->{$side . '_drug_id'} == $drug->id) {
-					$res[] = $prev;
+					$res[] = array(
+							$side . '_drug_id' => $prev->{$side . '_drug_id'}, 
+							$side . '_number' => $prev->{$side . '_number'},
+							'date' => $prev->created_date,
+					);
 				}
 			}
 		}
+		
+		if ($legacy_api = $this->getLegacyAPI()) {
+			foreach ($legacy_api->previousInjections($patient, $episode, $side, $drug) as $legacy) {
+				$res[] = $legacy;
+			}
+		}
+		
 		return $res;
 	}
 }
