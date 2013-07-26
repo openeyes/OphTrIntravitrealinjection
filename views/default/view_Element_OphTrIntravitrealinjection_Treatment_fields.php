@@ -33,11 +33,17 @@
 	<div class="data"><?php echo $element->{$side . '_pre_ioplowering_required'} ? 'Yes' : 'No' ?></div>
 </div>
 
-<?php if ($element->{$side . '_pre_ioplowering_id'}) { ?>
-<div class="eventDetail aligned">
-	<div class="label"><?php echo $element->getAttributeLabel($side . '_pre_ioplowering_id') ?>:</div>
-	<div class="data"><?php echo $element->{$side . '_pre_ioplowering'}->name ?></div>
-</div>
+<?php if ($element->{$side . '_pre_ioploweringdrugs'}) { ?>
+	<div class="eventDetail aligned">
+		<div class="label"><?php echo $element->getAttributeLabel($side . '_pre_ioploweringdrugs') ?>:</div>
+		<div class="data" style="display: inline-block;">
+			<?php 
+			foreach ($element->{$side . '_pre_ioploweringdrugs'} as $item) {
+				echo $item->name . "<br />";
+			}
+			?>
+		</div>
+	</div>
 <?php } ?>
 
 <div class="eventDetail aligned">
@@ -75,9 +81,16 @@
 	<div class="data"><?php echo $element->{$side . '_post_ioplowering_required'} ? 'Yes' : 'No' ?></div>
 </div>
 
-<?php if ($element->{$side . '_post_ioplowering_id'}) { ?>
-<div class="eventDetail aligned">
-	<div class="label"><?php echo $element->getAttributeLabel($side . '_post_ioplowering_id') ?>:</div>
-	<div class="data"><?php echo $element->{$side . '_post_ioplowering'}->name ?></div>
-</div>
+<?php if ($element->{$side . '_post_ioploweringdrugs'}) { ?>
+	<div class="eventDetail aligned">
+		<div class="label"><?php echo $element->getAttributeLabel($side . '_post_ioploweringdrugs') ?>:</div>
+		<div class="data" style="display: inline-block;">
+			<?php 
+			foreach ($element->{$side . '_post_ioploweringdrugs'} as $item) {
+				echo $item->name . "<br />";
+			}
+			?>
+		</div>
+	</div>
+
 <?php } ?>

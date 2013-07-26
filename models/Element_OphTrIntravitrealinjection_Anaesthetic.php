@@ -77,8 +77,8 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 			array('event_id, eye_id, left_anaesthetictype_id, left_anaestheticdelivery_id, left_anaestheticagent_id, ' .
 					'right_anaesthetictype_id, right_anaestheticdelivery_id, right_anaestheticagent_id', 'safe'),
 			array('eye_id', 'required'),
-			array('left_anaesthetictype_id, left_anaestheticagent_id, left_anaestheticagent_id', 'requiredIfSide', 'side' => 'left'),
-			array('right_anaesthetictype_id, right_anaestheticagent_id, right_anaestheticagent_id', 'requiredIfSide', 'side' => 'right'),
+			array('left_anaesthetictype_id, left_anaestheticdelivery_id, left_anaestheticagent_id', 'requiredIfSide', 'side' => 'left'),
+			array('right_anaesthetictype_id, right_anaestheticdelivery_id, right_anaestheticagent_id', 'requiredIfSide', 'side' => 'right'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, event_id, eye_id, left_anaesthetictype_id, left_anaestheticagent_id, left_anaestheticagent_id, ' .

@@ -95,10 +95,10 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 				'right_injection_given_by_id, right_injection_time, right_pre_ioplowering_required, right_post_ioplowering_required', 'requiredIfSide', 'side' => 'right'),
 			array('left_injection_time', 'typeIfSide', 'type' => 'time', 'side' => 'left'),
 			array('right_injection_time', 'typeIfSide', 'type' => 'time', 'side' => 'right'),
-			array('left_pre_ioplowering_id', 'requiredIfBoolean', 'side' => 'left', 'dependent' => 'left_pre_ioplowering_required'),
-			array('left_post_ioplowering_id', 'requiredIfBoolean', 'side' => 'left', 'dependent' => 'left_post_ioplowering_required'),
-			array('right_pre_ioplowering_id', 'requiredIfBoolean', 'side' => 'right', 'dependent' => 'right_pre_ioplowering_required'),
-			array('right_post_ioplowering_id', 'requiredIfBoolean', 'side' => 'right', 'dependent' => 'right_post_ioplowering_required'),
+			array('left_pre_ioploweringdrugs', 'requiredIfBoolean', 'side' => 'left', 'dependent' => 'left_pre_ioplowering_required'),
+			array('left_post_ioploweringdrugs', 'requiredIfBoolean', 'side' => 'left', 'dependent' => 'left_post_ioplowering_required'),
+			array('right_pre_ioploweringdrugs', 'requiredIfBoolean', 'side' => 'right', 'dependent' => 'right_pre_ioplowering_required'),
+			array('right_post_ioploweringdrugs', 'requiredIfBoolean', 'side' => 'right', 'dependent' => 'right_post_ioplowering_required'),
 			array('left_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'left', 'message' => 'Left {attribute} cannot be in the past.'),
 			array('right_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'right', 'message' => 'Right {attribute} cannot be in the past.'),
 			array('left_number, right_number', 'numerical', 'integerOnly' => true, 'min' => 1, 'message' => 'Number of Injections must be higher or equal to 1'),
@@ -134,17 +134,23 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			'right_pre_skin_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_SkinDrug', 'right_pre_skin_drug_id'),
 			'left_injection_given_by' => array(self::BELONGS_TO, 'User', 'left_injection_given_by_id'),
 			'right_injection_given_by' => array(self::BELONGS_TO, 'User', 'right_injection_given_by_id'),
-			'left_pre_ioplowering' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_IOPLoweringDrug', 'left_pre_ioplowering_id'),
-			'left_post_ioplowering' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_IOPLoweringDrug', 'left_post_ioplowering_id'),
-			'right_pre_ioplowering' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_IOPLoweringDrug', 'right_pre_ioplowering_id'),
-			'right_post_ioplowering' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_IOPLoweringDrug', 'right_post_ioplowering_id'),
+			'ioplowering_assignments' => array(self::HAS_MANY, 'OphTrIntravitrealinjection_IOPLoweringAssignment', 'element_id'),
+			
+			'left_pre_ioploweringdrugs' => array(self::HAS_MANY, 'OphTrIntravitrealinjection_IOPLoweringDrug', 'ioplowering_id', 'through' => 'ioplowering_assignments',
+				'on' => 'ioplowering_assignments.eye_id = ' . Eye::LEFT . ' AND ioplowering_assignments.is_pre = true'),
+			'left_post_ioploweringdrugs' => array(self::HAS_MANY, 'OphTrIntravitrealinjection_IOPLoweringDrug', 'ioplowering_id', 'through' => 'ioplowering_assignments',
+					'on' => 'ioplowering_assignments.eye_id = ' . Eye::LEFT . ' AND ioplowering_assignments.is_pre = false'),
+			'right_pre_ioploweringdrugs' => array(self::HAS_MANY, 'OphTrIntravitrealinjection_IOPLoweringDrug', 'ioplowering_id', 'through' => 'ioplowering_assignments',
+					'on' => 'ioplowering_assignments.eye_id = ' . Eye::RIGHT . ' AND ioplowering_assignments.is_pre = true'),
+			'right_post_ioploweringdrugs' => array(self::HAS_MANY, 'OphTrIntravitrealinjection_IOPLoweringDrug', 'ioplowering_id', 'through' => 'ioplowering_assignments',
+				'on' => 'ioplowering_assignments.eye_id = ' . Eye::RIGHT . ' AND ioplowering_assignments.is_pre = false'),
 		);
 	}
 
 	public function sidedFields()
 	{
 		return array('drug_id', 'number', 'batch_number', 'batch_expiry_date', 'injection_given_by_id',
-				'pre_ioplowering_required', 'pre_ioplowering_id', 'post_ioplowering_required', 'post_ioplowering_id');
+				'pre_ioplowering_required', 'post_ioplowering_required');
 	}
 
 	/**
@@ -172,14 +178,15 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			'right_pre_antisept_drug_id' => 'Pre Injection Antiseptic',
 			'left_pre_skin_drug_id' => 'Pre Injection Skin Cleanser',
 			'right_pre_skin_drug_id' => 'Pre Injection Skin Cleanser',
-			'left_pre_ioplowering_id' => 'Pre Injection IOP Lowering Drops',
-			'left_post_ioplowering_id' => 'Post Injection IOP Lowering Drops',
-			'right_pre_ioplowering_id' => 'Pre Injection IOP Lowering Drops',
-			'right_post_ioplowering_id' => 'Post Injection IOP Lowering Drops',
-			'left_pre_ioplowering_required' => 'Pre Injection IOP Lowering Drops Required',
-			'left_post_ioplowering_required' => 'Post Injection IOP Lowering Drops Required',
-			'right_pre_ioplowering_required' => 'Pre Injection IOP Lowering Drops Required',
-			'right_post_ioplowering_required' => 'Post Injection IOP Lowering Drops Required',
+			'left_pre_ioploweringdrugs' => 'Pre Injection IOP Lowering Therapy',
+			'left_post_ioploweringdrugs' => 'Post Injection IOP Lowering Therapy',
+			'right_pre_ioploweringdrugs' => 'Pre Injection IOP Lowering Therapy',
+			'right_post_ioploweringdrugs' => 'Post Injection IOP Lowering Therapy',
+			
+			'left_pre_ioplowering_required' => 'Pre Injection IOP Lowering Therapy Required',
+			'left_post_ioplowering_required' => 'Post Injection IOP Lowering Therapy Required',
+			'right_pre_ioplowering_required' => 'Pre Injection IOP Lowering Therapy Required',
+			'right_post_ioplowering_required' => 'Post Injection IOP Lowering Therapy Required',
 		);
 	}
 
@@ -218,10 +225,6 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		$criteria->compare('left_pre_skin_drug_id', $this->left_pre_skin_drug_id);
 		$criteria->compare('right_pre_skin_drug_id', $this->right_pre_skin_drug_id);
 
-		$criteria->compare('left_pre_ioplowering_id', $this->left_pre_ioplowering_id);
-		$criteria->compare('left_post_ioplowering_id', $this->left_post_ioplowering_id);
-		$criteria->compare('right_pre_ioplowering_id', $this->right_pre_ioplowering_id);
-		$criteria->compare('right_post_ioplowering_id', $this->right_post_ioplowering_id);
 		$criteria->compare('left_pre_ioplowering_required', $this->left_pre_ioplowering_required);
 		$criteria->compare('left_post_ioplowering_required', $this->left_post_ioplowering_required);
 		$criteria->compare('right_pre_ioplowering_required', $this->right_pre_ioplowering_required);
@@ -336,4 +339,48 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		}
 	}
 
+	/**
+	 * update the ioplowering assignments for the given side and stage.
+	 *
+	 * @param string $side
+	 * @param boolean $is_pre
+	 * @param integer[] $ioplowering_ids - array of ioplowering ids to assign to the element
+	 */
+	public function updateIOPLoweringDrugs($side, $is_pre = true, $ioplowering_ids = array())
+	{
+		$current_ioplowerings = array();
+		$save_ioplowerings = array();
+	
+		foreach ($this->ioplowering_assignments as $curr) {
+			if ($curr->eye_id == $side && $curr->is_pre == $is_pre) {
+				$current_ioplowerings[$curr->ioplowering_id] = $curr;
+			}
+		}
+	
+		// go through each update ioplowering id, if it isn't assigned for this element,
+		// create assignment and store for saving
+		// if there is, remove from the current complications array
+		// anything left in current ioplowering at the end is ripe for deleting
+		foreach ($ioplowering_ids as $id) {
+			if (!array_key_exists($id, $current_ioplowerings)) {
+				$s = new OphTrIntravitrealinjection_IOPLoweringAssignment();
+				$s->attributes = array('element_id' => $this->id, 'eye_id' => $side, 'ioplowering_id' => $id, 'is_pre' => $is_pre);
+				$save_ioplowerings[] = $s;
+			} else {
+				// don't want to delete later
+				unset($current_ioplowerings[$id]);
+			}
+		}
+		// save what needs saving
+		foreach ($save_ioplowerings as $save) {
+			if (!$save->save()) {
+				throw new Exception('cannot save IOP Lowering Drug assignment:' . print_r($save->getErrors(), true));
+			}
+		}
+		// delete the rest
+		foreach ($current_ioplowerings as $curr) {
+			$curr->delete();
+		}
+	}
+	
 }

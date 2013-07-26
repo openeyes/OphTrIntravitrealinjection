@@ -228,11 +228,11 @@ $(document).ready(function() {
 			'#Element_OphTrIntravitrealinjection_Treatment_left_pre_ioplowering_required', 'change', function() {
 		var side = getSplitElementSide($(this));
 		if ($(this).attr('checked')) {
-			$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioplowering_id').removeClass('hidden');
-			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioplowering_id').removeAttr('disabled');
+			$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioploweringdrugs').removeClass('hidden');
+			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioploweringdrugs').removeAttr('disabled');
 		} else {
-			$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioplowering_id').addClass('hidden');
-			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioplowering_id').attr('disabled', 'disabled');
+			$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioploweringdrugs').addClass('hidden');
+			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioploweringdrugs').attr('disabled', 'disabled');
 		}
 	});
 	
@@ -241,11 +241,11 @@ $(document).ready(function() {
 			'#Element_OphTrIntravitrealinjection_Treatment_left_post_ioplowering_required', 'change', function() {
 		var side = getSplitElementSide($(this));
 		if ($(this).attr('checked')) {
-			$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioplowering_id').removeClass('hidden');
-			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioplowering_id').removeAttr('disabled');
+			$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioploweringdrugs').removeClass('hidden');
+			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioploweringdrugs').removeAttr('disabled');
 		} else {
-			$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioplowering_id').addClass('hidden');
-			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioplowering_id').attr('disabled', 'disabled');
+			$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioploweringdrugs').addClass('hidden');
+			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioploweringdrugs').attr('disabled', 'disabled');
 		}
 	});
 	

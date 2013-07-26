@@ -80,14 +80,13 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Avastin','display_order'=>1));
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Eylea','display_order'=>2));
-		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Lucentis','display_order'=>3));
-		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Macugen','display_order'=>4));
-		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'PDT','display_order'=>5));
-		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Ozurdex','display_order'=>6));
-		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Intravitreal triamcinolone','display_order'=>7));
-		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Illuvien','display_order'=>8));
-
-
+		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Intravitreal triamcinolone','display_order'=>3));
+		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Illuvien','display_order'=>4));
+		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Lucentis','display_order'=>5));
+		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Macugen','display_order'=>6));
+		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Ozurdex','display_order'=>7));
+		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'PDT','display_order'=>8));
+		
 		// Site table
 		$this->createTable('et_ophtrintravitinjection_site', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
@@ -213,7 +212,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 
 		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Phakic','display_order'=>1, 'default_distance' => 4));
 		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Aphakic','display_order'=>2, 'default_distance' => 3.5));
-		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Psuedophakic','display_order'=>3, 'default_distance' => 3.5));
+		$this->insert('ophtrintravitinjection_lens_status',array('name'=>'Pseudophakic','display_order'=>3, 'default_distance' => 3.5));
 
 		$this->createTable('et_ophtrintravitinjection_anteriorseg', array(
 				'id' => 'int(10) unsigned NOT NULL AUTO_INCREMENT',
