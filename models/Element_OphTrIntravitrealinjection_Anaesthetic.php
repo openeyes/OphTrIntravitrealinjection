@@ -109,6 +109,10 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 		);
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see SplitEventTypeElement::sidedFields()
+	 */
 	public function sidedFields()
 	{
 		return array('anaesthetictype_id', 'anaestheticdelivery_id', 'anaestheticagent_id');

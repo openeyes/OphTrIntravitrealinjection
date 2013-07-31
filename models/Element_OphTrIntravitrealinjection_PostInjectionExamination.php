@@ -103,7 +103,7 @@ class Element_OphTrIntravitrealinjection_PostInjectionExamination extends SplitE
 
 	public function sidedFields()
 	{
-		return array('finger_count', 'iop_check');
+		return array('finger_count', 'iop_check', 'drops_id');
 	}
 
 	/**

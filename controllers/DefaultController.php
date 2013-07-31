@@ -124,20 +124,30 @@ class DefaultController extends BaseEventTypeController
 		foreach ($elements as $el) {
 			foreach (array('left' => SplitEventTypeElement::LEFT, 'right' => SplitEventTypeElement::RIGHT) as $side => $sconst) {
 				if (get_class($el) == 'Element_OphTrIntravitrealinjection_Complications') {
-					$el->updateComplications($sconst,
-							isset($_POST['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) ?
-							$_POST['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications'] :
-							array());
+					$comps = array();
+					if (isset($_POST['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) && 
+							($el->eye_id == $sconst || $el->eye_id == Eye::BOTH) ) {
+						// only set if relevant to element side, otherwise force reset of data
+						$comps = $_POST['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications'];
+					}
+					$el->updateComplications($sconst, $comps);
 				}
 				else if (get_class($el) == 'Element_OphTrIntravitrealinjection_Treatment') {
-					$el->updateIOPLoweringDrugs($sconst, true,
-							isset($_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_pre_ioploweringdrugs']) ? 
-							$_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_pre_ioploweringdrugs'] :
-							array());
-					$el->updateIOPLoweringDrugs($sconst, false,
-							isset($_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_post_ioploweringdrugs']) ?
-							$_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_post_ioploweringdrugs'] :
-							array());
+					$drugs = array();
+					if (isset($_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_pre_ioploweringdrugs']) &&
+						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH) ) {
+						// only set if relevant to element side, otherwise force reset of data
+						$drugs = $_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_pre_ioploweringdrugs'];
+					}
+					$el->updateIOPLoweringDrugs($sconst, true, $drugs);
+					// reset for post
+					$drugs = array();
+					if (isset($_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_post_ioploweringdrugs']) &&
+							($el->eye_id == $sconst || $el->eye_id == Eye::BOTH) ) {
+						// only set if relevant to element side, otherwise force reset of data
+						$drugs = $_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_post_ioploweringdrugs'];
+					}
+					$el->updateIOPLoweringDrugs($sconst, false, $drugs);
 				}
 
 			}
