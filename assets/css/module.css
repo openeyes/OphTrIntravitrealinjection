@@ -19,3 +19,5 @@
 #event_content.watermarkBox { background-image: url(../img/watermark.png); background-position: -5px 0; background-repeat: repeat-y; border-color: #a29d8a; }
 #event_content h3.withEventIcon { background:transparent url(../img/medium.png) center left no-repeat; }
 #event_content .cols2 .data { float: right; width: 330px; }
+
+.quicklook { width:180px;  top:0; z-index:1; padding:2px 0px 2px 5px; border:1px solid #3665ff; background:#fff; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; -moz-box-shadow: 2px 2px 2px 0 #999;  -webkit-box-shadow: 2px 2px 2px 0 #999;	box-shadow: 2px 2px 2px 0 #999;  }

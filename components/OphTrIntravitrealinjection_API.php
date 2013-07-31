@@ -49,7 +49,7 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 			$previous = array();
 			foreach ($events as $event) {
 				if ($treat = Element_OphTrIntravitrealinjection_Treatment::model()->find('event_id = :event_id', array(':event_id' => $event->id))) {
-				$previous[] = $treat;
+					$previous[] = $treat;
 				}
 			}
 			$this->previous_treatments[$patient->id][$episode->id] = $previous;
@@ -58,7 +58,7 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 	}
 
 	/**
-	 * return the set of treatment elements from previous injection events
+	 * return the set of treatment elements from previous injection events in descending order
 	 *
 	 * @param Patient $patient
 	 * @param Episode $episode
@@ -99,6 +99,9 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 			}
 		}
 		
+		// NOTE: we assume that all legacy injections would be from before any injections in
+		// this module. Should this prove not to be the case, we would need to sort the result
+		// data structure by date
 		if ($legacy_api = $this->getLegacyAPI()) {
 			foreach ($legacy_api->previousInjections($patient, $episode, $side, $drug) as $legacy) {
 				$res[] = $legacy;

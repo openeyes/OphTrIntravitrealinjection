@@ -131,6 +131,16 @@ function OphTrIntravitrealinjection_setInjectionNumber(side) {
 	}
 	
 	$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_number').val(count);
+	
+	// update the history tooltip when the drug is selected/changed
+	$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_number').find('.number-history-item').addClass('hidden');
+	if (drug_id) {
+		$('#' + side + '_number_history_icon').removeClass('hidden');
+		$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_history_' + drug_id).removeClass('hidden');
+	}
+	else {
+		$('#' + side + '_number_history_icon').addClass('hidden');
+	}
 }
 
 function OphTrIntravitrealinjection_hide(side) {
@@ -220,6 +230,31 @@ $(document).ready(function() {
 		var side = getSplitElementSide($(this));
 
 		OphTrIntravitrealinjection_setInjectionNumber(side);
+	});
+	
+	
+	// history tool tip
+	$(".Element_OphTrIntravitrealinjection_Treatment").find('.number-history').each(function(){
+		var quick = $(this);
+		var iconHover = $(this).parent().find('.number-history-icon');
+		
+		iconHover.hover(function(e){
+			var infoWrap = $('<div class="quicklook"></div>');
+			infoWrap.appendTo('body');
+			infoWrap.html(quick.html());
+			
+			var offsetPos = $(this).offset();
+			var top = offsetPos.top;
+			var left = offsetPos.left + 25;
+			
+			top = top - (infoWrap.height()/2) + 8;
+			
+			if (left + infoWrap.width() > 1150) left = left - infoWrap.width() - 40;
+			infoWrap.css({'position': 'absolute', 'top': top + "px", 'left': left + "px"});
+			infoWrap.fadeIn('fast');
+		},function(e){
+			$('body > div:last').remove();
+		});	
 	});
 	
 	// deal with the ioplowering show/hide
