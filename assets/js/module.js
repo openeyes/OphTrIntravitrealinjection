@@ -307,13 +307,6 @@ $(document).ready(function() {
 		OphTrIntravitrealinjection_otherComplicationsCheck(side);
 	});
 	
-	OphTrIntravitrealinjection_setInjectionNumber('left');
-	OphTrIntravitrealinjection_setInjectionNumber('right');
-	
-	// ensure we are only displaying the 'other' description if its required
-	OphTrIntravitrealinjection_otherComplicationsCheck('left');
-	OphTrIntravitrealinjection_otherComplicationsCheck('right');
-		
 });
 
 function ucfirst(str) { str += ''; var f = str.charAt(0).toUpperCase(); return f + str.substr(1); }
