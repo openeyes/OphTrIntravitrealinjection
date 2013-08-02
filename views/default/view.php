@@ -23,6 +23,8 @@
 	$this->header();
 ?>
 
+<?php  $this->renderPartial('//patient/event_actions'); ?>
+
 <h3 class="withEventIcon"><?php echo $this->event_type->name?></h3>
 
 <div>

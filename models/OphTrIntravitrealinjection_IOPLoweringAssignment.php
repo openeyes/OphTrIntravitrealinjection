@@ -1,5 +1,4 @@
-<?php
-/**
+<?php /**
  * OpenEyes
  *
  * (C) Moorfields Eye Hospital NHS Foundation Trust, 2008-2011
@@ -18,31 +17,25 @@
  */
 
 /**
- * This is the model class for table "et_ophtrintravitinjection_anteriorseg".
+ * This is the model class for table "ophtrintravitinjection_complicat_assignment".
  *
  * The followings are the available columns in table:
  * @property string $id
- * @property integer $event_id
- * @property string $left_eyedraw
- * @property string $right_eyedraw
- * @property integer $left_lens_status_id
- * @property integer $right_lens_status_id
+ * @property integer $element_id
+ * @property integer $eye_id
+ * @property integer $ioplowering_id
+ * @property boolean $is_pre
  *
- * The following are the available model relations:
+ * The followings are the available model relations:
  *
- * @property ElementType $element_type
- * @property EventType $eventType
- * @property Event $event
+ * @property Element_OphTrIntravitrealinjection_Treatment $element
+ * @property OphTrIntravitrealinjection_IOPLoweringDrug $complication
  * @property User $user
  * @property User $usermodified
- * @property OphTrIntravitrealinjection_LensStatus $left_lens_status
- * @property OphTrIntravitrealinjection_LensStatus $right_lens_status
  */
 
-class Element_OphTrIntravitrealinjection_AnteriorSegment extends SplitEventTypeElement
+class OphTrIntravitrealinjection_IOPLoweringAssignment extends BaseActiveRecord
 {
-	public $service;
-
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return the static model class
@@ -57,7 +50,7 @@ class Element_OphTrIntravitrealinjection_AnteriorSegment extends SplitEventTypeE
 	 */
 	public function tableName()
 	{
-		return 'et_ophtrintravitinjection_anteriorseg';
+		return 'ophtrintravitinjection_ioplowering_assign';
 	}
 
 	/**
@@ -68,16 +61,15 @@ class Element_OphTrIntravitrealinjection_AnteriorSegment extends SplitEventTypeE
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, eye_id, left_eyedraw, left_lens_status_id, right_eyedraw, right_lens_status_id', 'safe'),
-			array('left_eyedraw, left_lens_status_id', 'requiredIfSide', 'side' => 'left'),
-			array('right_eyedraw, right_lens_status_id', 'requiredIfSide', 'side' => 'right'),
+			array('element_id, eye_id, ioplowering_id, is_pre', 'safe'),
+			array('element_id, eye_id, ioplowering_id', 'required'),
+			array('is_pre', 'boolean'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, event_id, eye_id, left_eyedraw, left_lens_status_id, right_eyedraw, right_lens_status_id', 'safe', 'on' => 'search'),
+			array('id, element_id, ioplowering_id, is_pre', 'safe', 'on' => 'search'),
 		);
 	}
 
-	
 	/**
 	 * @return array relational rules.
 	 */
@@ -86,24 +78,11 @@ class Element_OphTrIntravitrealinjection_AnteriorSegment extends SplitEventTypeE
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'element_type' => array(self::HAS_ONE, 'ElementType', 'id','on' => "element_type.class_name='".get_class($this)."'"),
-			'eventType' => array(self::BELONGS_TO, 'EventType', 'event_type_id'),
-			'event' => array(self::BELONGS_TO, 'Event', 'event_id'),
+			'element' => array(self::BELONGS_TO, 'Element_OphTrIntravitrealinjection_Treatment', 'element_id'),
+			'ioplowering' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_IOPLoweringDrug', 'ioplowering_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
-			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
-			'left_lens_status' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_LensStatus' , 'left_lens_status_id' ),
-			'right_lens_status' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_LensStatus' , 'right_lens_status_id' ),
 		);
-	}
-
-	/**
-	 * (non-PHPdoc)
-	 * @see SplitEventTypeElement::sidedFields()
-	 */
-	public function sidedFields()
-	{
-		return array('lens_status_id', 'eyedraw');
 	}
 
 	/**
@@ -113,11 +92,6 @@ class Element_OphTrIntravitrealinjection_AnteriorSegment extends SplitEventTypeE
 	{
 		return array(
 			'id' => 'ID',
-			'event_id' => 'Event',
-			'left_eyedraw' => 'Anterior Segment',
-			'right_eyedraw' => 'Anterior Segment',
-			'left_lens_status_id' => 'Lens Status',
-			'right_lens_status_id' => 'Lens Status',
 		);
 	}
 
@@ -127,19 +101,34 @@ class Element_OphTrIntravitrealinjection_AnteriorSegment extends SplitEventTypeE
 	 */
 	public function search()
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
 		$criteria = new CDbCriteria;
 
 		$criteria->compare('id', $this->id, true);
-		$criteria->compare('event_id', $this->event_id, true);
-		$criteria->compare('complicat', $this->complicat);
-		$criteria->compare('oth_descrip', $this->oth_descrip);
 
 		return new CActiveDataProvider(get_class($this), array(
-			'criteria' => $criteria,
-		));
+				'criteria' => $criteria,
+			));
 	}
 
+	/**
+	 * Set default values for forms on create
+	 */
+	public function setDefaultOptions()
+	{
+	}
+
+	protected function beforeSave()
+	{
+		return parent::beforeSave();
+	}
+
+	protected function afterSave()
+	{
+		return parent::afterSave();
+	}
+
+	protected function beforeValidate()
+	{
+		return parent::beforeValidate();
+	}
 }
