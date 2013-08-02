@@ -27,6 +27,8 @@ class AdminController extends ModuleAdminController
 		$model_list = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order' => 'display_order asc'));
 		$this->jsVars['OphTrIntravitrealinjection_sort_url'] = $this->createUrl('sortTreatmentDrugs');
 
+		Audit::add('admin-OphTrIntravitrealinjection-OphTrIntravitrealinjection_Treatment_Drug','list');
+
 		$this->render('list',array(
 				'model_list'=>$model_list,
 				'title'=>'Treatment Drugs',
@@ -49,7 +51,7 @@ class AdminController extends ModuleAdminController
 			$model->display_order = $display_order;
 
 			if ($model->save()) {
-				Audit::add('OphTrIntravitrealinjection_Treatment_Drug', 'create', serialize($model->attributes));
+				Audit::add('admin-OphTrIntravitrealinjection-OphTrIntravitrealinjection_Treatment_Drug', 'create', serialize($model->attributes));
 				Yii::app()->user->setFlash('success', 'Treatment drug created');
 
 				$this->redirect(array('ViewAllOphTrIntravitrealinjection_Treatment_Drug'));
@@ -70,7 +72,7 @@ class AdminController extends ModuleAdminController
 			$model->attributes = $_POST['OphTrIntravitrealinjection_Treatment_Drug'];
 
 			if ($model->save()) {
-				Audit::add('OphTrIntravitrealinjection_Treatment_Drug', 'update', serialize($model->attributes));
+				Audit::add('admin-OphTrIntravitrealinjection-OphTrIntravitrealinjection_Treatment_Drug', 'update', serialize($model->attributes));
 				Yii::app()->user->setFlash('success', 'Treatment drug updated');
 
 				$this->redirect(array('ViewAllOphTrIntravitrealinjection_Treatment_Drug'));
