@@ -60,7 +60,8 @@ if (isset($_POST[get_class($element)])) {
 	}
 	echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_pre_ioploweringdrugs]', $side . '_pre_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options);
 	
-	$drugs = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order'=> 'display_order asc'));
+	$drugs = $element->getTreatmentDrugs($side);
+	
 	$html_options = array(
 		'empty' => '- Please select -',
 		'options' => array(),
@@ -171,12 +172,14 @@ if ($element->created_date) {
 </div>
 
 <?php
-$show = $element->{ $side . '_post_ioplowering_required'};
-if (isset($_POST[get_class($element)])) {
-	$show = $_POST[get_class($element)][$side . '_post_ioplowering_required'];
-}
-
-if (!$show) {
+	$div_class = "eventDetail";
+	$show = $element->{ $side . '_post_ioplowering_required'};
+	
+	if (isset($_POST[get_class($element)])) {
+		$show = $_POST[get_class($element)][$side . '_post_ioplowering_required'];
+	}
+	
+	if (!$show) {
 		$div_class .= " hidden";
 	}
 	

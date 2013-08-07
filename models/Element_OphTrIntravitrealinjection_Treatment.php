@@ -125,8 +125,6 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 			'site' => array(self::BELONGS_TO, 'Site', 'site_id'),
 			'eye' => array(self::BELONGS_TO, 'Eye', 'eye_id'),
-			'left_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Treatment_Drug', 'left_drug_id'),
-			'right_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_Treatment_Drug', 'right_drug_id'),
 			'left_pre_antisept_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_AntiSepticDrug', 'left_pre_antisept_drug_id'),
 			'right_pre_antisept_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_AntiSepticDrug', 'right_pre_antisept_drug_id'),
 			'left_pre_skin_drug' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_SkinDrug', 'left_pre_skin_drug_id'),
@@ -145,7 +143,39 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 				'on' => 'ioplowering_assignments.eye_id = ' . Eye::RIGHT . ' AND ioplowering_assignments.is_pre = false'),
 		);
 	}
-
+	
+	/**
+	 * sided function to perform lookup for Treatment Drug on the allScope
+	 * 
+	 * @param unknown $side
+	 * @return OphTrIntravitrealinjection_Treatment_Drug
+	 */
+	protected function getDrug($side)
+	{
+		if ($this->{$side . '_drug_id'}) {
+			return OphTrIntravitrealinjection_Treatment_Drug::model()->allScope()->findByPk($this->{$side . '_drug_id'});
+		}
+	}
+	
+	/**
+	 * left drug relation definiton
+	 * 
+	 * @return OphTrIntravitrealinjection_Treatment_Drug
+	 */
+	public function getLeft_Drug()
+	{
+		return $this->getDrug('left');
+	}
+	/**
+	 * right drug relation defintion
+	 * 
+	 * @return OphTrIntravitrealinjection_Treatment_Drug
+	 */
+	public function getRight_Drug()
+	{
+		return $this->getDrug('right');
+	}
+	
 	public function sidedFields()
 	{
 		return array('pre_antisept_drug_id', 'pre_skin_drug_id', 'drug_id', 'number', 'batch_number', 'batch_expiry_date', 
@@ -244,13 +274,51 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 
 		return parent::afterSave();
 	}
-
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see SplitEventTypeElement::setDefaultOptions()
+	 */
 	public function setDefaultOptions()
 	{
 		$this->left_injection_time = date('H:i:s');
 		$this->right_injection_time = date('H:i:s');
 	}
+	
+	/**
+	 * returns list of treatment drugs for the given side
+	 * 
+	 * @param string $side - left or right
+	 * @return OphTrIntravitrealinjection_Treatment_Drug[]
+	 */
+	public function getTreatmentDrugs($side)
+	{
+		$drugs = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll();
+		
+		if ($curr_id = $this->{$side . '_drug_id'}) {
+			$drug_array = array();
+			
+			foreach ($drugs as $drug) {
+				if ($curr_id == $drug->id) {
+					// current drug is in the list so we don't need to append
+					return $drugs;
+				}
+				$drug_array[] = $drug;
+			}
 
+			// got this far so the current drug for this side is no longer available
+			$drug_array[] = $this->{$side . '_drug'};
+			$drugs = $drug_array;
+		}
+		return $drugs;
+	}
+	
+	/**
+	 * clear out sided fields to prevent validation of irrelevant data
+	 * 
+	 * (non-PHPdoc)
+	 * @see CModel::beforeValidate()
+	 */
 	protected function beforeValidate()
 	{
 		// Need to clear any "sided" fields if that side isn't active to prevent
@@ -276,6 +344,7 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			$validator->validate($this);
 		}
 	}
+	
 	public function requiredIfBoolean($attribute, $params)
 	{
 		$dependent = $params['dependent'];
