@@ -150,7 +150,12 @@ if (!$element->getIsNewRecord()) {
 	</div>
 	<div class="data">
 		<?php
-			$val = date('H:i',strtotime($element->{$side . '_injection_time'}));
+			if ($element->{$side . '_injection_time'} != null) {
+				$val = date('H:i',strtotime($element->{$side . '_injection_time'}));
+			} else {
+				$val = date('H:i');
+			}
+			
 			if (isset($_POST[get_class($element)])) {
 				$val = $_POST[get_class($element)][$side . '_injection_time'];
 			}
