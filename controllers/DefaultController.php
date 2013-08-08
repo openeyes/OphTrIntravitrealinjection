@@ -45,7 +45,9 @@ class DefaultController extends BaseEventTypeController
 		if ($action == 'create' && empty($_POST)) {
 			// set any calculated defaults on the elements
 			$therapy_api = Yii::app()->moduleAPI->get('OphCoTherapyapplication');
+			$injection_api = Yii::app()->moduleAPI->get('OphTrIntravitrealinjection');
 			$default_eye = SplitEventTypeElement::BOTH;
+			
 			if ($this->episode && $therapy_api && $side = $therapy_api->getLatestApplicationSide($this->patient, $this->episode)) {
 				$default_eye = $side;
 			}
@@ -64,9 +66,13 @@ class DefaultController extends BaseEventTypeController
 						// get the latest drug that has been applied for and set it as default (for the appropriate eye)
 						if ($drug = $therapy_api->getLatestApplicationDrug($this->patient, $this->episode, 'left')) {
 							$element->left_drug_id = $drug->id;
+							$previous = $injection_api->previousInjections($this->patient, $this->episode, 'left', $drug);
+							$element->left_number = count($previous) + 1;
 						}
 						if ($drug = $therapy_api->getLatestApplicationDrug($this->patient, $this->episode, 'right')) {
 							$element->right_drug_id = $drug->id;
+							$previous = $injection_api->previousInjections($this->patient, $this->episode, 'right', $drug);
+							$element->right_number = count($previous) + 1;
 						}
 					}
 					$element->left_injection_given_by_id = Yii::app()->user->id;
