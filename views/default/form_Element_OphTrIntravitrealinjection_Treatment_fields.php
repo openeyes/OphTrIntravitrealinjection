@@ -132,7 +132,7 @@ if (isset($_POST[get_class($element)])) {
 
 <?php echo $form->textField($element, $side . '_batch_number', array('size' => '32'))?>
 <?php
-if ($element->created_date) {
+if (!$element->getIsNewRecord()) {
 	$expiry_date_params = array('minDate' => Helper::convertDate2NHS($element->created_date) );
 } else {
 	$expiry_date_params = array('minDate' => 'yesterday');
