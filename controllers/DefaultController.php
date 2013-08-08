@@ -37,6 +37,8 @@ class DefaultController extends BaseEventTypeController
 
 	/*
 	 * override to set the defaults on the elements that are arrived at dynamically
+	 * 
+	 * @return Element[]
 	 */
 	public function getDefaultElements($action, $event_type_id=false, $event=false)
 	{
@@ -87,7 +89,11 @@ class DefaultController extends BaseEventTypeController
 
 		return $elements;
 	}
-
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see BaseEventTypeController::setPOSTManyToMany()
+	 */
 	protected function setPOSTManyToMany($element)
 	{
 		foreach (array('left', 'right') as $side) {
@@ -122,9 +128,9 @@ class DefaultController extends BaseEventTypeController
 
 	/*
 	 * similar to setPOSTManyToMany, but will actually call methods on the elements that will create database entries
-	* should be called on create and update.
-	*
-	*/
+	 * should be called on create and update.
+	 *
+	 */
 	protected function storePOSTManyToMany($elements)
 	{
 		foreach ($elements as $el) {
@@ -132,7 +138,8 @@ class DefaultController extends BaseEventTypeController
 				if (get_class($el) == 'Element_OphTrIntravitrealinjection_Complications') {
 					$comps = array();
 					if (isset($_POST['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) && 
-							($el->eye_id == $sconst || $el->eye_id == Eye::BOTH) ) {
+						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH) 
+					) {
 						// only set if relevant to element side, otherwise force reset of data
 						$comps = $_POST['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications'];
 					}
@@ -140,16 +147,20 @@ class DefaultController extends BaseEventTypeController
 				}
 				else if (get_class($el) == 'Element_OphTrIntravitrealinjection_Treatment') {
 					$drugs = array();
-					if (isset($_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_pre_ioploweringdrugs']) &&
-						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH) ) {
+					if ($el->{$side . '_pre_ioplowering_required'} &&
+						isset($_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_pre_ioploweringdrugs']) &&
+						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH) 
+					) {
 						// only set if relevant to element side, otherwise force reset of data
 						$drugs = $_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_pre_ioploweringdrugs'];
 					}
 					$el->updateIOPLoweringDrugs($sconst, true, $drugs);
 					// reset for post
 					$drugs = array();
-					if (isset($_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_post_ioploweringdrugs']) &&
-							($el->eye_id == $sconst || $el->eye_id == Eye::BOTH) ) {
+					if ($el->{$side . '_post_ioplowering_required'} &&
+						isset($_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_post_ioploweringdrugs']) &&
+						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH) 
+					) {
 						// only set if relevant to element side, otherwise force reset of data
 						$drugs = $_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_post_ioploweringdrugs'];
 					}
