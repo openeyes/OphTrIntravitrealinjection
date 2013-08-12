@@ -44,27 +44,35 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 		return parent::model($className);
 	}
 	
-	
 	/*
 	 * scope to get all records including those marked as unavailable
 	 * 
 	 */
 	public function allScope()
 	{
+		$alias = $this->getTableAlias(false);
 		$this->resetScope()->getDbCriteria()->mergeWith(array(
-			'order' => 'ophtrintravitinjection_treatment_drug.display_order ASC',
-			'alias' => 'ophtrintravitinjection_treatment_drug'
+			'order' => $alias . '.display_order ASC',
+			'alias' => $alias,
+			'condition' => ''
 		));
 		return $this; 
 	}
 	
+	/**
+	 * only return available drugs
+	 * 
+	 * (non-PHPdoc)
+	 * @see CActiveRecord::defaultScope()
+	 */
 	public function defaultScope()
 	{
+		$alias = $this->getTableAlias(false, false);
 		return array(
-				'order' => 'ophtrintravitinjection_treatment_drug.display_order ASC',
-				'condition' => 'ophtrintravitinjection_treatment_drug.available = :available',
+				'order' => $alias . '.display_order ASC',
+				'condition' => $alias . '.available = :available',
 				'params' => array(':available' => true),
-				'alias' => 'ophtrintravitinjection_treatment_drug'
+				'alias' => $alias
 		);
 	}
 	

@@ -143,6 +143,8 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		);
 	}
 	
+	
+	
 	/**
 	 * sided function to perform lookup for Treatment Drug on the allScope
 	 * 
@@ -165,6 +167,7 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 	{
 		return $this->getDrug('left');
 	}
+	
 	/**
 	 * right drug relation defintion
 	 * 
