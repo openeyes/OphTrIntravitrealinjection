@@ -43,25 +43,24 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 	{
 		return parent::model($className);
 	}
-	
+
 	/*
 	 * scope to get all records including those marked as unavailable
-	 * 
+	 *
 	 */
-	public function allScope()
+	public function availableScope()
 	{
 		$alias = $this->getTableAlias(false);
 		$this->resetScope()->getDbCriteria()->mergeWith(array(
 			'order' => $alias . '.display_order ASC',
-			'alias' => $alias,
-			'condition' => ''
+			'condition' => $alias . '.available = true',
 		));
-		return $this; 
+		return $this;
 	}
-	
+
 	/**
-	 * only return available drugs
-	 * 
+	 * default the sort order
+	 *
 	 * (non-PHPdoc)
 	 * @see CActiveRecord::defaultScope()
 	 */
@@ -69,13 +68,10 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 	{
 		$alias = $this->getTableAlias(false, false);
 		return array(
-				'order' => $alias . '.display_order ASC',
-				'condition' => $alias . '.available = :available',
-				'params' => array(':available' => true),
-				'alias' => $alias
+			'order' => $alias . '.display_order ASC',
 		);
 	}
-	
+
 	/**
 	 * @return string the associated database table name
 	 */

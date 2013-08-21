@@ -24,7 +24,7 @@ class AdminController extends ModuleAdminController
 	// Treatment Drug actions
 	public function actionViewAllOphTrIntravitrealinjection_Treatment_Drug()
 	{
-		$model_list = OphTrIntravitrealinjection_Treatment_Drug::model()->allScope()->findAll(array('order' => 'display_order asc'));
+		$model_list = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order' => 'display_order asc'));
 		$this->jsVars['OphTrIntravitrealinjection_sort_url'] = $this->createUrl('sortTreatmentDrugs');
 
 		Audit::add('admin','list',null,false,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
@@ -43,7 +43,7 @@ class AdminController extends ModuleAdminController
 		if (isset($_POST['OphTrIntravitrealinjection_Treatment_Drug'])) {
 			$model->attributes = $_POST['OphTrIntravitrealinjection_Treatment_Drug'];
 
-			if ($bottom_drug = OphTrIntravitrealinjection_Treatment_Drug::model()->allScope()->find(array('order'=>'display_order desc'))) {
+			if ($bottom_drug = OphTrIntravitrealinjection_Treatment_Drug::model()->find(array('order'=>'display_order desc'))) {
 				$display_order = $bottom_drug->display_order+1;
 			} else {
 				$display_order = 1;
@@ -66,7 +66,7 @@ class AdminController extends ModuleAdminController
 
 	public function actionUpdateOphTrIntravitrealinjection_Treatment_Drug($id)
 	{
-		if (!$model = OphTrIntravitrealinjection_Treatment_Drug::model()->allScope()->findByPk((int) $id)) {
+		if (!$model = OphTrIntravitrealinjection_Treatment_Drug::model()->findByPk((int) $id)) {
 			throw new Exception('Treatment drug not found with id ' . $id);
 		}
 
