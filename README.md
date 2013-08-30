@@ -13,4 +13,13 @@ Admin
 Dependencies
 ------------
 
-1. Eyedraw
+1. Requires the following modules:
+  1. Eyedraw
+2. Uses the following modules if present:
+  1. OphLeIntravitrealinjection
+
+Items of note
+-------------
+
+If the legacy injection event module is installed, the default injection number for a given drug will take patient events from it into account
+
