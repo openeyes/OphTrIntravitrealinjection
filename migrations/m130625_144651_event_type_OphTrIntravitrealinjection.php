@@ -80,7 +80,7 @@ class m130625_144651_event_type_OphTrIntravitrealinjection extends CDbMigration
 
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Avastin','display_order'=>1));
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Eylea','display_order'=>2));
-		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Intravitreal triamcinolone','display_order'=>3));
+		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Triamcinolone','display_order'=>3));
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Illuvien','display_order'=>4));
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Lucentis','display_order'=>5));
 		$this->insert('ophtrintravitinjection_treatment_drug',array('name'=>'Macugen','display_order'=>6));
