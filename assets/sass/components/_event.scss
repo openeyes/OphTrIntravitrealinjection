@@ -1,5 +1,11 @@
 .event {
 	&.intravitreal-injection {
-
+		border-color: #a29d8a;
+		.event-content {
+			background-image: image-url("watermark.png");
+		}
+		.event-title {
+			background-image: image-url("medium.png");
+		}
 	}
 }
