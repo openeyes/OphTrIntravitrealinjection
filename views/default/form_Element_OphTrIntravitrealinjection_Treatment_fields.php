@@ -42,48 +42,97 @@ if (isset($_POST[get_class($element)])) {
 ?>
 
 
-<div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_pre_ioplowering_id"
-	class="eventDetail<?php if (!$show) { echo " hidden"; } ?>">
+<?php
+	$div_class = "eventDetail";
+	if (!$show) {
+		$div_class .= " hidden";
+	}
+	
+	$html_options = array(
+		'options' => array(),
+		'empty' => '- Please select -',
+		'div_id' =>  "div_" . get_class($element) ."_" . $side . "_pre_ioploweringdrugs",
+		'label' => $element->getAttributeLabel($side . '_pre_ioploweringdrugs'),
+		'div_class' => $div_class);
+	$ioplowering_drugs = OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order'=>'display_order asc'));
+	foreach ($ioplowering_drugs as $drug) {
+		$html_options['options'][(string) $drug->id] = array('data-order' => $drug->display_order);
+	}
+	echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_pre_ioploweringdrugs]', $side . '_pre_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options);
+	
+	$drugs = $element->getTreatmentDrugs($side);
+	
+	$html_options = array(
+		'empty' => '- Please select -',
+		'options' => array(),
+	);
+	// get the previous injection counts for each of the drug options for this eye
+	$drug_history = array();
+	
+	foreach ($drugs as $drug) {
+		$previous = $injection_api->previousInjections($this->patient, $episode, $side, $drug);
+		$count = 0;
+		if (sizeof($previous)) {
+			$count = $previous[0][$side . '_number'];
+		}
+		$drug_history[$drug->id] = array_reverse($previous);
+		
+	 	$html_options['options'][$drug->id] = array(
+			'data-previous' => $count,
+		);
+		
+		// if this is an edit, we want to know what the original count was so that we don't replace it
+		if ($element->{$side . '_drug_id'} && $element->{$side . '_drug_id'} == $drug->id) {
+			$html_options['options'][$drug->id]['data-original-count'] = $element->{$side . '_number'};
+		}
+	}
+	
+	echo $form->dropDownList($element, $side . '_drug_id', CHtml::listData($drugs,'id','name'),$html_options);
+	
+	$selected_drug = null;
+	if (@$_POST['Element_OphTrIntravitrealinjection_Treatment']) {
+		$selected_drug = $_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_drug_id'];
+	} else {
+		$selected_drug = $element->{$side . '_drug_id'};
+	}
+	
+?>
+
+<div id="div_<?php echo get_class($element);?>_<?php echo $side?>_number" class="eventDetail">
 	<div class="label">
-		<?php echo $element->getAttributeLabel($side . '_pre_ioplowering_id') ?>:
+		<?php echo $element->getAttributeLabel($side . '_number'); ?>
 	</div>
 	<div class="data">
-		<?php echo $form->dropDownList($element, $side . '_pre_ioplowering_id',
-				CHtml::listData(OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'),
-				array('empty' => '- Please select -', 'nowrapper' => true)); ?>
+		<?php echo $form->textField($element, $side . '_number', array('size' => '10', 'nowrapper' => true))?>
+		<span id="<?php echo $side; ?>_number_history_icon" class="number-history-icon<?php if (!$selected_drug) { echo ' hidden'; } ?>">
+			<img src="<?php echo $this->assetPath ?>/img/icon_info.png" height="20" />
+		</span>
+		<div class="quicklook number-history" style="display: none;">
+			<?php 
+			foreach ($drugs as $drug) {
+				echo '<div class="number-history-item';
+				if ($drug->id != $selected_drug) { echo ' hidden';}
+				echo '" id="div_' . get_class($element) . '_' . $side . '_history_' . $drug->id . '">';
+				if (count($drug_history[$drug->id])) {
+					echo '<b>Previous ' . $drug->name . ' treatments</b><br />';
+					echo '<dl style="margin-top: 0px; margin-bottom: 2px;">';
+					foreach ($drug_history[$drug->id] as $previous) {
+						echo '<dt>' . Helper::convertDate2NHS($previous['date']) . ' (' . $previous[$side . '_number'] . ')</dt>';
+					}
+					echo '</dl>';
+				}
+				else {
+					echo 'No previous ' . $drug->name . ' treatments';
+				}
+				echo '</div>';
+			}?>
+		</div>	
 	</div>
 </div>
 
-<?php
-
-$drugs = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order'=> 'display_order asc'));
-$html_options = array(
-	'empty' => '- Please select -',
-	'options' => array(),
-);
-// get the previous injection counts for each of the drug options for this eye
-foreach ($drugs as $drug) {
-	$previous = $injection_api->previousInjections($this->patient, $episode, $side, $drug);
-	$count = 0;
-	if (sizeof($previous)) {
-		$count = $previous[0]->{$side . '_number'};
-	}
- 	$html_options['options'][$drug->id] = array(
-		'data-previous' => $count,
-	);
-	// if this is an edit, we want to know what the original count was so that we don't replace it
-	if ($element->{$side . '_drug_id'} && $element->{$side . '_drug_id'} == $drug->id) {
-		$html_options['options'][$drug->id]['data-original-count'] = $element->{$side . '_number'};
-	}
-}
-
-echo $form->dropDownList($element, $side . '_drug_id', CHtml::listData($drugs,'id','name'),$html_options)
-?>
-
-<?php echo $form->textField($element, $side . '_number', array('size' => '10'))?>
 <?php echo $form->textField($element, $side . '_batch_number', array('size' => '32'))?>
 <?php
-if ($element->created_date) {
+if (!$element->getIsNewRecord()) {
 	$expiry_date_params = array('minDate' => Helper::convertDate2NHS($element->created_date) );
 } else {
 	$expiry_date_params = array('minDate' => 'yesterday');
@@ -101,7 +150,12 @@ if ($element->created_date) {
 	</div>
 	<div class="data">
 		<?php
-			$val = date('H:i',strtotime($element->{$side . '_injection_time'}));
+			if ($element->{$side . '_injection_time'} != null) {
+				$val = date('H:i',strtotime($element->{$side . '_injection_time'}));
+			} else {
+				$val = date('H:i');
+			}
+			
 			if (isset($_POST[get_class($element)])) {
 				$val = $_POST[get_class($element)][$side . '_injection_time'];
 			}
@@ -123,21 +177,26 @@ if ($element->created_date) {
 </div>
 
 <?php
-$show = $element->{ $side . '_post_ioplowering_required'};
-if (isset($_POST[get_class($element)])) {
-	$show = $_POST[get_class($element)][$side . '_post_ioplowering_required'];
-}
+	$div_class = "eventDetail";
+	$show = $element->{ $side . '_post_ioplowering_required'};
+	
+	if (isset($_POST[get_class($element)])) {
+		$show = $_POST[get_class($element)][$side . '_post_ioplowering_required'];
+	}
+	
+	if (!$show) {
+		$div_class .= " hidden";
+	}
+	
+	$html_options = array(
+		'options' => array(),
+		'empty' => '- Please select -',
+		'div_id' =>  "div_" . get_class($element) ."_" . $side . "_post_ioploweringdrugs",
+		'label' => $element->getAttributeLabel($side . '_post_ioploweringdrugs'),
+		'div_class' => $div_class);
+	$ioplowering_drugs = OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order'=>'display_order asc'));
+	foreach ($ioplowering_drugs as $drug) {
+		$html_options['options'][(string) $drug->id] = array('data-order' => $drug->display_order);
+	}
+	echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_post_ioploweringdrugs]', $side . '_post_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options);
 ?>
-
-<div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_post_ioplowering_id"
-	class="eventDetail
-	<?php if (!$show) { echo " hidden"; } ?>">
-	<div class="label">
-		<?php echo $element->getAttributeLabel($side . '_post_ioplowering_id') ?>:
-	</div>
-	<div class="data">
-		<?php echo $form->dropDownList($element, $side . '_post_ioplowering_id',
-				CHtml::listData(OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'),
-				array('empty' => '- Please select -', 'nowrapper' => true)); ?>
-	</div>
-</div>

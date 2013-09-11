@@ -77,6 +77,7 @@ class Element_OphTrIntravitrealinjection_AnteriorSegment extends SplitEventTypeE
 		);
 	}
 
+	
 	/**
 	 * @return array relational rules.
 	 */
@@ -96,9 +97,13 @@ class Element_OphTrIntravitrealinjection_AnteriorSegment extends SplitEventTypeE
 		);
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see SplitEventTypeElement::sidedFields()
+	 */
 	public function sidedFields()
 	{
-		return array('lens_status');
+		return array('lens_status_id', 'eyedraw');
 	}
 
 	/**

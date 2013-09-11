@@ -30,4 +30,26 @@
 	}
 	echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_complications]', $side . '_complications', 'id', CHtml::listData($complications,'id','name'), $element->ophtrintravitinjection_complication_defaults, $html_options)
 ?>
-<?php echo $form->textArea($element, $side . '_oth_descrip', array('rows' => 4, 'cols' => 30))?>
+<?php
+$show_desc = false;
+if (@$_POST[get_class($element)] && $complication_ids = @$_POST[get_class($element)][$side . '_complications']) {
+	$criteria = new CDbCriteria();
+	$criteria->addInCondition('id', $complication_ids);
+	$complications = OphTrIntravitrealinjection_Complication::model()->findAll($criteria);
+}
+else {
+	$complications = $element->{$side . '_complications'};
+}
+
+foreach ($complications as $complication) {
+	if ($complication->description_required) {
+		$show_desc = true;
+	}
+}
+?>
+
+<div id="div_Element_OphTrIntravitrealinjection_Complications_<?php echo $side; ?>_oth_descrip" class="elementField" <?php if (!$show_desc) { echo ' style="display: none;"'; } ?>>
+	<div class="label"><?php echo $element->getAttributeLabel($side . '_oth_descrip'); ?></div>
+	<div class="data"><?php echo $form->textArea($element, $side . '_oth_descrip', array('rows' => 4, 'cols' => 30, 'nowrapper' => true));?></div>
+</div>
+

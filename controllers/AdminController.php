@@ -27,6 +27,8 @@ class AdminController extends ModuleAdminController
 		$model_list = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order' => 'display_order asc'));
 		$this->jsVars['OphTrIntravitrealinjection_sort_url'] = $this->createUrl('sortTreatmentDrugs');
 
+		Audit::add('admin','list',null,false,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
+
 		$this->render('list',array(
 				'model_list'=>$model_list,
 				'title'=>'Treatment Drugs',
@@ -49,7 +51,7 @@ class AdminController extends ModuleAdminController
 			$model->display_order = $display_order;
 
 			if ($model->save()) {
-				Audit::add('OphTrIntravitrealinjection_Treatment_Drug', 'create', serialize($model->attributes));
+				Audit::add('admin','create',serialize($model->attributes),false,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
 				Yii::app()->user->setFlash('success', 'Treatment drug created');
 
 				$this->redirect(array('ViewAllOphTrIntravitrealinjection_Treatment_Drug'));
@@ -64,13 +66,15 @@ class AdminController extends ModuleAdminController
 
 	public function actionUpdateOphTrIntravitrealinjection_Treatment_Drug($id)
 	{
-		$model = OphTrIntravitrealinjection_Treatment_Drug::model()->findByPk((int) $id);
+		if (!$model = OphTrIntravitrealinjection_Treatment_Drug::model()->findByPk((int) $id)) {
+			throw new Exception('Treatment drug not found with id ' . $id);
+		}
 
 		if (isset($_POST['OphTrIntravitrealinjection_Treatment_Drug'])) {
 			$model->attributes = $_POST['OphTrIntravitrealinjection_Treatment_Drug'];
 
 			if ($model->save()) {
-				Audit::add('OphTrIntravitrealinjection_Treatment_Drug', 'update', serialize($model->attributes));
+				Audit::add('admin','update',serialize($model->attributes),false,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
 				Yii::app()->user->setFlash('success', 'Treatment drug updated');
 
 				$this->redirect(array('ViewAllOphTrIntravitrealinjection_Treatment_Drug'));

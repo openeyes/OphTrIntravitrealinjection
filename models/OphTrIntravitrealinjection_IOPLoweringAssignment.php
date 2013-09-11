@@ -17,23 +17,24 @@
  */
 
 /**
- * This is the model class for table "ophtrintravitinjection_treatment_drug".
+ * This is the model class for table "ophtrintravitinjection_complicat_assignment".
  *
  * The followings are the available columns in table:
  * @property string $id
- * @property string $name
- * @property boolean $available
+ * @property integer $element_id
+ * @property integer $eye_id
+ * @property integer $ioplowering_id
+ * @property boolean $is_pre
  *
  * The followings are the available model relations:
  *
- * @property ElementType $element_type
- * @property EventType $eventType
- * @property Event $event
+ * @property Element_OphTrIntravitrealinjection_Treatment $element
+ * @property OphTrIntravitrealinjection_IOPLoweringDrug $complication
  * @property User $user
  * @property User $usermodified
  */
 
-class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
+class OphTrIntravitrealinjection_IOPLoweringAssignment extends BaseActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -44,40 +45,12 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 		return parent::model($className);
 	}
 
-	/*
-	 * scope to get all records including those marked as unavailable
-	 *
-	 */
-	public function availableScope()
-	{
-		$alias = $this->getTableAlias(false);
-		$this->resetScope()->getDbCriteria()->mergeWith(array(
-			'order' => $alias . '.display_order ASC',
-			'condition' => $alias . '.available = true',
-		));
-		return $this;
-	}
-
-	/**
-	 * default the sort order
-	 *
-	 * (non-PHPdoc)
-	 * @see CActiveRecord::defaultScope()
-	 */
-	public function defaultScope()
-	{
-		$alias = $this->getTableAlias(false, false);
-		return array(
-			'order' => $alias . '.display_order ASC',
-		);
-	}
-
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'ophtrintravitinjection_treatment_drug';
+		return 'ophtrintravitinjection_ioplowering_assign';
 	}
 
 	/**
@@ -88,11 +61,12 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, available', 'safe'),
-			array('name, available', 'required'),
+			array('element_id, eye_id, ioplowering_id, is_pre', 'safe'),
+			array('element_id, eye_id, ioplowering_id', 'required'),
+			array('is_pre', 'boolean'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, available', 'safe', 'on' => 'search'),
+			array('id, element_id, ioplowering_id, is_pre', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -101,7 +75,11 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 	 */
 	public function relations()
 	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
 		return array(
+			'element' => array(self::BELONGS_TO, 'Element_OphTrIntravitrealinjection_Treatment', 'element_id'),
+			'ioplowering' => array(self::BELONGS_TO, 'OphTrIntravitrealinjection_IOPLoweringDrug', 'ioplowering_id'),
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
 		);
@@ -114,8 +92,6 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
-			'available' => 'Available'
 		);
 	}
 
@@ -125,13 +101,9 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 	 */
 	public function search()
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
 		$criteria = new CDbCriteria;
 
 		$criteria->compare('id', $this->id, true);
-		$criteria->compare('name', $this->name, true);
 
 		return new CActiveDataProvider(get_class($this), array(
 				'criteria' => $criteria,
