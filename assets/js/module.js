@@ -1,10 +1,10 @@
 // listener to handle setting the injection depth for different lens status
 function OphTrIntravitrealinjection_antSegListener(_drawing) {
 	var self = this;
-	
+
 	self.drawing = _drawing;
 	self._default_distance = null;
-	
+
 	var side = 'right';
 	if (self.drawing.eye) {
 		side = 'left';
@@ -20,19 +20,19 @@ function OphTrIntravitrealinjection_antSegListener(_drawing) {
 OphTrIntravitrealinjection_antSegListener.prototype.init = function()
 {
 	var self = this;
-	
+
 	self.drawing.registerForNotifications(self, 'callback', ['doodleAdded', 'doodleDeleted', 'parameterChanged']);
 	self.getDefaultDistance();
-	
+
 	$('#Element_OphTrIntravitrealinjection_AnteriorSegment_' + self.side + '_lens_status_id').bind('change', function() {
 		self.getDefaultDistance();
-	});	
+	});
 }
 
 // get the default distance from the lens status
 OphTrIntravitrealinjection_antSegListener.prototype.getDefaultDistance = function() {
 	var self = this;
-	
+
 	var selVal = $('#Element_OphTrIntravitrealinjection_AnteriorSegment_' + self.side + '_lens_status_id').val();
 	if (selVal) {
 		$('#Element_OphTrIntravitrealinjection_AnteriorSegment_' + self.side + '_lens_status_id').find('option').each(function() {
@@ -82,8 +82,8 @@ OphTrIntravitrealinjection_antSegListener.prototype.updateDistances = function()
 // listener callback function for eyedraw
 OphTrIntravitrealinjection_antSegListener.prototype.callback = function(_messageArray) {
 	var self = this;
-	
-	
+
+
 	if (_messageArray.eventName == "doodleAdded" && _messageArray.object.className == 'InjectionSite') {
 		// set the distance to the default value from the lens status
 		self._injectionDoodles[_messageArray.object.id] = _messageArray.object;
@@ -105,7 +105,7 @@ OphTrIntravitrealinjection_antSegListener.prototype.callback = function(_message
 			self._unsynced.push(_messageArray.object.doodle.id);
 		}
 	}
-	 
+
 };
 
 function OphTrIntravitrealinjection_setInjectionNumber(side) {
@@ -115,7 +115,7 @@ function OphTrIntravitrealinjection_setInjectionNumber(side) {
 	if (drug_id) {
 		// work out the number of injections (previous plus one)
 		count++;
-		
+
 		// get the previous count of this drug for this side
 		el.find('option').each(function() {
 			if ($(this).val() == drug_id) {
@@ -129,9 +129,9 @@ function OphTrIntravitrealinjection_setInjectionNumber(side) {
 			}
 		});
 	}
-	
+
 	$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_number').val(count);
-	
+
 	// update the history tooltip when the drug is selected/changed
 	$('#div_Element_OphTrIntravitrealinjection_Treatment_'+side+'_number').find('.number-history-item').addClass('hidden');
 	if (drug_id) {
@@ -168,7 +168,7 @@ function OphTrIntravitrealinjection_otherComplicationsCheck(side) {
 	});
 	var el = $('#div_Element_OphTrIntravitrealinjection_Complications_'+side+'_oth_descrip');
 	var input = el.find('textarea');
-	
+
 	if (show) {
 		el.show();
 		if (el.data('store-value') && el.data('store-value').length) {
@@ -181,14 +181,21 @@ function OphTrIntravitrealinjection_otherComplicationsCheck(side) {
 			el.data('store-value', input.val());
 			input.val('');
 		}
-		
+
 	}
 }
 
 $(document).ready(function() {
-			handleButton($('#et_save'),function() {
-					});
-	
+
+	handleButton($('#et_print'),function(e) {
+		printIFrameUrl(OE_print_url, null);
+		enableButtons();
+		e.preventDefault();
+	});
+
+	handleButton($('#et_save'),function() {
+	});
+
 	handleButton($('#et_cancel'),function(e) {
 		if (m = window.location.href.match(/\/update\/[0-9]+/)) {
 			window.location.href = window.location.href.replace('/update/','/view/');
@@ -223,7 +230,7 @@ $(document).ready(function() {
 			}
 		}
 	});
-	
+
 	// live checking of the drug selection for treatment to determine if the other elements should be shown or not
 	$('.Element_OphTrIntravitrealinjection_Treatment').delegate('#Element_OphTrIntravitrealinjection_Treatment_right_drug_id, ' +
 			'#Element_OphTrIntravitrealinjection_Treatment_left_drug_id', 'change', function() {
@@ -231,32 +238,32 @@ $(document).ready(function() {
 
 		OphTrIntravitrealinjection_setInjectionNumber(side);
 	});
-	
-	
+
+
 	// history tool tip
 	$(".Element_OphTrIntravitrealinjection_Treatment").find('.number-history').each(function(){
 		var quick = $(this);
 		var iconHover = $(this).parent().find('.number-history-icon');
-		
+
 		iconHover.hover(function(e){
 			var infoWrap = $('<div class="quicklook"></div>');
 			infoWrap.appendTo('body');
 			infoWrap.html(quick.html());
-			
+
 			var offsetPos = $(this).offset();
 			var top = offsetPos.top;
 			var left = offsetPos.left + 25;
-			
+
 			top = top - (infoWrap.height()/2) + 8;
-			
+
 			if (left + infoWrap.width() > 1150) left = left - infoWrap.width() - 40;
 			infoWrap.css({'position': 'absolute', 'top': top + "px", 'left': left + "px"});
 			infoWrap.fadeIn('fast');
 		},function(e){
 			$('body > div:last').remove();
-		});	
+		});
 	});
-	
+
 	// deal with the ioplowering show/hide
 	$('.Element_OphTrIntravitrealinjection_Treatment').delegate(
 			'#Element_OphTrIntravitrealinjection_Treatment_right_pre_ioplowering_required, ' +
@@ -270,7 +277,7 @@ $(document).ready(function() {
 			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_pre_ioploweringdrugs').attr('disabled', 'disabled');
 		}
 	});
-	
+
 	$('.Element_OphTrIntravitrealinjection_Treatment').delegate(
 			'#Element_OphTrIntravitrealinjection_Treatment_right_post_ioplowering_required, ' +
 			'#Element_OphTrIntravitrealinjection_Treatment_left_post_ioplowering_required', 'change', function() {
@@ -283,7 +290,7 @@ $(document).ready(function() {
 			$('#Element_OphTrIntravitrealinjection_Treatment_'+side+'_post_ioploweringdrugs').attr('disabled', 'disabled');
 		}
 	});
-	
+
 	// extend the removal behaviour for treatment drug to affect the dependent elements
 	$(this).delegate('#event_content .side .activeForm a.removeSide', 'click', function(e) {
 		side = getSplitElementSide($(this));
@@ -293,7 +300,7 @@ $(document).ready(function() {
 		}
 		OphTrIntravitrealinjection_hide(side);
 		OphTrIntravitrealinjection_show(other_side);
-		
+
 	});
 
 	// extend the adding behaviour for treatment drug to affect dependent elements
@@ -301,12 +308,12 @@ $(document).ready(function() {
 		side = getSplitElementSide($(this));
 		OphTrIntravitrealinjection_show(side);
 	});
-	
+
 	$('.Element_OphTrIntravitrealinjection_Complications').delegate('select.MultiSelectList', 'MultiSelectChanged', function(e) {
 		var side = getSplitElementSide($(this));
 		OphTrIntravitrealinjection_otherComplicationsCheck(side);
 	});
-	
+
 });
 
 function ucfirst(str) { str += ''; var f = str.charAt(0).toUpperCase(); return f + str.substr(1); }
