@@ -107,24 +107,12 @@ class OphTrIntravitrealinjection_AntiSepticDrug extends BaseActiveRecord
 	}
 
 	/**
-	 * Set default values for forms on create
+	 * get the default antiseptic drug (if set)
+	 *
+	 * @return OphTrIntravitrealinjection_AntiSepticDrug|null
 	 */
-	public function setDefaultOptions()
+	public static function getDefault()
 	{
-	}
-
-	protected function beforeSave()
-	{
-		return parent::beforeSave();
-	}
-
-	protected function afterSave()
-	{
-		return parent::afterSave();
-	}
-
-	protected function beforeValidate()
-	{
-		return parent::beforeValidate();
+		return OphTrIntravitrealinjection_AntiSepticDrug::model()->find('is_default = ?', array(true));
 	}
 }

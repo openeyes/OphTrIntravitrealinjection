@@ -15,29 +15,9 @@ class DefaultController extends BaseEventTypeController
 		return $res;
 	}
 
-	public function actionCreate()
-	{
-		parent::actionCreate();
-	}
-
-	public function actionUpdate($id)
-	{
-		parent::actionUpdate($id);
-	}
-
-	public function actionView($id)
-	{
-		parent::actionView($id);
-	}
-
-	public function actionPrint($id)
-	{
-		parent::actionPrint($id);
-	}
-
-	/*
+	/**
 	 * override to set the defaults on the elements that are arrived at dynamically
-	 * 
+	 *
 	 * @return Element[]
 	 */
 	public function getDefaultElements($action, $event_type_id=false, $event=false)
@@ -49,7 +29,7 @@ class DefaultController extends BaseEventTypeController
 			$therapy_api = Yii::app()->moduleAPI->get('OphCoTherapyapplication');
 			$injection_api = Yii::app()->moduleAPI->get('OphTrIntravitrealinjection');
 			$default_eye = SplitEventTypeElement::BOTH;
-			
+
 			if ($this->episode && $therapy_api && $side = $therapy_api->getLatestApplicationSide($this->patient, $this->episode)) {
 				$default_eye = $side;
 			}
@@ -59,7 +39,7 @@ class DefaultController extends BaseEventTypeController
 			}
 
 			foreach ($elements as $element) {
-				if (property_exists($element, 'eye_id') ) {
+				if ($element->hasAttribute('eye_id') ) {
 					$element->eye_id = $default_eye;
 				}
 
@@ -89,7 +69,7 @@ class DefaultController extends BaseEventTypeController
 
 		return $elements;
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see BaseEventTypeController::setPOSTManyToMany()
@@ -100,7 +80,7 @@ class DefaultController extends BaseEventTypeController
 			if (get_class($element) == 'Element_OphTrIntravitrealinjection_Complications') {
 				if (isset($_POST['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) ) {
 					$complications = array();
-			
+
 					foreach ($_POST['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications'] as $comp_id) {
 						if ($comp = OphTrIntravitrealinjection_Complication::model()->findByPk($comp_id)) {
 							$complications[] = $comp;
@@ -113,7 +93,7 @@ class DefaultController extends BaseEventTypeController
 				foreach (array('pre', 'post') as $stage) {
 					if (isset($_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_' . $stage . '_ioploweringdrugs']) ) {
 						$ioplowerings = array();
-							
+
 						foreach ($_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_' . $stage . '_ioploweringdrugs'] as $ioplowering_id) {
 							if ($ioplowering = OphTrIntravitrealinjection_IOPLoweringDrug::model()->findByPk($ioplowering_id)) {
 								$ioplowerings[] = $ioplowering;
@@ -126,10 +106,11 @@ class DefaultController extends BaseEventTypeController
 		}
 	}
 
-	/*
+	/**
 	 * similar to setPOSTManyToMany, but will actually call methods on the elements that will create database entries
 	 * should be called on create and update.
 	 *
+	 * @param BaseEventTypeElement[] $elements
 	 */
 	protected function storePOSTManyToMany($elements)
 	{
@@ -137,8 +118,8 @@ class DefaultController extends BaseEventTypeController
 			foreach (array('left' => SplitEventTypeElement::LEFT, 'right' => SplitEventTypeElement::RIGHT) as $side => $sconst) {
 				if (get_class($el) == 'Element_OphTrIntravitrealinjection_Complications') {
 					$comps = array();
-					if (isset($_POST['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) && 
-						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH) 
+					if (isset($_POST['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) &&
+						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH)
 					) {
 						// only set if relevant to element side, otherwise force reset of data
 						$comps = $_POST['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications'];
@@ -149,7 +130,7 @@ class DefaultController extends BaseEventTypeController
 					$drugs = array();
 					if ($el->{$side . '_pre_ioplowering_required'} &&
 						isset($_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_pre_ioploweringdrugs']) &&
-						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH) 
+						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH)
 					) {
 						// only set if relevant to element side, otherwise force reset of data
 						$drugs = $_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_pre_ioploweringdrugs'];
@@ -159,7 +140,7 @@ class DefaultController extends BaseEventTypeController
 					$drugs = array();
 					if ($el->{$side . '_post_ioplowering_required'} &&
 						isset($_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_post_ioploweringdrugs']) &&
-						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH) 
+						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH)
 					) {
 						// only set if relevant to element side, otherwise force reset of data
 						$drugs = $_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_post_ioploweringdrugs'];
@@ -171,9 +152,9 @@ class DefaultController extends BaseEventTypeController
 		}
 	}
 
-	/*
+	/**
 	 * ensures Many Many fields processed for elements
-	*/
+	 */
 	public function createElements($elements, $data, $firm, $patientId, $userId, $eventTypeId)
 	{
 		if ($id = parent::createElements($elements, $data, $firm, $patientId, $userId, $eventTypeId)) {
@@ -183,9 +164,9 @@ class DefaultController extends BaseEventTypeController
 		return $id;
 	}
 
-	/*
+	/**
 	 * ensures Many Many fields processed for elements
-	*/
+	 */
 	public function updateElements($elements, $data, $event)
 	{
 		if (parent::updateElements($elements, $data, $event)) {

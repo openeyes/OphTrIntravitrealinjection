@@ -206,16 +206,12 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		$criteria->compare('left_batch_expiry_date', $this->left_batch_expiry_date);
 		$criteria->compare('left_injection_given_by_id', $this->left_injection_given_by_id);
 		$criteria->compare('left_injection_time', $this->left_injection_time);
-		$criteria->compare('left_anaesthetictype_id', $this->left_anaesthetictype_id);
-		$criteria->compare('left_anaestheticagent_id', $this->left_anaestheticagent_id);
 		$criteria->compare('right_drug_id', $this->right_drug_id);
 		$criteria->compare('right_number', $this->right_number);
 		$criteria->compare('right_batch_number', $this->right_batch_number);
 		$criteria->compare('right_batch_expiry_date', $this->right_batch_expiry_date);
 		$criteria->compare('right_injection_given_by_id', $this->right_injection_given_by_id);
 		$criteria->compare('right_injection_time', $this->right_injection_time);
-		$criteria->compare('right_anaesthetictype_id', $this->right_anaesthetictype_id);
-		$criteria->compare('right_anaestheticagent_id', $this->right_anaestheticagent_id);
 
 		$criteria->compare('left_pre_antisept_drug_id', $this->left_pre_antisept_drug_id);
 		$criteria->compare('right_pre_antisept_drug_id', $this->right_pre_antisept_drug_id);
@@ -249,8 +245,14 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 	 */
 	public function setDefaultOptions()
 	{
-		$this->left_injection_time = date('H:i:s');
-		$this->right_injection_time = date('H:i:s');
+		$pre_skin_default = OphTrIntravitrealinjection_SkinDrug::getDefault();
+		$pre_anti_default = OphTrIntravitrealinjection_AntiSepticDrug::getDefault();
+
+		foreach(array('left', 'right') as $side) {
+			$this->{$side . '_injection_time'} = date('H:i:s');
+			$this->{$side . '_pre_skin_drug_id'} = $pre_skin_default ? $pre_skin_default->id : null;
+			$this->{$side . '_pre_antisept_drug_id'} = $pre_anti_default ? $pre_anti_default->id : null;
+		}
 	}
 
 	/**
