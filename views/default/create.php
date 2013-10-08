@@ -25,6 +25,8 @@
 
 <h3 class="withEventIcon"><?php echo $this->event_type->name ?></h3>
 
+<?php $this->renderPartial('//base/_messages'); ?>
+
 <div>
 	<?php $form = $this->beginWidget('BaseEventTypeCActiveForm', array(
 			'id'=>'clinical-create',

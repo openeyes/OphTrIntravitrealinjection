@@ -28,9 +28,21 @@ class DefaultController extends BaseEventTypeController
 			// set any calculated defaults on the elements
 			$therapy_api = Yii::app()->moduleAPI->get('OphCoTherapyapplication');
 			$injection_api = Yii::app()->moduleAPI->get('OphTrIntravitrealinjection');
+			$exam_api = Yii::app()->moduleAPI->get('OphCiExamination');
+
 			$default_eye = SplitEventTypeElement::BOTH;
 
-			if ($this->episode && $therapy_api && $side = $therapy_api->getLatestApplicationSide($this->patient, $this->episode)) {
+			if ($this->episode && $exam_api && $imc = $exam_api->getLatestInjectionManagementComplex($this->episode) ) {
+				if ($side = $imc->getInjectionSide()) {
+					$default_eye = $side;
+					Yii::app()->user->setFlash('info', 'Examination from ' . Helper::convertDate2NHS($imc->created_date) . ' requires an injection for ' . strtolower(Eye::model()->findByPk($default_eye)->name) . ' eye(s)');
+				}
+				else {
+					Yii::app()->user->setFlash('warning.warning', 'Examination from ' . Helper::convertDate2NHS($imc->created_date) . ' states injection should not be given');
+				}
+			}
+			// get the side of the latest therapy application
+			elseif ($this->episode && $therapy_api && $side = $therapy_api->getLatestApplicationSide($this->patient, $this->episode)) {
 				$default_eye = $side;
 			}
 			// get the side of the episode diagnosis and use that as the default for the elements
