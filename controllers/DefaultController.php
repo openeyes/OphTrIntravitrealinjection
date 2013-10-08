@@ -30,13 +30,19 @@ class DefaultController extends BaseEventTypeController
 			$injection_api = Yii::app()->moduleAPI->get('OphTrIntravitrealinjection');
 			$exam_api = Yii::app()->moduleAPI->get('OphCiExamination');
 
-			$default_eye = SplitEventTypeElement::BOTH;
+			$default_eye = Eye::BOTH;
+			$default_left_drug = null;
+			$default_right_drug = null;
+
 			$since = new DateTime();
 			$since->setTime(0, 0, 0);
+
 			if ($this->episode && $exam_api && $imc = $exam_api->getLatestInjectionManagementComplex($this->episode, $since) ) {
 				if ($side = $imc->getInjectionSide()) {
 					$default_eye = $side;
 					Yii::app()->user->setFlash('info', strtolower(Eye::model()->findByPk($default_eye)->name) . ' eye(s) to be injected');
+					$default_left_drug = $imc->left_treatment;
+					$default_right_drug = $imc->right_treatment;
 				}
 				else {
 					Yii::app()->user->setFlash('warning.warning', 'Neither eye should be injected today');
@@ -51,6 +57,16 @@ class DefaultController extends BaseEventTypeController
 				$default_eye = $this->episode->eye_id;
 			}
 
+			// if we haven't got the default drug from the imc, try therapy application
+			if ($therapy_api) {
+				if ($default_eye != Eye::RIGHT && !$default_left_drug) {
+					$default_left_drug = $therapy_api->getLatestApplicationDrug($this->patient, $this->episode, 'left');
+				}
+				if ($default_eye != Eye::LEFT && !$default_right_drug) {
+					$default_right_drug = $therapy_api->getLatestApplicationDrug($this->patient, $this->episode, 'right');
+				}
+			}
+
 			foreach ($elements as $element) {
 				if ($element->hasAttribute('eye_id') ) {
 					$element->eye_id = $default_eye;
@@ -59,14 +75,14 @@ class DefaultController extends BaseEventTypeController
 				if (get_class($element) == 'Element_OphTrIntravitrealinjection_Treatment') {
 					if ($therapy_api) {
 						// get the latest drug that has been applied for and set it as default (for the appropriate eye)
-						if ($drug = $therapy_api->getLatestApplicationDrug($this->patient, $this->episode, 'left')) {
-							$element->left_drug_id = $drug->id;
-							$previous = $injection_api->previousInjections($this->patient, $this->episode, 'left', $drug);
+						if ($default_left_drug) {
+							$element->left_drug_id = $default_left_drug->id;
+							$previous = $injection_api->previousInjections($this->patient, $this->episode, 'left', $default_left_drug);
 							$element->left_number = count($previous) + 1;
 						}
-						if ($drug = $therapy_api->getLatestApplicationDrug($this->patient, $this->episode, 'right')) {
-							$element->right_drug_id = $drug->id;
-							$previous = $injection_api->previousInjections($this->patient, $this->episode, 'right', $drug);
+						if ($default_right_drug) {
+							$element->right_drug_id = $default_right_drug->id;
+							$previous = $injection_api->previousInjections($this->patient, $this->episode, 'right', $default_right_drug);
 							$element->right_number = count($previous) + 1;
 						}
 					}
