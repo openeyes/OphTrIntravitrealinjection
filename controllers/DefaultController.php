@@ -31,14 +31,15 @@ class DefaultController extends BaseEventTypeController
 			$exam_api = Yii::app()->moduleAPI->get('OphCiExamination');
 
 			$default_eye = SplitEventTypeElement::BOTH;
-
-			if ($this->episode && $exam_api && $imc = $exam_api->getLatestInjectionManagementComplex($this->episode) ) {
+			$since = new DateTime();
+			$since->setTime(0, 0, 0);
+			if ($this->episode && $exam_api && $imc = $exam_api->getLatestInjectionManagementComplex($this->episode, $since) ) {
 				if ($side = $imc->getInjectionSide()) {
 					$default_eye = $side;
-					Yii::app()->user->setFlash('info', 'Examination from ' . Helper::convertDate2NHS($imc->created_date) . ' requires an injection for ' . strtolower(Eye::model()->findByPk($default_eye)->name) . ' eye(s)');
+					Yii::app()->user->setFlash('info', strtolower(Eye::model()->findByPk($default_eye)->name) . ' eye(s) to be injected');
 				}
 				else {
-					Yii::app()->user->setFlash('warning.warning', 'Examination from ' . Helper::convertDate2NHS($imc->created_date) . ' states injection should not be given');
+					Yii::app()->user->setFlash('warning.warning', 'Neither eye should be injected today');
 				}
 			}
 			// get the side of the latest therapy application
