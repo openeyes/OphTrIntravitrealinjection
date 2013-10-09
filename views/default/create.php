@@ -39,6 +39,30 @@
 	?>
 
 	<?php $this->displayErrors($errors)?>
+	<?php if ($this->side_to_inject !== null) {
+		$cls_lkup = array(
+			0 => 'none',
+			Eye::LEFT => 'left',
+			Eye::RIGHT => 'right',
+			Eye::BOTH => 'both'
+		);
+		if ($this->side_to_inject == 0) {
+			$msg = 'No injection should be performed today';
+		}
+		elseif ($this->side_to_inject == Eye::BOTH) {
+			$msg = "Both eyes to be injected";
+		}
+		else {
+			$msg = "Only " . strtolower(Eye::model()->findByPk($this->side_to_inject)->name) . " eye to be injected";
+		}
+		?>
+		<div class="injection-warning <?php echo $cls_lkup[$this->side_to_inject] ?>">
+			<?php echo $msg ?>
+		</div>
+
+		<?php
+	}
+	?>
 	<?php $this->renderDefaultElements($this->action->id, $form)?>
 	<?php $this->renderOptionalElements($this->action->id, $form)?>
 	<?php $this->displayErrors($errors)?>

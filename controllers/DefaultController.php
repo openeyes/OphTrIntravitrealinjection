@@ -15,6 +15,8 @@ class DefaultController extends BaseEventTypeController
 		return $res;
 	}
 
+	public $side_to_inject = null;
+
 	/**
 	 * override to set the defaults on the elements that are arrived at dynamically
 	 *
@@ -40,12 +42,12 @@ class DefaultController extends BaseEventTypeController
 			if ($this->episode && $exam_api && $imc = $exam_api->getLatestInjectionManagementComplex($this->episode, $since) ) {
 				if ($side = $imc->getInjectionSide()) {
 					$default_eye = $side;
-					Yii::app()->user->setFlash('info', strtolower(Eye::model()->findByPk($default_eye)->name) . ' eye(s) to be injected');
+					$this->side_to_inject = $default_eye;
 					$default_left_drug = $imc->left_treatment;
 					$default_right_drug = $imc->right_treatment;
 				}
 				else {
-					Yii::app()->user->setFlash('warning.warning', 'Neither eye should be injected today');
+					$this->side_to_inject = 0;
 				}
 			}
 			// get the side of the latest therapy application
