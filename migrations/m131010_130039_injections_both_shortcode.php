@@ -5,7 +5,7 @@ class m131010_130039_injections_both_shortcode extends CDbMigration
 	public function up()
 	{
 		$inj_event_type = $this->dbConnection->createCommand()->select('id')->from('event_type')
-			->where('name=:name', array(':name'=>'Examination'))->queryRow();
+			->where('class_name=:cname', array(':cname'=>'OphTrIntravitrealinjection'))->queryRow();
 
 		$inj_event_type_id = $inj_event_type['id'];
 
