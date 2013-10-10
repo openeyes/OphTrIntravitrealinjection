@@ -73,6 +73,7 @@ class OphTrIntravitrealinjection_AntiSepticDrug extends BaseActiveRecord
 		return array(
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
+			'allergies' => array(self::MANY_MANY, 'Allergy', 'ophtrintravitinjection_antiseptic_allergy_assignment(antisepticdrug_id, allergy_id)'),
 		);
 	}
 

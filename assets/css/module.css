@@ -39,3 +39,9 @@
 .injection-warning.none {
 	background-color: #eb5911;
 }
+
+.wrapper { padding: 5px; border-radius: 5px; display: inline-block; }
+
+.allergyWarning {
+	background-color: #f66 !important;
+}

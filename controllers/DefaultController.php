@@ -15,6 +15,38 @@ class DefaultController extends BaseEventTypeController
 		return $res;
 	}
 
+	protected function showAllergyWarning($patient)
+	{
+		if ($patient->no_allergies_date) {
+			Yii::app()->user->setFlash('info.prescription_allergy', $patient->getAllergiesString());
+		}
+		else {
+			Yii::app()->user->setFlash('warning.prescription_allergy', $patient->getAllergiesString());
+		}
+	}
+
+	public function actionCreate()
+	{
+		if (!$patient = Patient::model()->findByPk($_REQUEST['patient_id'])) {
+			throw new CHttpException(403, 'Invalid patient_id.');
+		}
+
+		$this->showAllergyWarning($patient);
+
+		parent::actionCreate();
+	}
+
+	public function actionUpdate($id)
+	{
+		if (!$event = Event::model()->findByPk($id)) {
+			throw new CHttpException(403, 'Invalid event id.');
+		}
+
+		$this->showAllergyWarning($event->episode->patient);
+
+		parent::actionUpdate($id);
+	}
+
 	public $side_to_inject = null;
 
 	/**
@@ -69,6 +101,26 @@ class DefaultController extends BaseEventTypeController
 				}
 			}
 
+			// set up the values for the potentially allergy restricted drugs in treatment
+			$pre_skin_default = OphTrIntravitrealinjection_SkinDrug::getDefault();
+			$pre_anti_default = OphTrIntravitrealinjection_AntiSepticDrug::getDefault();
+
+			if ($pre_skin_default) {
+				foreach ($pre_skin_default->allergies as $allergy) {
+					if ($this->patient->hasAllergy($allergy)) {
+						$pre_skin_default = null;
+					}
+				}
+			}
+
+			if ($pre_anti_default) {
+				foreach ($pre_anti_default->allergies as $allergy) {
+					if ($this->patient->hasAllergy($allergy)) {
+						$pre_anti_default = null;
+					}
+				}
+			}
+
 			foreach ($elements as $element) {
 				if ($element->hasAttribute('eye_id') ) {
 					$element->eye_id = $default_eye;
@@ -88,6 +140,10 @@ class DefaultController extends BaseEventTypeController
 							$element->right_number = count($previous) + 1;
 						}
 					}
+					$element->left_pre_skin_drug_id = $pre_skin_default ? $pre_skin_default->id : null;
+					$element->right_pre_skin_drug_id = $pre_skin_default ? $pre_skin_default->id : null;
+					$element->left_pre_antisept_drug_id = $pre_anti_default ? $pre_anti_default->id : null;
+					$element->right_pre_antisept_drug_id = $pre_anti_default ? $pre_anti_default->id : null;
 					$element->left_injection_given_by_id = Yii::app()->user->id;
 					$element->right_injection_given_by_id = Yii::app()->user->id;
 				}

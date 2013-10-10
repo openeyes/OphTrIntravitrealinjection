@@ -245,13 +245,8 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 	 */
 	public function setDefaultOptions()
 	{
-		$pre_skin_default = OphTrIntravitrealinjection_SkinDrug::getDefault();
-		$pre_anti_default = OphTrIntravitrealinjection_AntiSepticDrug::getDefault();
-
 		foreach(array('left', 'right') as $side) {
 			$this->{$side . '_injection_time'} = date('H:i:s');
-			$this->{$side . '_pre_skin_drug_id'} = $pre_skin_default ? $pre_skin_default->id : null;
-			$this->{$side . '_pre_antisept_drug_id'} = $pre_anti_default ? $pre_anti_default->id : null;
 		}
 	}
 

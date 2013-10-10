@@ -231,6 +231,27 @@ $(document).ready(function() {
 		}
 	});
 
+	$('select').bind('change').change(function() {
+		var selVal = $(this).val();
+		var allergic = false;
+		if (selVal) {
+			$(this).find('option').each(function() {
+				if (selVal == $(this).val()) {
+					if ($(this).data('allergic') == '1') {
+						allergic = true;
+					}
+					return false;
+				}
+			});
+		}
+		if (allergic) {
+			$(this).closest('.wrapper').addClass('allergyWarning');
+		}
+		else {
+			$(this).closest('.wrapper').removeClass('allergyWarning');
+		}
+	})
+
 	// live checking of the drug selection for treatment to determine if the other elements should be shown or not
 	$('.Element_OphTrIntravitrealinjection_Treatment').delegate('#Element_OphTrIntravitrealinjection_Treatment_right_drug_id, ' +
 			'#Element_OphTrIntravitrealinjection_Treatment_left_drug_id', 'change', function() {
