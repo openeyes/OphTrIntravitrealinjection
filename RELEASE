@@ -1,6 +1,17 @@
 Release History
 ===============
 
+1.4.2
+-----
++ default treatment based from examination event
++ default side for injection based from examination event
+
+1.4.1
+-----
++ printing support
++ default value settings
++ shortcodes
+
 1.4
 ---
 
