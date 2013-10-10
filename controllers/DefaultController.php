@@ -2,7 +2,12 @@
 
 class DefaultController extends BaseEventTypeController
 {
-	// TODO: check this is in line with Jamie's change circa 3rd April 2013
+	/**
+	 * use the split event type javascript and styling
+	 *
+	 * @param CAction $action
+	 * @return bool
+	 */
 	protected function beforeAction($action)
 	{
 		if (!Yii::app()->getRequest()->getIsAjaxRequest() && !(in_array($action->id,$this->printActions())) ) {
@@ -15,6 +20,11 @@ class DefaultController extends BaseEventTypeController
 		return $res;
 	}
 
+	/**
+	 * set flash message for ptient allergies
+	 *
+	 * @param Patient $patient
+	 */
 	protected function showAllergyWarning($patient)
 	{
 		if ($patient->no_allergies_date) {
@@ -25,6 +35,12 @@ class DefaultController extends BaseEventTypeController
 		}
 	}
 
+	/**
+	 * ensures flash message set for allergies
+	 *
+	 * @throws CHttpException
+	 * @see BaseEventTypeController::actionCreate()
+	 */
 	public function actionCreate()
 	{
 		if (!$patient = Patient::model()->findByPk($_REQUEST['patient_id'])) {
@@ -36,6 +52,14 @@ class DefaultController extends BaseEventTypeController
 		parent::actionCreate();
 	}
 
+	/**
+	 * ensures flash message set for allergies
+	 *
+	 * @param $id
+	 * @throws CHttpException
+	 * 
+	 * @see BaseEventTypeController::actionUpdate($id)
+	 */
 	public function actionUpdate($id)
 	{
 		if (!$event = Event::model()->findByPk($id)) {
