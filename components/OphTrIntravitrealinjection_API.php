@@ -173,6 +173,32 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 	}
 
 	/**
+	 * get the most recent drug for both sides in the current subspecialty episode for the patient
+	 *
+	 * @param $patient
+	 * @return string
+	 */
+	public function getLetterTreatmentDrugBoth($patient)
+	{
+		if ($episode = $patient->getEpisodeForCurrentSubspecialty()) {
+			$res = '';
+			$right = $this->getLetterTreatmentDrugForSide($patient, $episode, 'right');
+			$left = $this->getLetterTreatmentDrugForSide($patient, $episode, 'left');
+			if ($right) {
+				$res = $right . ' in the right eye';
+				if ($left) {
+					$res .= ', and ' . $left . ' in the left eye';
+				}
+
+			}
+			elseif ($left) {
+				$res = $left . ' in the left eye';
+			}
+			return $res;
+		}
+	}
+
+	/**
 	 * get the most recent treatment number for the patient, episode and side
 	 *
 	 * @param $patient
