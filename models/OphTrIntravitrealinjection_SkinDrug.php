@@ -23,6 +23,8 @@
  * @property string $id
  * @property string $name
  * @property integer $display_order
+ * @property boolean is_predefault
+ * @property boolean is_postdefault
  *
  * The followings are the available model relations:
  *
@@ -61,7 +63,7 @@ class OphTrIntravitrealinjection_SkinDrug extends BaseActiveRecord
 			array('name', 'required'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on' => 'search'),
+			array('id, name, is_predefault, is_postdefault', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -73,6 +75,7 @@ class OphTrIntravitrealinjection_SkinDrug extends BaseActiveRecord
 		return array(
 			'user' => array(self::BELONGS_TO, 'User', 'created_user_id'),
 			'usermodified' => array(self::BELONGS_TO, 'User', 'last_modified_user_id'),
+			'allergies' => array(self::MANY_MANY, 'Allergy', 'ophtrintravitinjection_skindrug_allergy_assignment(skindrug_id, allergy_id)'),
 		);
 	}
 
@@ -107,24 +110,13 @@ class OphTrIntravitrealinjection_SkinDrug extends BaseActiveRecord
 	}
 
 	/**
-	 * Set default values for forms on create
+	 * get the default skin drug (if set)
+	 *
+	 * @return OphTrIntravitrealinjection_SkinDrug|null
 	 */
-	public function setDefaultOptions()
+	public static function getDefault()
 	{
+		return OphTrIntravitrealinjection_SkinDrug::model()->find('is_default = ?', array(true));
 	}
 
-	protected function beforeSave()
-	{
-		return parent::beforeSave();
-	}
-
-	protected function afterSave()
-	{
-		return parent::afterSave();
-	}
-
-	protected function beforeValidate()
-	{
-		return parent::beforeValidate();
-	}
 }

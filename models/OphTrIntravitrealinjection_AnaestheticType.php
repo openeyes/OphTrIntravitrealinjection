@@ -100,4 +100,16 @@ class OphTrIntravitrealinjection_AnaestheticType extends BaseActiveRecord
 			'criteria' => $criteria,
 		));
 	}
+
+	/**
+	 * get the default anaesthetic type (if set)
+	 *
+	 * @return AnaestheticType|null
+	 */
+	public static function getDefault()
+	{
+		if ($defmap = OphTrIntravitrealinjection_AnaestheticType::model()->find('is_default = ?', array(true)) ) {
+			return $defmap->anaesthetic_type;
+		};
+	}
 }

@@ -21,7 +21,12 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 {
 	private $previous_treatments = array();
 	private $legacy_api;
-	
+
+	/**
+	 * cache and return a legacy injection api instance
+	 *
+	 * @return mixed
+	 */
 	protected function getLegacyAPI()
 	{
 		if (!$this->legacy_api) {
@@ -29,7 +34,7 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 		}
 		return $this->legacy_api;
 	}
-	
+
 	/**
 	 * caching method for previous injections store
 	 *
@@ -65,14 +70,12 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 	 * @param string $side
 	 * @param Drug $drug
 	 * @throws Exception
-	 *
-	 * @return {$side . '_drug_id' => integer, $side . '_number' => integer, 'date' => datetime}[] - array of treatment elements for the eye and optional drug
-	 * 
+	 * @return array {$side . '_drug_id' => integer, $side . '_number' => integer, 'date' => datetime}[] - array of treatment elements for the eye and optional drug
 	 */
 	public function previousInjections($patient, $episode, $side, $drug = null)
 	{
 		$res = array();
-		
+
 		$previous = $this->previousInjectionsForPatientEpisode($patient, $episode);
 
 		switch ($side) {
@@ -91,14 +94,14 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 			if (in_array($prev->eye_id,$eye_ids)) {
 				if ($drug == null || $prev->{$side . '_drug_id'} == $drug->id) {
 					$res[] = array(
-							$side . '_drug_id' => $prev->{$side . '_drug_id'}, 
+							$side . '_drug_id' => $prev->{$side . '_drug_id'},
 							$side . '_number' => $prev->{$side . '_number'},
 							'date' => $prev->created_date,
 					);
 				}
 			}
 		}
-		
+
 		// NOTE: we assume that all legacy injections would be from before any injections in
 		// this module. Should this prove not to be the case, we would need to sort the result
 		// data structure by date
@@ -107,7 +110,155 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 				$res[] = $legacy;
 			}
 		}
-		
+
 		return $res;
+	}
+
+	/**
+	 * get the most recent treatment element that has data for the given eye side.
+	 *
+	 * @param $patient
+	 * @param $episode
+	 * @param $side
+	 * @return Element_OphTrIntravitrealinjection_Treatment
+	 */
+	protected function getPreviousTreatmentForSide($patient, $episode, $side)
+	{
+		$checker = ($side == 'left') ? 'hasLeft' : 'hasRight';
+		$treatment = $this->getElementForLatestEventInEpisode($patient, $episode, 'Element_OphTrIntravitrealinjection_Treatment');
+		if ($treatment && $treatment->$checker()) {
+			return $treatment;
+		}
+	}
+
+	/**
+	 * get the drug name for the patient, episode and side from the most recent injection event, if it exists.
+	 *
+	 * @param $patient
+	 * @param $episode
+	 * @param $side
+	 * @return mixed
+	 */
+	public function getLetterTreatmentDrugForSide($patient, $episode, $side)
+	{
+		if ($injection = $this->getPreviousTreatmentForSide($patient, $episode, $side)) {
+			return $injection->{$side . '_drug'}->name;
+		}
+	}
+
+	/**
+	 * get the most recent drug for the left side in the current subspecialty episode for the patient
+	 *
+	 * @param $patient
+	 * @return mixed
+	 */
+	public function getLetterTreatmentDrugLeft($patient)
+	{
+		if ($episode = $patient->getEpisodeForCurrentSubspecialty()) {
+			return $this->getLetterTreatmentDrugForSide($patient, $episode, 'left');
+		}
+	}
+
+	/**
+	 * get the most recent drug for the right side in the current subspecialty episode for the patient
+	 *
+	 * @param $patient
+	 * @return mixed
+	 */
+	public function getLetterTreatmentDrugRight($patient)
+	{
+		if ($episode = $patient->getEpisodeForCurrentSubspecialty()) {
+			return $this->getLetterTreatmentDrugForSide($patient, $episode, 'right');
+		}
+	}
+
+	/**
+	 * get the most recent drug for both sides in the current subspecialty episode for the patient
+	 *
+	 * @param $patient
+	 * @return string
+	 */
+	public function getLetterTreatmentDrugBoth($patient)
+	{
+		if ($episode = $patient->getEpisodeForCurrentSubspecialty()) {
+			$res = '';
+			$right = $this->getLetterTreatmentDrugForSide($patient, $episode, 'right');
+			$left = $this->getLetterTreatmentDrugForSide($patient, $episode, 'left');
+			if ($right) {
+				$res = $right . ' in the right eye';
+				if ($left) {
+					$res .= ', and ' . $left . ' in the left eye';
+				}
+
+			}
+			elseif ($left) {
+				$res = $left . ' in the left eye';
+			}
+			return $res;
+		}
+	}
+
+	/**
+	 * get the most recent treatment number for the patient, episode and side
+	 *
+	 * @param $patient
+	 * @param $episode
+	 * @param $side
+	 * @return mixed
+	 */
+	public function getLetterTreatmentNumberForSide($patient, $episode, $side)
+	{
+		if ($injection = $this->getPreviousTreatmentForSide($patient, $episode, $side)) {
+			return $injection->{$side . '_number'};
+		}
+	}
+
+	/**
+	 * get the most recent treatment number for the left side in the current subspecialty episode for the patient
+	 *
+	 * @param $patient
+	 * @return mixed
+	 */
+	public function getLetterTreatmentNumberLeft($patient)
+	{
+		if ($episode = $patient->getEpisodeForCurrentSubspecialty()) {
+			return $this->getLetterTreatmentNumberForSide($patient, $episode, 'left');
+		}
+	}
+
+	/**
+	 * get the most recent treatment number for the right side in the current subspecialty episode for the patient
+	 *
+	 * @param $patient
+	 * @return mixed
+	 */
+	public function getLetterTreatmentNumberRight($patient)
+	{
+		if ($episode = $patient->getEpisodeForCurrentSubspecialty()) {
+			return $this->getLetterTreatmentNumberForSide($patient, $episode, 'right');
+		}
+	}
+
+	/**
+	 * get the text string describing the post injection drops needed for the last injection event in the episode
+	 *
+	 * @param $patient
+	 * @param $episode
+	 * @return string
+	 */
+	public function getLetterPostInjectionDrops($patient)
+	{
+		if ($episode = $patient->getEpisodeForCurrentSubspecialty()) {
+			if ($el = $this->getElementForLatestEventInEpisode($patient, $episode, 'Element_OphTrIntravitrealinjection_PostInjectionExamination')) {
+				$drops = array();
+				if ($el->hasLeft()) {
+					$drops[] = $el->left_drops->name . " to the left eye";
+				}
+				if ($el->hasRight()) {
+					$drops[] = $el->right_drops->name . " to the right eye";
+				}
+				return implode(", and ", $drops);
+			}
+		}
 	}
 }

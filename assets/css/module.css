@@ -21,3 +21,27 @@
 #event_content .cols2 .data { float: right; width: 330px; }
 
 .quicklook { width:180px;  top:0; z-index:1; padding:2px 0px 2px 5px; border:1px solid #3665ff; background:#fff; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; -moz-box-shadow: 2px 2px 2px 0 #999;  -webkit-box-shadow: 2px 2px 2px 0 #999;	box-shadow: 2px 2px 2px 0 #999;  }
+
+.injection-warning {
+	background-color: #ffe6b2;
+	border: #cc0000 solid 2px;
+	font-size: 1.8em;
+	padding: 5px;
+	margin-bottom: 15px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
+}
+
+.injection-warning.left {
+	margin-left: 50%;
+}
+.injection-warning.right {
+	width: 48%;
+}
+.injection-warning.none {
+	background-color: #eb5911;
+}
+
+.wrapper { padding: 5px; border-radius: 5px; display: inline-block; }
+
+.allergyWarning {
+	background-color: #f66 !important;
+}

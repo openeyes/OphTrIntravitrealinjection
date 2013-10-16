@@ -100,4 +100,16 @@ class OphTrIntravitrealinjection_AnaestheticAgent extends BaseActiveRecord
 			'criteria' => $criteria,
 		));
 	}
+
+	/**
+	 * get the default anaesthetic agent (if set)
+	 *
+	 * @return OphTrIntravitrealinjection_AnaestheticAgent|null
+	 */
+	public static function getDefault()
+	{
+		if ($defmap = OphTrIntravitrealinjection_AnaestheticAgent::model()->find('is_default = ?', array(true)) ) {
+			return $defmap->anaesthetic_agent;
+		};
+	}
 }

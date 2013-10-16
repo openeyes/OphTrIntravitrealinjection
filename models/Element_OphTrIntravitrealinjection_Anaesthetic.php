@@ -160,6 +160,20 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 		));
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see SplitEventTypeElement::setDefaultOptions()
+	 */
+	public function setDefaultOptions()
+	{
+		$def_anaesthetictype = OphTrIntravitrealinjection_AnaestheticType::getDefault();
+		$def_anaestheticagent = OphTrIntravitrealinjection_AnaestheticAgent::getDefault();
+
+		foreach(array('left', 'right') as $side) {
+			$this->{$side . '_anaesthetictype_id'} = $def_anaesthetictype ? $def_anaesthetictype->id : null;
+			$this->{$side . '_anaestheticagent_id'} = $def_anaestheticagent ? $def_anaestheticagent->id : null;
+		}
+	}
 
 	protected function beforeSave()
 	{

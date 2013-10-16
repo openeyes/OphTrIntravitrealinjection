@@ -18,9 +18,66 @@
  */
 ?>
 
-<?php echo $form->dropDownList($element, $side . '_pre_antisept_drug_id', CHtml::listData(OphTrIntravitrealinjection_AntiSepticDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), array('empty' => '- Please select -')); ?>
+<?php
+	$antiseptic_drugs = OphTrIntravitrealinjection_AntiSepticDrug::model()->with('allergies')->findAll();
+	$antiseptic_drugs_opts = array('empty' => '- Please select -', 'nowrapper' => true, 'options' => array());
+	$antiseptic_allergic = false;
+	foreach ($antiseptic_drugs as $drug) {
+		$opts = array();
+		foreach ($drug->allergies as $allergy) {
+			if ($this->patient->hasAllergy($allergy)) {
+				$opts['data-allergic'] = 1;
+				if ($drug->id == $element->{$side . '_pre_antisept_drug_id'}) {
+					$antiseptic_allergic = true;
+				}
+			}
+		}
+		$antiseptic_drugs_opts['options'][(string)$drug->id] = $opts;
+	}
+	$skin_drugs = OphTrIntravitrealinjection_SkinDrug::model()->with('allergies')->findAll();
+	$skin_drugs_opts = array('empty' => '- Please select -', 'nowrapper' => true, 'options' => array());
+	$skin_allergic = false;
+	foreach ($skin_drugs as $drug) {
+		$opts = array();
+		foreach ($drug->allergies as $allergy) {
+			if ($this->patient->hasAllergy($allergy)) {
+				$opts['data-allergic'] = 1;
+				if ($drug->id == $element->{$side . '_pre_skin_drug_id'}) {
+					$skin_allergic = true;
+				}
+			}
+		}
+		$skin_drugs_opts['options'][(string)$drug->id] = $opts;
+	}
+?>
 
-<?php echo $form->dropDownList($element, $side . '_pre_skin_drug_id', CHtml::listData(OphTrIntravitrealinjection_SkinDrug::model()->findAll(array('order' => 'display_order asc')), 'id', 'name'), array('empty' => '- Please select -')); ?>
+<div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_pre_antisept_drug_id"
+	 class="eventDetail">
+	<div class="label">
+		<?php echo $element->getAttributeLabel($side . '_pre_antisept_drug_id') ?>:
+	</div>
+	<div class="data">
+		<div class="wrapper<?php if ($antiseptic_allergic) { echo ' allergyWarning'; }?>">
+			<?php
+				echo $form->dropDownList($element, $side . '_pre_antisept_drug_id', CHtml::listData($antiseptic_drugs, 'id', 'name'), $antiseptic_drugs_opts);
+			?>
+		</div>
+	</div>
+</div>
+
+<div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_pre_skin_drug_id"
+	 class="eventDetail">
+	<div class="label">
+		<?php echo $element->getAttributeLabel($side . '_pre_skin_drug_id') ?>:
+	</div>
+	<div class="data">
+		<div class="wrapper<?php if ($skin_allergic) { echo ' allergyWarning'; }?>">
+			<?php
+			echo $form->dropDownList($element, $side . '_pre_skin_drug_id', CHtml::listData($skin_drugs, 'id', 'name'), $skin_drugs_opts);
+			?>
+		</div>
+	</div>
+</div>
 
 <div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_pre_ioplowering_required"
 	class="eventDetail">
@@ -47,7 +104,7 @@ if (isset($_POST[get_class($element)])) {
 	if (!$show) {
 		$div_class .= " hidden";
 	}
-	
+
 	$html_options = array(
 		'options' => array(),
 		'empty' => '- Please select -',
@@ -59,16 +116,16 @@ if (isset($_POST[get_class($element)])) {
 		$html_options['options'][(string) $drug->id] = array('data-order' => $drug->display_order);
 	}
 	echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_pre_ioploweringdrugs]', $side . '_pre_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options);
-	
+
 	$drugs = $element->getTreatmentDrugs($side);
-	
+
 	$html_options = array(
 		'empty' => '- Please select -',
 		'options' => array(),
 	);
 	// get the previous injection counts for each of the drug options for this eye
 	$drug_history = array();
-	
+
 	foreach ($drugs as $drug) {
 		$previous = $injection_api->previousInjections($this->patient, $episode, $side, $drug);
 		$count = 0;
@@ -76,26 +133,26 @@ if (isset($_POST[get_class($element)])) {
 			$count = $previous[0][$side . '_number'];
 		}
 		$drug_history[$drug->id] = array_reverse($previous);
-		
+
 	 	$html_options['options'][$drug->id] = array(
 			'data-previous' => $count,
 		);
-		
+
 		// if this is an edit, we want to know what the original count was so that we don't replace it
 		if ($element->{$side . '_drug_id'} && $element->{$side . '_drug_id'} == $drug->id) {
 			$html_options['options'][$drug->id]['data-original-count'] = $element->{$side . '_number'};
 		}
 	}
-	
+
 	echo $form->dropDownList($element, $side . '_drug_id', CHtml::listData($drugs,'id','name'),$html_options);
-	
+
 	$selected_drug = null;
 	if (@$_POST['Element_OphTrIntravitrealinjection_Treatment']) {
 		$selected_drug = $_POST['Element_OphTrIntravitrealinjection_Treatment'][$side . '_drug_id'];
 	} else {
 		$selected_drug = $element->{$side . '_drug_id'};
 	}
-	
+
 ?>
 
 <div id="div_<?php echo get_class($element);?>_<?php echo $side?>_number" class="eventDetail">
@@ -108,7 +165,7 @@ if (isset($_POST[get_class($element)])) {
 			<img src="<?php echo $this->assetPath ?>/img/icon_info.png" height="20" />
 		</span>
 		<div class="quicklook number-history" style="display: none;">
-			<?php 
+			<?php
 			foreach ($drugs as $drug) {
 				echo '<div class="number-history-item';
 				if ($drug->id != $selected_drug) { echo ' hidden';}
@@ -126,7 +183,7 @@ if (isset($_POST[get_class($element)])) {
 				}
 				echo '</div>';
 			}?>
-		</div>	
+		</div>
 	</div>
 </div>
 
@@ -155,7 +212,7 @@ if (!$element->getIsNewRecord()) {
 			} else {
 				$val = date('H:i');
 			}
-			
+
 			if (isset($_POST[get_class($element)])) {
 				$val = $_POST[get_class($element)][$side . '_injection_time'];
 			}
@@ -179,15 +236,15 @@ if (!$element->getIsNewRecord()) {
 <?php
 	$div_class = "eventDetail";
 	$show = $element->{ $side . '_post_ioplowering_required'};
-	
+
 	if (isset($_POST[get_class($element)])) {
 		$show = $_POST[get_class($element)][$side . '_post_ioplowering_required'];
 	}
-	
+
 	if (!$show) {
 		$div_class .= " hidden";
 	}
-	
+
 	$html_options = array(
 		'options' => array(),
 		'empty' => '- Please select -',
