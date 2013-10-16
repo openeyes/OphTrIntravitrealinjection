@@ -30,7 +30,7 @@ $this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
 ));
 ?>
 
-<div class="eyedrawFields">
+<div class="eyedrawFields view">
 	<div class="label"><?php echo $element->getAttributeLabel($side . '_lens_status_id') ?>:</div>
 	<div class="data"><?php echo $element->{$side . '_lens_status'}->name ?></div>
 </div>

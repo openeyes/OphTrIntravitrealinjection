@@ -46,9 +46,14 @@
 	background-color: #f66 !important;
 }
 
-.eyedrawFields { float: left; width: 180px; margin: 5px 0 0 10px; }
-.eyedrawFields > div { margin: 5px 0; }
+.eyedrawFields { float: left; margin-top: 100px; margin-left: 20px; }
+.eyedrawFields.view { margin-top: 70px;  }
+#event_content .eyedrawFields.view div {display: inline-block; }
 #event_content .eyedrawFields div.label,
-#event_content .eyedrawFields div.data { display: inline-block; float: left; width: 130px; }
+#event_content .eyedrawFields div.data { display: inline-block; float: left; width: 90px; clear: both; }
+
+#event_content .eyedrawFields.view div.label,
+#event_content .eyedrawFields.view div.data { display: block; clear: none; }
+
 #event_content .eyedrawFields .aligned .label { width: 75px; }
 #event_content canvas {float: left; }
