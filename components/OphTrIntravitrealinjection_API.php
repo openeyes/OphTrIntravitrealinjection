@@ -185,14 +185,14 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 			$right = $this->getLetterTreatmentDrugForSide($patient, $episode, 'right');
 			$left = $this->getLetterTreatmentDrugForSide($patient, $episode, 'left');
 			if ($right) {
-				$res = $right . ' in the right eye';
+				$res = $right . ' injection on the right eye';
 				if ($left) {
-					$res .= ', and ' . $left . ' in the left eye';
+					$res .= ', and ' . $left . ' injection on the left eye';
 				}
 
 			}
 			elseif ($left) {
-				$res = $left . ' in the left eye';
+				$res = $left . ' injection on the left eye';
 			}
 			return $res;
 		}
@@ -237,6 +237,28 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 		if ($episode = $patient->getEpisodeForCurrentSubspecialty()) {
 			return $this->getLetterTreatmentNumberForSide($patient, $episode, 'right');
 		}
+	}
+
+	/**
+	 * get the most recent treatment number for both eyes in the current subspecialty episode for the patient
+	 *
+	 * @param Patient $patient
+	 */
+	public function getLetterTreatmentNumberBoth($patient)
+	{
+		$right = $this->getLetterTreatmentNumberRight($patient);
+		$left = $this->getLetterTreatmentNumberLeft($patient);
+		$res = '';
+		if ($right) {
+			$res = $right . ' on the right eye';
+			if ($left) {
+				$res .= ', and ' . $left . ' on the left eye';
+			}
+		}
+		elseif ($left) {
+			$res = $left . ' on the left eye';
+		}
+		return $res;
 	}
 
 	/**
