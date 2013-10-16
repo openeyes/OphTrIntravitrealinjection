@@ -45,3 +45,10 @@
 .allergyWarning {
 	background-color: #f66 !important;
 }
+
+.eyedrawFields { float: left; width: 180px; margin: 5px 0 0 10px; }
+.eyedrawFields > div { margin: 5px 0; }
+#event_content .eyedrawFields div.label,
+#event_content .eyedrawFields div.data { display: inline-block; float: left; width: 130px; }
+#event_content .eyedrawFields .aligned .label { width: 75px; }
+#event_content canvas {float: left; }
