@@ -313,19 +313,19 @@ $(document).ready(function() {
 	});
 
 	// extend the removal behaviour for treatment drug to affect the dependent elements
-	$(this).delegate('#event_content .side .activeForm a.removeSide', 'click', function(e) {
+	$(this).delegate('#event_content .removeSide', 'click', function(e) {
 		side = getSplitElementSide($(this));
+
 		var other_side = 'left';
 		if (side == 'left') {
 			other_side = 'right';
 		}
 		OphTrIntravitrealinjection_hide(side);
 		OphTrIntravitrealinjection_show(other_side);
-
 	});
 
 	// extend the adding behaviour for treatment drug to affect dependent elements
-	$(this).delegate('#event_content .side .inactiveForm a', 'click', function(e) {
+	$(this).delegate('#event_content .xinactive-form a', 'click', function(e) {
 		side = getSplitElementSide($(this));
 		OphTrIntravitrealinjection_show(side);
 	});
