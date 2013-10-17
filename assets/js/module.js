@@ -325,7 +325,7 @@ $(document).ready(function() {
 	});
 
 	// extend the adding behaviour for treatment drug to affect dependent elements
-	$(this).delegate('#event_content .xinactive-form a', 'click', function(e) {
+	$(this).delegate('#event_content .inactive-form a', 'click', function(e) {
 		side = getSplitElementSide($(this));
 		OphTrIntravitrealinjection_show(side);
 	});
