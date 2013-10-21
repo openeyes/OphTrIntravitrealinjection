@@ -1,6 +1,11 @@
 Release History
 ===============
 
+1.4.4
+-----
++ shortcode support for injection number
++ layout tweaks to anterior segment
+
 1.4.3
 -----
 + added integration with allergies on patients
