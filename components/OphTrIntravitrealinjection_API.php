@@ -265,7 +265,6 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 	 * get the text string describing the post injection drops needed for the last injection event in the episode
 	 *
 	 * @param $patient
-	 * @param $episode
 	 * @return string
 	 */
 	public function getLetterPostInjectionDrops($patient)
@@ -273,11 +272,11 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 		if ($episode = $patient->getEpisodeForCurrentSubspecialty()) {
 			if ($el = $this->getElementForLatestEventInEpisode($patient, $episode, 'Element_OphTrIntravitrealinjection_PostInjectionExamination')) {
 				$drops = array();
-				if ($el->hasLeft()) {
-					$drops[] = $el->left_drops->name . " to the left eye";
-				}
 				if ($el->hasRight()) {
 					$drops[] = $el->right_drops->name . " to the right eye";
+				}
+				if ($el->hasLeft()) {
+					$drops[] = $el->left_drops->name . " to the left eye";
 				}
 				return implode(", and ", $drops);
 			}
