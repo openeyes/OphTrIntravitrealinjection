@@ -313,7 +313,7 @@ $(document).ready(function() {
 	});
 
 	// extend the removal behaviour for treatment drug to affect the dependent elements
-	$(this).delegate('#event_content .removeSide', 'click', function(e) {
+	$(this).delegate('#event-content .removeSide', 'click', function(e) {
 		side = getSplitElementSide($(this));
 
 		var other_side = 'left';
@@ -325,7 +325,7 @@ $(document).ready(function() {
 	});
 
 	// extend the adding behaviour for treatment drug to affect dependent elements
-	$(this).delegate('#event_content .inactive-form a', 'click', function(e) {
+	$(this).delegate('#event-content .inactive-form a', 'click', function(e) {
 		side = getSplitElementSide($(this));
 		OphTrIntravitrealinjection_show(side);
 	});
