@@ -20,7 +20,7 @@
 return array(
 	'params' => array(
 		'admin_menu' => array(
-			'Drugs' => '/OphTrIntravitrealinjection/admin/viewAllOphTrIntravitrealinjection_Treatment_Drug',
+			'Treatment drugs' => '/OphTrIntravitrealinjection/admin/viewTreatmentDrugs',
 		),
 	),
 );

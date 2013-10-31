@@ -21,22 +21,21 @@ class AdminController extends ModuleAdminController
 {
 	public $defaultAction = "ViewAllOphTrIntravitrealinjection_Treatment_Drug";
 
-	// Treatment Drug actions
-	public function actionViewAllOphTrIntravitrealinjection_Treatment_Drug()
+	public function actionViewTreatmentDrugs()
 	{
 		$model_list = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order' => 'display_order asc'));
 		$this->jsVars['OphTrIntravitrealinjection_sort_url'] = $this->createUrl('sortTreatmentDrugs');
 
 		Audit::add('admin','list',null,false,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
 
-		$this->render('list',array(
-				'model_list'=>$model_list,
-				'title'=>'Treatment Drugs',
-				'model_class'=>'OphTrIntravitrealinjection_Treatment_Drug',
+		$this->render('list_OphTrIntravitrealinjection_Treatment_Drug',array(
+				'model_list' => $model_list,
+				'title' => 'Treatment Drugs',
+				'model_class' => 'OphTrIntravitrealinjection_Treatment_Drug',
 		));
 	}
 
-	public function actionCreateOphTrIntravitrealinjection_Treatment_Drug()
+	public function actionAddTreatmentDrug()
 	{
 		$model = new OphTrIntravitrealinjection_Treatment_Drug();
 
@@ -54,17 +53,19 @@ class AdminController extends ModuleAdminController
 				Audit::add('admin','create',serialize($model->attributes),false,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
 				Yii::app()->user->setFlash('success', 'Treatment drug created');
 
-				$this->redirect(array('ViewAllOphTrIntravitrealinjection_Treatment_Drug'));
+				$this->redirect(array('ViewTreatmentDrugs'));
 			}
 		}
 
 		$this->render('create', array(
 			'model' => $model,
+			'title' => 'Treatment Drug',
+			'cancel_uri' => '/OphTrIntravitrealinjection/admin/viewTreatmentDrugs',
 		));
 	}
 
 
-	public function actionUpdateOphTrIntravitrealinjection_Treatment_Drug($id)
+	public function actionEditTreatmentDrug($id)
 	{
 		if (!$model = OphTrIntravitrealinjection_Treatment_Drug::model()->findByPk((int) $id)) {
 			throw new Exception('Treatment drug not found with id ' . $id);
@@ -77,12 +78,14 @@ class AdminController extends ModuleAdminController
 				Audit::add('admin','update',serialize($model->attributes),false,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
 				Yii::app()->user->setFlash('success', 'Treatment drug updated');
 
-				$this->redirect(array('ViewAllOphTrIntravitrealinjection_Treatment_Drug'));
+				$this->redirect(array('ViewTreatmentDrugs'));
 			}
 		}
 
-		$this->render('create', array(
+		$this->render('update', array(
 				'model' => $model,
+				'title' => 'Treatment Drug',
+				'cancel_uri' => '/OphTrIntravitrealinjection/admin/viewTreatmentDrugs',
 		));
 	}
 
@@ -101,5 +104,18 @@ class AdminController extends ModuleAdminController
 				}
 			}
 		}
+	}
+
+	public function actionDeleteTreatmentDrugs()
+	{
+		$result = 1;
+
+		foreach (OphTrIntravitrealinjection_Treatment_Drug::model()->findAllByPk($_POST['treatment_drugs']) as $drug) {
+			if (!$drug->delete()) {
+				$result = 0;
+			}
+		}
+
+		echo $result;
 	}
 }
