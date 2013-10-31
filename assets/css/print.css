@@ -79,3 +79,15 @@
 	display: inline-block;
 	width: 100%;
 }
+
+.eyedrawFields { float: left; margin-top: 100px; margin-left: 20px; }
+.eyedrawFields.view { margin-top: 70px;  }
+
+.eyedrawFields div.label,
+.eyedrawFields div.data { display: inline-block; float: left; width: 90px; clear: both; }
+
+.eyedrawFields.view div.label,
+.eyedrawFields.view div.data { display: block; clear: none; }
+
+.eyedrawFields .aligned .label { width: 75px; }
+canvas {float: left; }
