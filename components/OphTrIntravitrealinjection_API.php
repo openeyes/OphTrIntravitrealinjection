@@ -185,9 +185,9 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 			$right = $this->getLetterTreatmentDrugForSide($patient, $episode, 'right');
 			$left = $this->getLetterTreatmentDrugForSide($patient, $episode, 'left');
 			if ($right) {
-				$res = $right . ' injection on the right eye';
+				$res = $right . ' injection to the right eye';
 				if ($left) {
-					$res .= ', and ' . $left . ' injection on the left eye';
+					$res .= ', and ' . $left . ' injection to the left eye';
 				}
 
 			}
