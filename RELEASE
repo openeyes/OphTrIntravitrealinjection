@@ -1,6 +1,10 @@
 Release History
 ===============
 
+1.4.5
+-----
++ bugfixes
+
 1.4.4
 -----
 + shortcode support for injection number
