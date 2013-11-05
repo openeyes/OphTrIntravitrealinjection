@@ -1,3 +1,4 @@
+/** Intravitreal injection module styles */
 /**
  * OpenEyes
  *
@@ -15,45 +16,15 @@
  * @copyright Copyright (c) 2011-2013, OpenEyes Foundation
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
-
-#event_content.watermarkBox { background-image: url(../img/watermark.png); background-position: -5px 0; background-repeat: repeat-y; border-color: #a29d8a; }
-#event_content h3.withEventIcon { background:transparent url(../img/medium.png) center left no-repeat; }
-#event_content .cols2 .data { float: right; width: 330px; }
-
-.quicklook { width:180px;  top:0; z-index:1; padding:2px 0px 2px 5px; border:1px solid #3665ff; background:#fff; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; -moz-box-shadow: 2px 2px 2px 0 #999;  -webkit-box-shadow: 2px 2px 2px 0 #999;	box-shadow: 2px 2px 2px 0 #999;  }
-
-.injection-warning {
-	background-color: #ffe6b2;
-	border: #cc0000 solid 2px;
-	font-size: 1.8em;
-	padding: 5px;
-	margin-bottom: 15px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
+/* line 2, ../sass/components/_event.scss */
+.event.ophtrintravitrealinjection {
+  border-color: #a29d8a;
 }
-
-.injection-warning.left {
-	margin-left: 50%;
+/* line 4, ../sass/components/_event.scss */
+.event.ophtrintravitrealinjection .event-content {
+  background-image: url('../img/new/watermark.png?1382093883');
 }
-.injection-warning.right {
-	width: 48%;
+/* line 7, ../sass/components/_event.scss */
+.event.ophtrintravitrealinjection .event-title {
+  background-image: url('../img/new/medium.png?1382093883');
 }
-.injection-warning.none {
-	background-color: #eb5911;
-}
-
-.wrapper { padding: 5px; border-radius: 5px; display: inline-block; }
-
-.allergyWarning {
-	background-color: #f66 !important;
-}
-
-.eyedrawFields { float: left; margin-top: 100px; margin-left: 20px; }
-.eyedrawFields.view { margin-top: 70px;  }
-#event_content .eyedrawFields.view div {display: inline-block; }
-#event_content .eyedrawFields div.label,
-#event_content .eyedrawFields div.data { display: inline-block; float: left; width: 90px; clear: both; }
-
-#event_content .eyedrawFields.view div.label,
-#event_content .eyedrawFields.view div.data { display: block; clear: none; }
-
-#event_content .eyedrawFields .aligned .label { width: 75px; }
-#event_content canvas {float: left; }
