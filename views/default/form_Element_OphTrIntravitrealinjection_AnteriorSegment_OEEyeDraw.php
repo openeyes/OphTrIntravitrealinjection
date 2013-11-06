@@ -1,4 +1,3 @@
-<?php /* DEPRECATED */ ?>
 <?php
 /**
  * OpenEyes
@@ -19,47 +18,37 @@
  */
 ?>
 <?php
-	$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
-			'doodleToolBarArray' => array('InjectionSite',),
-			'onReadyCommandArray' => array(
-					array('addDoodle', array('AntSeg')),
-					array('addDoodle', array('InjectionSite')),
-					array('deselectDoodles', array()),
-			),
-			/*
-			'bindingArray' => array(
-				'InjectionSite' => array(
-					'gauge' => array(
-						'id' => 'Element_OphTrIntravitrealinjection_AnteriorSegment_' + $side +' _lens_status_id',
-						'attribute' => 'data-default-distance'
-					),
+$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+		'doodleToolBarArray' => array('InjectionSite',),
+		'onReadyCommandArray' => array(
+				array('addDoodle', array('AntSeg')),
+				array('addDoodle', array('InjectionSite')),
+				array('deselectDoodles', array()),
+		),
+		/*
+		'bindingArray' => array(
+			'InjectionSite' => array(
+				'gauge' => array(
+					'id' => 'Element_OphTrIntravitrealinjection_AnteriorSegment_' + $side +' _lens_status_id',
+					'attribute' => 'data-default-distance'
 				),
 			),
-			*/
-			'listenerArray' => array('OphTrIntravitrealinjection_antSegListener'),
-			'scale' => 0.5,
-			'idSuffix' => $side.'_'.$element->elementType->id,
-			'side' => ($side == 'right') ? 'R' : 'L',
-			'mode' => 'edit',
-			'model' => $element,
-			'attribute' => $side.'_eyedraw',
-	));
-
-	$values = array();
-	$options = array();
-	foreach (OphTrIntravitrealinjection_LensStatus::model()->findAll() as $lens_status) {
-		$values[] = $lens_status;
-		$options[$lens_status->id]['data-default-distance'] = $lens_status->default_distance;
-	}
+		),
+		*/
+		'listenerArray' => array('OphTrIntravitrealinjection_antSegListener'),
+		'scale' => 0.5,
+		'idSuffix' => $side.'_'.$element->elementType->id,
+		'side' => ($side == 'right') ? 'R' : 'L',
+		'mode' => 'edit',
+		'model' => $element,
+		'attribute' => $side.'_eyedraw',
+));
 ?>
-
-<div class="eyedrawFields">
-	<div>
-		<div class="label">
-			<?php echo $element->getAttributeLabel($side . '_lens_status_id') . ":"; ?>
-		</div>
-		<div class="data">
-			<?php echo $form->dropDownList($element, $side . '_lens_status_id', CHtml::listData($values,'id','name'),array('empty'=>'- Please select -', 'nowrapper' => true, 'options' => $options) ); ?>
-		</div>
-	</div>
-</div>
+<?php
+$values = array();
+$options = array();
+foreach (OphTrIntravitrealinjection_LensStatus::model()->findAll() as $lens_status) {
+	$values[] = $lens_status;
+	$options[$lens_status->id]['data-default-distance'] = $lens_status->default_distance;
+}
+echo $form->dropDownList($element, $side . '_lens_status_id', CHtml::listData($values,'id','name'),array('empty'=>'- Please select -', 'options' => $options) )?>

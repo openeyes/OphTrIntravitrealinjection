@@ -1,4 +1,3 @@
-<?php /* DEPRECATED */ ?>
 <?php
 /**
  * OpenEyes
@@ -19,27 +18,33 @@
  */
 ?>
 
-<h1><?php echo $title ? $title : "Intravitreal Injection Admin" ?></h1>
+<div class="box admin">
 
-<a href="<?php echo Yii::app()->createUrl('OphTrIntravitrealinjection/admin/create' . $model_class); ?>">Add New</a>
+	<header class="box-header">
+		<h2 class="box-title"><?php echo $title ? $title : "Intravitreal Injection Admin" ?></h2>
+		<div class="box-actions">
+			<a class="button small" href="<?php echo Yii::app()->createUrl('OphTrIntravitrealinjection/admin/create' . $model_class); ?>">Add New</a>
+		</div>
+	</header>
 
-<div>
-	<ul class="grid reduceheight">
-		<li class="header">
-			<span class="column_name">Name</span>
-			<span class="column_available">Available?</span>
-		</li>
-		<div class="sortable">
+	<table class="grid">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Available?</th>
+			</tr>
+		</thead>
+		<tbody>
 			<?php
 			foreach ($model_list as $i => $model) {?>
-				<li class="<?php if ($i%2 == 0) {?>even<?php } else {?>odd<?php }?>" data-attr-id="<?php echo $model->id?>">
+				<tr data-attr-id="<?php echo $model->id?>">
 					<?php
 					$this->renderPartial('list_' . get_class($model), array(
 						'model' => $model,
 						));
 					?>
-				</li>
+				</tr>
 			<?php }?>
-		</div>
-	</ul>
+		</tbody>
+	</table>
 </div>

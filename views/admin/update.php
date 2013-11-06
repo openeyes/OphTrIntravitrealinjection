@@ -17,25 +17,27 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 ?>
+<div class="box admin">
+	<h2>Edit <?php echo $title?></h2>
 
+	<?php
+	$form = $this->beginWidget('BaseEventTypeCActiveForm', array(
+		'id'=>'adminform',
+		'enableAjaxValidation'=>false,
+		'htmlOptions' => array(
+				'enctype' => 'multipart/form-data'
+		)
+	))?>
 
+	<?php echo $form->errorSummary($model)?>
 
-	<div class="row data-row">
-		<div class="large-4 column">
-			<div class="data-label"><?php echo $element->getAttributeLabel($side . '_anaesthetictype_id') ?>:</div>
-		</div>
-		<div class="large-8 column">
-			<div class="data-value">
-			<?php echo $element->{$side . '_anaesthetictype'}->name ?>
-			</div>
-		</div>
-	</div>
-	<div class="row data-row">
-		<div class="large-4 column">
-			<div class="data-label"><?php echo $element->getAttributeLabel($side . '_anaestheticagent_id') ?>:</div>
-		</div>
-		<div class="large-8 column">
-			<div class="data-value"><?php echo $element->{$side . '_anaestheticagent'}->name ?></div>
-		</div>
-	</div>
+	<?php
+	$this->renderPartial('form_'.get_class($model), array(
+			'model' => $model,
+			'form' => $form,
+	))?>
 
+	<?php echo $form->formActions(array('cancel-uri'=>@$cancel_uri))?>
+
+	<?php $this->endWidget()?>
+</div>

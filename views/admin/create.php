@@ -1,4 +1,3 @@
-<?php /* DEPRECATED */ ?>
 <?php
 /**
  * OpenEyes
@@ -18,27 +17,27 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 ?>
+<div class="box admin">
+	<h2>Add <?php echo $title?></h2>
 
-<div class="report curvybox white">
+	<?php
+	$form = $this->beginWidget('BaseEventTypeCActiveForm', array(
+		'id'=>'adminform',
+		'enableAjaxValidation'=>false,
+		'htmlOptions' => array(
+				'enctype' => 'multipart/form-data'
+		)
+	))?>
 
-<div class="admin">
-<?php
-$form=$this->beginWidget('BaseEventTypeCActiveForm', array(
-	'id'=>'OphTrIntravitrealinjection_adminform',
-	'enableAjaxValidation'=>false,
-));
+	<?php echo $form->errorSummary($model)?>
 
-$this->renderPartial('form_' . get_class($model), array(
-		'model' => $model,
-		'form' => $form,
-));
-?>
+	<?php
+	$this->renderPartial('form_'.get_class($model), array(
+			'model' => $model,
+			'form' => $form,
+	))?>
 
-</div>
+	<?php echo $form->formActions(array('cancel-uri'=>@$cancel_uri))?>
 
-<div class="row buttons">
-	<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
-</div>
-
-<?php $this->endWidget(); ?>
+	<?php $this->endWidget()?>
 </div>
