@@ -34,6 +34,20 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 
 	public function up()
 	{
+		if (!$this->consolidate(
+			array(
+				"m130625_144651_event_type_OphTrIntravitrealinjection",
+				"m130725_145929_drops_changes",
+				"m130808_130727_missing_fields"
+			)
+		)
+		) {
+			$this->createTables();
+		}
+	}
+
+	public function createTables()
+	{
 		$this->setData();
 		//disable foreign keys check
 		$this->execute("SET foreign_key_checks = 0");
