@@ -11,7 +11,6 @@ class DefaultController extends BaseEventTypeController
 	protected function beforeAction($action)
 	{
 		if (!Yii::app()->getRequest()->getIsAjaxRequest() && !(in_array($action->id,$this->printActions())) ) {
-			Yii::app()->getClientScript()->registerCssFile(Yii::app()->createUrl('css/spliteventtype.css'));
 			Yii::app()->getClientScript()->registerScriptFile(Yii::app()->createUrl('js/spliteventtype.js'));
 		}
 
@@ -57,7 +56,7 @@ class DefaultController extends BaseEventTypeController
 	 *
 	 * @param $id
 	 * @throws CHttpException
-	 * 
+	 *
 	 * @see BaseEventTypeController::actionUpdate($id)
 	 */
 	public function actionUpdate($id)
