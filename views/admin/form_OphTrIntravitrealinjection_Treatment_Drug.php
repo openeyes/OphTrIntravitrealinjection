@@ -19,5 +19,5 @@
 ?>
 
 <?php echo $form->errorSummary($model)?>
-<?php echo $form->textField($model, 'name', array(), array(), array('label' => 2, 'field' => 10))?>
-<?php echo $form->radioBoolean($model, 'available', array(), array('label' => 2, 'field' => 10))?>
+<?php echo $form->textField($model, 'name')?>
+<?php echo $form->radioBoolean($model, 'available')?>
