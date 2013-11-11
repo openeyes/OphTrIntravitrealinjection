@@ -1,3 +1,2 @@
-id,user_id,created_user_id,last_modified_user_id,created_date,last_modified_date
-1,1,1,1,"1900-01-01 00:00:00","1900-01-01 00:00:00"
-2,2,1,1,"1900-01-01 00:00:00","1900-01-01 00:00:00"
+user_id => User.username
+admin
