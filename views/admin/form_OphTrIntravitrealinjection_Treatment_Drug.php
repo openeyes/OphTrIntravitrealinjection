@@ -18,6 +18,5 @@
  */
 ?>
 
-<?php echo $form->errorSummary($model)?>
 <?php echo $form->textField($model, 'name')?>
 <?php echo $form->radioBoolean($model, 'available')?>
