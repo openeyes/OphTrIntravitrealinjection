@@ -41,7 +41,7 @@
 			</div>
 			<div class="inactive-form">
 				<div class="add-side">
-				Set right side treatment drug
+					Set right side treatment drug
 				</div>
 			</div>
 		</div>
@@ -56,7 +56,7 @@
 			</div>
 			<div class="inactive-form">
 				<div class="add-side">
-				Set left side treatment drug
+					Set left side treatment drug
 				</div>
 			</div>
 		</div>

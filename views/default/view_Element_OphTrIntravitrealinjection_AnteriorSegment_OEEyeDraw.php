@@ -17,23 +17,29 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 ?>
-<?php
-$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
-		'idSuffix' => $side.'_'.$element->elementType->id.'_'.$element->id,
-		'side' => ($side == 'right') ? 'R' : 'L',
-		'mode' => 'view',
-		'scale' => 0.35,
-		'width' => 200,
-		'height' => 200,
-		'model' => $element,
-		'attribute' => $side.'_eyedraw',
-));
-?>
-<div class="row data-row">
-	<div class="large-4 column">
-		<div class="data-label"><?php echo $element->getAttributeLabel($side . '_lens_status_id') ?>:</div>
+<div class="eyedraw-data row field-row anterior-segment">
+	<div class="fixed column">
+		<?php
+		$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+				'idSuffix' => $side.'_'.$element->elementType->id.'_'.$element->id,
+				'side' => ($side == 'right') ? 'R' : 'L',
+				'mode' => 'view',
+				'scale' => 0.35,
+				'width' => 200,
+				'height' => 200,
+				'model' => $element,
+				'attribute' => $side.'_eyedraw',
+		));
+		?>
 	</div>
-	<div class="large-8 column">
-		<div class="data-value"><?php echo $element->{$side . '_lens_status'}->name ?></div>
+	<div class="fluid column">
+		<div class="row data-row">
+			<div class="large-5 column">
+				<div class="data-label"><?php echo $element->getAttributeLabel($side . '_lens_status_id') ?>:</div>
+			</div>
+			<div class="large-7 column">
+				<div class="data-value"><?php echo $element->{$side . '_lens_status'}->name ?></div>
+			</div>
+		</div>
 	</div>
 </div>

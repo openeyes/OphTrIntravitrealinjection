@@ -17,38 +17,48 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 ?>
-<?php
-$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
-		'doodleToolBarArray' => array('InjectionSite',),
-		'onReadyCommandArray' => array(
-				array('addDoodle', array('AntSeg')),
-				array('addDoodle', array('InjectionSite')),
-				array('deselectDoodles', array()),
-		),
-		/*
-		'bindingArray' => array(
-			'InjectionSite' => array(
-				'gauge' => array(
-					'id' => 'Element_OphTrIntravitrealinjection_AnteriorSegment_' + $side +' _lens_status_id',
-					'attribute' => 'data-default-distance'
+<div class="eyedraw-data row field-row anterior-segment">
+	<div class="fixed column">
+		<?php
+		$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+			'doodleToolBarArray' => array('InjectionSite',),
+			'onReadyCommandArray' => array(
+					array('addDoodle', array('AntSeg')),
+					array('addDoodle', array('InjectionSite')),
+					array('deselectDoodles', array()),
+			),
+			/*
+			'bindingArray' => array(
+				'InjectionSite' => array(
+					'gauge' => array(
+						'id' => 'Element_OphTrIntravitrealinjection_AnteriorSegment_' + $side +' _lens_status_id',
+						'attribute' => 'data-default-distance'
+					),
 				),
 			),
-		),
-		*/
-		'listenerArray' => array('OphTrIntravitrealinjection_antSegListener'),
-		'scale' => 0.5,
-		'idSuffix' => $side.'_'.$element->elementType->id,
-		'side' => ($side == 'right') ? 'R' : 'L',
-		'mode' => 'edit',
-		'model' => $element,
-		'attribute' => $side.'_eyedraw',
-));
-?>
-<?php
-$values = array();
-$options = array();
-foreach (OphTrIntravitrealinjection_LensStatus::model()->findAll() as $lens_status) {
-	$values[] = $lens_status;
-	$options[$lens_status->id]['data-default-distance'] = $lens_status->default_distance;
-}
-echo $form->dropDownList($element, $side . '_lens_status_id', CHtml::listData($values,'id','name'),array('empty'=>'- Please select -', 'options' => $options) )?>
+			*/
+			'listenerArray' => array('OphTrIntravitrealinjection_antSegListener'),
+			'scale' => 0.5,
+			'idSuffix' => $side.'_'.$element->elementType->id,
+			'side' => ($side == 'right') ? 'R' : 'L',
+			'mode' => 'edit',
+			'model' => $element,
+			'attribute' => $side.'_eyedraw',
+		));
+		?>
+	</div>
+	<div class="fluid column">
+		<?php
+		$values = array();
+		$options = array();
+		foreach (OphTrIntravitrealinjection_LensStatus::model()->findAll() as $lens_status) {
+			$values[] = $lens_status;
+			$options[$lens_status->id]['data-default-distance'] = $lens_status->default_distance;
+		}
+		?>
+		<label for="<?php echo get_class($element).'_'.$side.'_lens_status_id';?>">
+			<?php echo CHtml::encode($element->getAttributeLabel($side . '_lens_status_id'));?>:
+		</label>
+		<?php echo $form->dropDownList($element, $side . '_lens_status_id', CHtml::listData($values,'id','name'),array('nowrapper' => true, 'empty'=>'- Please select -', 'options' => $options) )?>
+	</div>
+</div>

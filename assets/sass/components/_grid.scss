@@ -1,0 +1,15 @@
+@include grid-fixed-fluid(".anterior-segment", 326px);
+
+.view {
+	@include grid-fixed-fluid(".anterior-segment", 220px);
+}
+
+.edit {
+	.row {
+		&.anterior-segment {
+			.fluid {
+				padding-top: 200px;
+			}
+		}
+	}
+}
