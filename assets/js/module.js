@@ -313,7 +313,7 @@ $(document).ready(function() {
 	});
 
 	// extend the removal behaviour for treatment drug to affect the dependent elements
-	$(this).delegate('#event_content .side .activeForm a.removeSide', 'click', function(e) {
+	$(this).delegate('#event-content .side .active-form .remove-side', 'click', function(e) {
 		side = getSplitElementSide($(this));
 
 		var other_side = 'left';
