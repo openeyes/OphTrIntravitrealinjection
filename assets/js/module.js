@@ -21,16 +21,16 @@ OphTrIntravitrealinjection_antSegListener.prototype.init = function()
 {
 	var self = this;
 
+	self.setDefaultDistance();
 	self.drawing.registerForNotifications(self, 'callback', ['doodleAdded', 'doodleDeleted', 'parameterChanged']);
-	self.getDefaultDistance();
 
 	$('#Element_OphTrIntravitrealinjection_AnteriorSegment_' + self.side + '_lens_status_id').bind('change', function() {
-		self.getDefaultDistance();
+		self.setDefaultDistance();
 	});
 }
 
 // get the default distance from the lens status
-OphTrIntravitrealinjection_antSegListener.prototype.getDefaultDistance = function() {
+OphTrIntravitrealinjection_antSegListener.prototype.setDefaultDistance = function() {
 	var self = this;
 
 	var selVal = $('#Element_OphTrIntravitrealinjection_AnteriorSegment_' + self.side + '_lens_status_id').val();
@@ -44,7 +44,7 @@ OphTrIntravitrealinjection_antSegListener.prototype.getDefaultDistance = functio
 		self.updateDistances();
 	}
 	else {
-		self.default_distance = null;
+		self._default_distance = null;
 	}
 }
 
@@ -95,7 +95,15 @@ OphTrIntravitrealinjection_antSegListener.prototype.callback = function(_message
 	else if (_messageArray.eventName == "parameterChanged"
 		&& _messageArray.object.doodle.className == "InjectionSite"
 		&& _messageArray.object.parameter == "distance") {
-		if (_messageArray.object.value != self._default_distance) {
+
+		// when editing/after validation, initial doodles are not added, so need to verify the doodle is known to our listener
+		var id = _messageArray.object.doodle.id;
+		if (!self._injectionDoodles[id]) {
+			self._injectionDoodles[id] = _messageArray.object.doodle;
+		}
+
+		if (_messageArray.object.value != _messageArray.object.oldvalue
+			&& _messageArray.object.value != self._default_distance) {
 			// unsync this injection from future changes to lens status
 			for (var i = 0; i <= self._unsynced.length; i++) {
 				if (self._unsynced[i] == _messageArray.object.doodle.id) {
