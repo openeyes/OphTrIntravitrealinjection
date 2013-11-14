@@ -39,6 +39,7 @@
 	));
 	?>
 		<?php $this->displayErrors($errors)?>
+
 		<?php if ($this->side_to_inject !== null) {
 			$cls_lkup = array(
 				0 => 'none',
@@ -55,14 +56,24 @@
 			else {
 				$msg = "Only " . strtolower(Eye::model()->findByPk($this->side_to_inject)->name) . " eye to be injected";
 			}
-			?>
-			<div class="alert-box alert with-icon injection-warning <?php echo $cls_lkup[$this->side_to_inject] ?>">
-				<?php echo $msg ?>
-			</div>
 
-			<?php
-		}
-		?>
+			$columns = 6;
+			$offset = 0;
+			if ($this->side_to_inject === Eye::LEFT) {
+				$offset = 6;
+			} else if ($this->side_to_inject !== Eye::RIGHT) {
+				$columns = 12;
+			}
+			?>
+			<div class="row">
+				<div class="large-<?php echo $columns;?> column large-offset-<?php echo $offset;?>">
+					<div class="alert-box alert injection-warning">
+						<?php echo $msg ?>
+					</div>
+				</div>
+			</div>
+		<?php } ?>
+
 		<?php $this->renderDefaultElements($this->action->id, $form)?>
 		<?php $this->renderOptionalElements($this->action->id, $form)?>
 		<?php $this->displayErrors($errors, true)?>
