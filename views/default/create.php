@@ -22,7 +22,7 @@
 
 	<?php
 		$this->breadcrumbs=array($this->module->id);
-		$this->event_actions[] = EventAction::button('Save', 'save', array('level' => 'secondary'), array('class'=>'button small', 'form'=>'clinical-create'));
+		$this->event_actions[] = EventAction::button('Save', 'save', array('level' => 'save'), array('form'=>'clinical-create'));
 	?>
 
 	<h2 class="event-title"><?php echo $this->event_type->name ?></h2>

@@ -35,7 +35,7 @@
 			'field' => 8)
 		));
 		// Event actions
-		$this->event_actions[] = EventAction::button('Save', 'save', array('level' => 'secondary'), array('form'=>'c','class'=>'button small'));
+		$this->event_actions[] = EventAction::button('Save', 'save', array('level' => 'save'), array('form'=>'c'));
 	?>
 		<?php $this->displayErrors($errors)?>
 		<?php $this->renderDefaultElements($this->action->id, $form)?>
