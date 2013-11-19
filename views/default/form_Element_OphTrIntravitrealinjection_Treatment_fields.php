@@ -125,7 +125,12 @@ if (isset($_POST[get_class($element)])) {
 	$drug_history = array();
 
 	foreach ($drugs as $drug) {
+		if($element->event_id){
+			$previous = $injection_api->previousInjectionsByEvent($element->event_id, $side, $drug);
+		}
+		else{
 		$previous = $injection_api->previousInjections($this->patient, $episode, $side, $drug);
+		}
 		$count = 0;
 		if (sizeof($previous)) {
 			$count = $previous[0][$side . '_number'];
