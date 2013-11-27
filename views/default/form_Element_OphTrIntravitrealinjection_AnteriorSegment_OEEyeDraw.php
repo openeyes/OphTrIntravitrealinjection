@@ -17,7 +17,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 ?>
-<div class="eyedraw-data row field-row anterior-segment">
+<div class="eyedraw-row row field-row anterior-segment">
 	<div class="fixed column">
 		<?php
 		$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
