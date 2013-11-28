@@ -27,6 +27,6 @@
 		<h3 class="element-title"><?php echo $element->elementType->name; ?></h3>
 	</header>
 	<div class="element-fields">
-	<?php echo $form->dropDownList($element, 'site_id', Site::model()->getListForCurrentInstitution(), array(), false, array('label' => 2, 'field' => 10)); ?>
+	<?php echo $form->dropDownList($element, 'site_id', Site::model()->getListForCurrentInstitution(), array(), false, array('label'=>2,'field'=>3)); ?>
 	</div>
 </section>
