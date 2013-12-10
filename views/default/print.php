@@ -21,7 +21,7 @@
 	<div class="header">
 		<div class="title middle">
 			<img src="<?php echo Yii::app()->createUrl('img/_print/letterhead_seal.jpg')?>" alt="letterhead_seal" class="seal" width="100" height="83"/>
-			<h1><?php echo $this->event_type->name?></h1>
+			<h1><?php echo $this->title?></h1>
 		</div>
 		<div class="headerInfo">
 			<div class="patientDetails">

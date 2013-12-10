@@ -22,10 +22,6 @@
 	$this->beginContent('//patient/event_container');
 ?>
 
-	<h2 class="event-title"><?php echo $this->event_type->name ?></h2>
-
-	<?php $this->renderPartial('//base/_messages'); ?>
-
 	<?php
 	$form = $this->beginWidget('BaseEventTypeCActiveForm', array(
 		'id'=>'c',

@@ -28,8 +28,6 @@
 			$this->event_actions[] = EventAction::button('Print', 'print',null,array('class'=>'button small'));}
 	?>
 
-	<h2 class="event-title"><?php echo $this->event_type->name?></h2>
-
 	<?php $this->renderDefaultElements($this->action->id)?>
 	<?php $this->renderOptionalElements($this->action->id)?>
 
