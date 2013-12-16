@@ -27,7 +27,7 @@
  * The followings are the available model relations:
  * @property anaestheticagent $anaesthetic_agent
  */
-class OphTrIntravitrealinjection_AnaestheticAgent extends BaseActiveRecord
+class OphTrIntravitrealinjection_AnaestheticAgent extends BaseActiveRecordVersioned
 {
 
 	/**

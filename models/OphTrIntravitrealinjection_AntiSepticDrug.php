@@ -30,7 +30,7 @@
  * @property User $usermodified
  */
 
-class OphTrIntravitrealinjection_AntiSepticDrug extends BaseActiveRecord
+class OphTrIntravitrealinjection_AntiSepticDrug extends BaseActiveRecordVersioned
 {
 	/**
 	 * Returns the static model of the specified AR class.
