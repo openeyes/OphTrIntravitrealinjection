@@ -23,12 +23,12 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 
 	public function setData(){
 		$this->element_types = array(
-			'Element_OphTrIntravitrealinjection_Site' => array('name' => 'Site'),
-			'Element_OphTrIntravitrealinjection_Anaesthetic' => array('name' => 'Anaesthetic'),
-			'Element_OphTrIntravitrealinjection_Treatment' => array('name' => 'Treatment'),
-			'Element_OphTrIntravitrealinjection_AnteriorSegment' => array('name' => 'Anterior Segment'),
-			'Element_OphTrIntravitrealinjection_PostInjectionExamination' => array('name' => 'Post Injection Examination'),
-			'Element_OphTrIntravitrealinjection_Complications' => array('name' => 'Complications'),
+			'Element_OphTrIntravitrealinjection_Site' => array('name' => 'Site', 'display_order' => 1),
+			'Element_OphTrIntravitrealinjection_Anaesthetic' => array('name' => 'Anaesthetic', 'display_order' => 1),
+			'Element_OphTrIntravitrealinjection_Treatment' => array('name' => 'Treatment', 'display_order' => 1),
+			'Element_OphTrIntravitrealinjection_AnteriorSegment' => array('name' => 'Anterior Segment', 'display_order' => 2),
+			'Element_OphTrIntravitrealinjection_PostInjectionExamination' => array('name' => 'Post Injection Examination', 'display_order' => 3),
+			'Element_OphTrIntravitrealinjection_Complications' => array('name' => 'Complications', 'display_order' => 4),
 		);
 	}
 
