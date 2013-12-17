@@ -99,8 +99,8 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  `event_id` int(10) unsigned NOT NULL,
 			  `eye_id` int(10) unsigned NOT NULL DEFAULT '3',
-			  `left_eyedraw` text COLLATE utf8_bin,
-			  `right_eyedraw` text COLLATE utf8_bin,
+			  `left_eyedraw` text,
+			  `right_eyedraw` text,
 			  `left_lens_status_id` int(10) unsigned DEFAULT NULL,
 			  `right_lens_status_id` int(10) unsigned DEFAULT NULL,
 			  `last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
@@ -125,8 +125,8 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  `event_id` int(10) unsigned NOT NULL,
 			  `eye_id` int(10) unsigned NOT NULL DEFAULT '3',
-			  `left_oth_descrip` text COLLATE utf8_bin,
-			  `right_oth_descrip` text COLLATE utf8_bin,
+			  `left_oth_descrip` text,
+			  `right_oth_descrip` text,
 			  `last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
 			  `last_modified_date` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
 			  `created_user_id` int(10) unsigned NOT NULL DEFAULT '1',
@@ -203,7 +203,7 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 			  `left_drug_id` int(10) unsigned DEFAULT NULL,
 			  `right_drug_id` int(10) unsigned DEFAULT NULL,
 			  `left_number` int(10) unsigned DEFAULT NULL,
-			  `left_batch_number` varchar(255) COLLATE utf8_bin DEFAULT '',
+			  `left_batch_number` varchar(255) DEFAULT '',
 			  `left_batch_expiry_date` date DEFAULT NULL,
 			  `left_injection_given_by_id` int(10) unsigned DEFAULT NULL,
 			  `left_injection_time` time DEFAULT NULL,
@@ -212,7 +212,7 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 			  `right_pre_skin_drug_id` int(10) unsigned DEFAULT NULL,
 			  `right_pre_ioplowering_required` tinyint(1) DEFAULT NULL,
 			  `right_number` int(10) unsigned DEFAULT NULL,
-			  `right_batch_number` varchar(255) COLLATE utf8_bin DEFAULT '',
+			  `right_batch_number` varchar(255) DEFAULT '',
 			  `right_batch_expiry_date` date DEFAULT NULL,
 			  `right_injection_given_by_id` int(10) unsigned DEFAULT NULL,
 			  `right_injection_time` time DEFAULT NULL,
@@ -305,7 +305,7 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 
 		$this->execute("CREATE TABLE `ophtrintravitinjection_antiseptic_drug` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  `name` varchar(128) COLLATE utf8_bin NOT NULL,
+			  `name` varchar(128) NOT NULL,
 			  `display_order` int(10) unsigned NOT NULL DEFAULT '1',
 			  `last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
 			  `last_modified_date` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
@@ -321,7 +321,7 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 
 		$this->execute("CREATE TABLE `ophtrintravitinjection_complicat` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  `name` varchar(128) COLLATE utf8_bin NOT NULL,
+			  `name` varchar(128) NOT NULL,
 			  `display_order` int(10) unsigned NOT NULL DEFAULT '1',
 			  `default` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			  `description_required` tinyint(1) NOT NULL DEFAULT '0',
@@ -379,7 +379,7 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 
 		$this->execute("CREATE TABLE `ophtrintravitinjection_ioplowering` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  `name` varchar(128) COLLATE utf8_bin NOT NULL,
+			  `name` varchar(128) NOT NULL,
 			  `display_order` int(10) unsigned NOT NULL DEFAULT '1',
 			  `last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
 			  `last_modified_date` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
@@ -419,7 +419,7 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 
 		$this->execute("CREATE TABLE `ophtrintravitinjection_lens_status` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  `name` varchar(128) COLLATE utf8_bin NOT NULL,
+			  `name` varchar(128) NOT NULL,
 			  `display_order` int(10) unsigned NOT NULL DEFAULT '1',
 			  `default_distance` decimal(2,1) NOT NULL,
 			  `last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
@@ -436,7 +436,7 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 
 		$this->execute("CREATE TABLE `ophtrintravitinjection_postinjection_drops` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  `name` varchar(128) COLLATE utf8_bin NOT NULL,
+			  `name` varchar(128) NOT NULL,
 			  `display_order` int(10) unsigned NOT NULL DEFAULT '1',
 			  `last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
 			  `last_modified_date` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
@@ -452,7 +452,7 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 
 		$this->execute("CREATE TABLE `ophtrintravitinjection_skin_drug` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  `name` varchar(128) COLLATE utf8_bin NOT NULL,
+			  `name` varchar(128) NOT NULL,
 			  `display_order` int(10) unsigned NOT NULL DEFAULT '1',
 			  `last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
 			  `last_modified_date` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
@@ -468,7 +468,7 @@ class m130913_000007_consolidation_for_ophtrinvitrealinjection extends OEMigrati
 
 		$this->execute("CREATE TABLE `ophtrintravitinjection_treatment_drug` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  `name` varchar(128) COLLATE utf8_bin NOT NULL,
+			  `name` varchar(128) NOT NULL,
 			  `display_order` int(10) unsigned NOT NULL DEFAULT '1',
 			  `available` tinyint(1) NOT NULL DEFAULT '1',
 			  `last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
