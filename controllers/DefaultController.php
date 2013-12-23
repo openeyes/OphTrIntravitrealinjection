@@ -81,29 +81,35 @@ class DefaultController extends BaseEventTypeController
 	{
 		$elements = parent::getDefaultElements($action, $event_type_id, $event);
 
+		// set any calculated defaults on the elements
+		$therapy_api = Yii::app()->moduleAPI->get('OphCoTherapyapplication');
+		$injection_api = Yii::app()->moduleAPI->get('OphTrIntravitrealinjection');
+		$exam_api = Yii::app()->moduleAPI->get('OphCiExamination');
+
+		$default_eye = Eye::BOTH;
+		$default_left_drug = null;
+		$default_right_drug = null;
+
+		$since = new DateTime();
+		$since->setTime(0, 0, 0);
+
+		if ($this->episode && $exam_api && $imc = $exam_api->getLatestInjectionManagementComplex($this->episode, $since) ) {
+			if ($side = $imc->getInjectionSide()) {
+				$this->side_to_inject = $default_eye;
+			}
+			else {
+				$this->side_to_inject = 0;
+			}
+		}
+
 		if ($action == 'create' && empty($_POST)) {
-			// set any calculated defaults on the elements
-			$therapy_api = Yii::app()->moduleAPI->get('OphCoTherapyapplication');
-			$injection_api = Yii::app()->moduleAPI->get('OphTrIntravitrealinjection');
-			$exam_api = Yii::app()->moduleAPI->get('OphCiExamination');
-
-			$default_eye = Eye::BOTH;
-			$default_left_drug = null;
-			$default_right_drug = null;
-
-			$since = new DateTime();
-			$since->setTime(0, 0, 0);
 
 			if ($this->episode && $exam_api && $imc = $exam_api->getLatestInjectionManagementComplex($this->episode, $since) ) {
-				if ($side = $imc->getInjectionSide()) {
-					$default_eye = $side;
-					$this->side_to_inject = $default_eye;
-					$default_left_drug = $imc->left_treatment;
-					$default_right_drug = $imc->right_treatment;
-				}
-				else {
-					$this->side_to_inject = 0;
-				}
+					if ($side = $imc->getInjectionSide()) {
+						$default_eye = $side;
+						$default_left_drug = $imc->left_treatment;
+						$default_right_drug = $imc->right_treatment;
+					}
 			}
 			// get the side of the latest therapy application
 			elseif ($this->episode && $therapy_api && $side = $therapy_api->getLatestApplicationSide($this->patient, $this->episode)) {
