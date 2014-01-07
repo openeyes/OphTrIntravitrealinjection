@@ -35,15 +35,32 @@ class DefaultController extends BaseEventTypeController
 		}
 	}
 
+	/**
+	 * Ensures flash message set for allergies
+	 */
 	protected function editInit()
 	{
 		$this->showAllergyWarning();
+	}
+
+	/**
+	 * Call edit init and set attribute for alerting which side the latest injection management
+	 * implies should be injected
+	 *
+	 * @see BaseEventTypeController::createInit()
+	 */
+	protected function createInit()
+	{
+		parent::createInit();
+		$this->editInit();
 
 		// set up the injection side if provided by the injection management in examination
 		$exam_api = Yii::app()->moduleAPI->get('OphCiExamination');
+		// We only want to show the injection mananagement side highlighting from injection management that has
+		// been created on the day of this injection
 		$since = new DateTime();
 		$since->setTime(0, 0, 0);
-
+		
 		if ($this->episode && $exam_api && $imc = $exam_api->getLatestInjectionManagementComplex($this->episode, $since) ) {
 			if ($side = $imc->getInjectionSide()) {
 				$this->side_to_inject = $side;
@@ -55,23 +72,9 @@ class DefaultController extends BaseEventTypeController
 	}
 
 	/**
-	 * ensures flash message set for allergies
-	 *
-	 * @throws CHttpException
-	 * @see BaseEventTypeController::createInit()
-	 */
-	protected function createInit()
-	{
-		parent::createInit();
-		$this->editInit();
-	}
-
-	/**
-	 * ensures flash message set for allergies
+	 * call edit init
 	 *
 	 * @param $id
-	 * @throws CHttpException
-	 *
 	 * @see BaseEventTypeController::updateInit($id)
 	 */
 	protected function updateInit($id)
@@ -226,7 +229,8 @@ class DefaultController extends BaseEventTypeController
 	 * similar to setPOSTManyToMany, but will actually call methods on the elements that will create database entries
 	 * should be called on create and update.
 	 *
-	 * @param BaseEventTypeElement[] $elements
+	 * @param $data
+	 * @internal param \BaseEventTypeElement[] $elements
 	 */
 	protected function saveEventComplexAttributesFromData($data)
 	{
@@ -266,30 +270,6 @@ class DefaultController extends BaseEventTypeController
 
 			}
 		}
-	}
-
-	/**
-	 * ensures Many Many fields processed for elements
-	 */
-	public function createElements($elements, $data, $firm, $patientId, $userId, $eventTypeId)
-	{
-		if ($id = parent::createElements($elements, $data, $firm, $patientId, $userId, $eventTypeId)) {
-			// create has been successful, store many to many values
-			$this->storePOSTManyToMany($elements);
-		}
-		return $id;
-	}
-
-	/**
-	 * ensures Many Many fields processed for elements
-	 */
-	public function updateElements($elements, $data, $event)
-	{
-		if (parent::updateElements($elements, $data, $event)) {
-			// update has been successful, now need to deal with many to many changes
-			$this->storePOSTManyToMany($elements);
-		}
-		return true;
 	}
 
 }
