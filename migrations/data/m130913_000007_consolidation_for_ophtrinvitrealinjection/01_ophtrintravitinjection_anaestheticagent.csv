@@ -1,4 +1,4 @@
-anaesthetic_agent_id => AnaestheticAgent.name,display_order
+anaesthetic_agent_id => anaesthetic_agent.name,display_order
 G Amethocaine,1
 G Benoxinate,2
 G Proxymetacaine,3

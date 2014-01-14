@@ -1,4 +1,4 @@
-anaesthetic_delivery_id => AnaestheticDelivery.name,display_order
+anaesthetic_delivery_id => anaesthetic_delivery.name,display_order
 Retrobulbar,1
 Peribulbar,2
 Subtenons,3
