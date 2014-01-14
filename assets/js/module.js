@@ -151,11 +151,15 @@ function OphTrIntravitrealinjection_setInjectionNumber(side) {
 	}
 }
 
-function OphTrIntravitrealinjection_hide(side) {
-	hideSplitElementSide('Element_OphTrIntravitrealinjection_Anaesthetic', side);
-	hideSplitElementSide('Element_OphTrIntravitrealinjection_AnteriorSegment', side);
-	hideSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
-	hideSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
+function OphTrIntravitrealinjection_hide(side, el) {
+	removeButt = $(el).parents('section').attr('data-element-type-class');
+	if(removeButt != 'Element_OphTrIntravitrealinjection_Treatment'){
+		hideSplitElementSide('Element_OphTrIntravitrealinjection_Anaesthetic', side);
+		hideSplitElementSide('Element_OphTrIntravitrealinjection_AnteriorSegment', side);
+		hideSplitElementSide('Element_OphTrIntravitrealinjection_PostInjectionExamination', side);
+		hideSplitElementSide('Element_OphTrIntravitrealinjection_Complications', side);
+	}
+	hideSplitElementSide('Element_OphTrIntravitrealinjection_Treatment', side);
 }
 
 function OphTrIntravitrealinjection_show(side) {
@@ -328,7 +332,7 @@ $(document).ready(function() {
 		if (side == 'left') {
 			other_side = 'right';
 		}
-		OphTrIntravitrealinjection_hide(side);
+		OphTrIntravitrealinjection_hide(side,  this);
 		OphTrIntravitrealinjection_show(other_side);
 	});
 
