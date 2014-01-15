@@ -40,7 +40,7 @@ CREATE TABLE `et_ophtrintravitinjection_anaesthetic_version` (
 	CONSTRAINT `acv_et_ophtrintravitinjection_anaesthetic_rat_id_fk` FOREIGN KEY (`right_anaesthetictype_id`) REFERENCES `anaesthetic_type` (`id`),
 	CONSTRAINT `acv_et_ophtrintravitinjection_anaesthetic_rad_id_fk` FOREIGN KEY (`right_anaestheticdelivery_id`) REFERENCES `anaesthetic_delivery` (`id`),
 	CONSTRAINT `acv_et_ophtrintravitinjection_anaesthetic_raa_id_fk` FOREIGN KEY (`right_anaestheticagent_id`) REFERENCES `anaesthetic_agent` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('et_ophtrintravitinjection_anaesthetic_version','id','int(10) unsigned NOT NULL');
@@ -60,8 +60,8 @@ CREATE TABLE `et_ophtrintravitinjection_anteriorseg_version` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 	`event_id` int(10) unsigned NOT NULL,
 	`eye_id` int(10) unsigned NOT NULL DEFAULT '3',
-	`left_eyedraw` text COLLATE utf8_bin,
-	`right_eyedraw` text COLLATE utf8_bin,
+	`left_eyedraw` text,
+	`right_eyedraw` text,
 	`left_lens_status_id` int(10) unsigned DEFAULT NULL,
 	`right_lens_status_id` int(10) unsigned DEFAULT NULL,
 	`last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
@@ -79,7 +79,7 @@ CREATE TABLE `et_ophtrintravitinjection_anteriorseg_version` (
 	CONSTRAINT `acv_et_ophtrintravitinjection_anteriorseg_ei_fk` FOREIGN KEY (`eye_id`) REFERENCES `eye` (`id`),
 	CONSTRAINT `acv_et_ophtrintravitinjection_anteriorseg_llsi_fk` FOREIGN KEY (`left_lens_status_id`) REFERENCES `ophtrintravitinjection_lens_status` (`id`),
 	CONSTRAINT `acv_et_ophtrintravitinjection_anteriorseg_rlsi_fk` FOREIGN KEY (`right_lens_status_id`) REFERENCES `ophtrintravitinjection_lens_status` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('et_ophtrintravitinjection_anteriorseg_version','id','int(10) unsigned NOT NULL');
@@ -99,8 +99,8 @@ CREATE TABLE `et_ophtrintravitinjection_complications_version` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 	`event_id` int(10) unsigned NOT NULL,
 	`eye_id` int(10) unsigned NOT NULL DEFAULT '3',
-	`left_oth_descrip` text COLLATE utf8_bin,
-	`right_oth_descrip` text COLLATE utf8_bin,
+	`left_oth_descrip` text,
+	`right_oth_descrip` text,
 	`last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
 	`last_modified_date` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
 	`created_user_id` int(10) unsigned NOT NULL DEFAULT '1',
@@ -114,7 +114,7 @@ CREATE TABLE `et_ophtrintravitinjection_complications_version` (
 	CONSTRAINT `acv_et_ophtrintravitinjection_complicat_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_et_ophtrintravitinjection_complicat_ev_fk` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`),
 	CONSTRAINT `acv_et_ophtrintravitinjection_complicat_eye_id_fk` FOREIGN KEY (`eye_id`) REFERENCES `eye` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('et_ophtrintravitinjection_complications_version','id','int(10) unsigned NOT NULL');
@@ -157,7 +157,7 @@ CREATE TABLE `et_ophtrintravitinjection_postinject_version` (
 	CONSTRAINT `acv_et_ophtrintravitinjection_postinject_eye_id_fk` FOREIGN KEY (`eye_id`) REFERENCES `eye` (`id`),
 	CONSTRAINT `acv_et_ophtrintravitinjection_postinject_ldrops_id_fk` FOREIGN KEY (`left_drops_id`) REFERENCES `ophtrintravitinjection_postinjection_drops` (`id`),
 	CONSTRAINT `acv_et_ophtrintravitinjection_postinject_rdrops_id_fk` FOREIGN KEY (`right_drops_id`) REFERENCES `ophtrintravitinjection_postinjection_drops` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('et_ophtrintravitinjection_postinject_version','id','int(10) unsigned NOT NULL');
@@ -190,7 +190,7 @@ CREATE TABLE `et_ophtrintravitinjection_site_version` (
 	CONSTRAINT `acv_et_ophtrintravitinjection_site_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_et_ophtrintravitinjection_site_ev_fk` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`),
 	CONSTRAINT `acv_et_ophtrintravitinjection_site_site_id_fk` FOREIGN KEY (`site_id`) REFERENCES `site` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('et_ophtrintravitinjection_site_version','id','int(10) unsigned NOT NULL');
@@ -216,7 +216,7 @@ CREATE TABLE `et_ophtrintravitinjection_treatment_version` (
 	`left_drug_id` int(10) unsigned DEFAULT NULL,
 	`right_drug_id` int(10) unsigned DEFAULT NULL,
 	`left_number` int(10) unsigned DEFAULT NULL,
-	`left_batch_number` varchar(255) COLLATE utf8_bin DEFAULT '',
+	`left_batch_number` varchar(255) DEFAULT '',
 	`left_batch_expiry_date` date DEFAULT NULL,
 	`left_injection_given_by_id` int(10) unsigned DEFAULT NULL,
 	`left_injection_time` time DEFAULT NULL,
@@ -225,7 +225,7 @@ CREATE TABLE `et_ophtrintravitinjection_treatment_version` (
 	`right_pre_skin_drug_id` int(10) unsigned DEFAULT NULL,
 	`right_pre_ioplowering_required` tinyint(1) DEFAULT NULL,
 	`right_number` int(10) unsigned DEFAULT NULL,
-	`right_batch_number` varchar(255) COLLATE utf8_bin DEFAULT '',
+	`right_batch_number` varchar(255) DEFAULT '',
 	`right_batch_expiry_date` date DEFAULT NULL,
 	`right_injection_given_by_id` int(10) unsigned DEFAULT NULL,
 	`right_injection_time` time DEFAULT NULL,
@@ -259,7 +259,7 @@ CREATE TABLE `et_ophtrintravitinjection_treatment_version` (
 	CONSTRAINT `acv_et_ophtrintravitinjection_treatment_rprsd_id_fk` FOREIGN KEY (`right_pre_skin_drug_id`) REFERENCES `ophtrintravitinjection_skin_drug` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_treatment_ldrug_fk` FOREIGN KEY (`left_drug_id`) REFERENCES `ophtrintravitinjection_treatment_drug` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_treatment_rdrug_fk` FOREIGN KEY (`right_drug_id`) REFERENCES `ophtrintravitinjection_treatment_drug` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('et_ophtrintravitinjection_treatment_version','id','int(10) unsigned NOT NULL');
@@ -291,7 +291,7 @@ CREATE TABLE `ophtrintravitinjection_anaestheticagent_version` (
 	CONSTRAINT `acv_ophtrintravitinjection_anaestheticagent_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_anaestheticagent_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_anaestheticagent_ti_fk` FOREIGN KEY (`anaesthetic_agent_id`) REFERENCES `anaesthetic_agent` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_anaestheticagent_version','id','int(10) unsigned NOT NULL');
@@ -322,7 +322,7 @@ CREATE TABLE `ophtrintravitinjection_anaestheticdelivery_version` (
 	CONSTRAINT `acv_ophtrintravitinjection_anaestheticdelivery_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_anaestheticdelivery_di_fk` FOREIGN KEY (`anaesthetic_delivery_id`) REFERENCES `anaesthetic_delivery` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_anaestheticdelivery_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_anaestheticdelivery_version','id','int(10) unsigned NOT NULL');
@@ -354,7 +354,7 @@ CREATE TABLE `ophtrintravitinjection_anaesthetictype_version` (
 	CONSTRAINT `acv_ophtrintravitinjection_anaesthetictype_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_anaesthetictype_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_anaesthetictype_ti_fk` FOREIGN KEY (`anaesthetic_type_id`) REFERENCES `anaesthetic_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_anaesthetictype_version','id','int(10) unsigned NOT NULL');
@@ -387,7 +387,7 @@ CREATE TABLE `ophtrintravitinjection_antiseptic_allergy_assignment_version` (
 	CONSTRAINT `acv_ophtrintravitinjection_antiseptic_allergy_assign_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_antiseptic_allergy_assign_iopi_fk` FOREIGN KEY (`antisepticdrug_id`) REFERENCES `ophtrintravitinjection_antiseptic_drug` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_antiseptic_allergy_assign_allergyi_fk` FOREIGN KEY (`allergy_id`) REFERENCES `allergy` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_antiseptic_allergy_assignment_version','id','int(10) unsigned NOT NULL');
@@ -405,7 +405,7 @@ CREATE TABLE `ophtrintravitinjection_antiseptic_allergy_assignment_version` (
 		$this->execute("
 CREATE TABLE `ophtrintravitinjection_antiseptic_drug_version` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-	`name` varchar(128) COLLATE utf8_bin NOT NULL,
+	`name` varchar(128) NOT NULL,
 	`display_order` int(10) unsigned NOT NULL DEFAULT '1',
 	`last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
 	`last_modified_date` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
@@ -417,7 +417,7 @@ CREATE TABLE `ophtrintravitinjection_antiseptic_drug_version` (
 	KEY `acv_ophtrintravitinjection_antiseptic_drug_cui_fk` (`created_user_id`),
 	CONSTRAINT `acv_ophtrintravitinjection_antiseptic_drug_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_antiseptic_drug_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_antiseptic_drug_version','id','int(10) unsigned NOT NULL');
@@ -435,7 +435,7 @@ CREATE TABLE `ophtrintravitinjection_antiseptic_drug_version` (
 		$this->execute("
 CREATE TABLE `ophtrintravitinjection_complicat_version` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-	`name` varchar(128) COLLATE utf8_bin NOT NULL,
+	`name` varchar(128) NOT NULL,
 	`display_order` int(10) unsigned NOT NULL DEFAULT '1',
 	`default` tinyint(1) unsigned NOT NULL DEFAULT '0',
 	`description_required` tinyint(1) NOT NULL DEFAULT '0',
@@ -448,7 +448,7 @@ CREATE TABLE `ophtrintravitinjection_complicat_version` (
 	KEY `acv_ophtrintravitinjection_complicat_cui_fk` (`created_user_id`),
 	CONSTRAINT `acv_ophtrintravitinjection_complicat_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_complicat_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_complicat_version','id','int(10) unsigned NOT NULL');
@@ -484,7 +484,7 @@ CREATE TABLE `ophtrintravitinjection_complicat_assignment_version` (
 	CONSTRAINT `acv_ophtrintravitinjection_complicat_assignment_ele_fk` FOREIGN KEY (`element_id`) REFERENCES `et_ophtrintravitinjection_complications` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_complicat_assign_eye_id_fk` FOREIGN KEY (`eye_id`) REFERENCES `eye` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_complicat_assignment_lku_fk` FOREIGN KEY (`complication_id`) REFERENCES `ophtrintravitinjection_complicat` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_complicat_assignment_version','id','int(10) unsigned NOT NULL');
@@ -514,7 +514,7 @@ CREATE TABLE `ophtrintravitinjection_injectionuser_version` (
 	CONSTRAINT `acv_ophtrintravitinjection_injectionuser_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_injectionuser_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_injectionuser_ui_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_injectionuser_version','id','int(10) unsigned NOT NULL');
@@ -532,7 +532,7 @@ CREATE TABLE `ophtrintravitinjection_injectionuser_version` (
 		$this->execute("
 CREATE TABLE `ophtrintravitinjection_ioplowering_version` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-	`name` varchar(128) COLLATE utf8_bin NOT NULL,
+	`name` varchar(128) NOT NULL,
 	`display_order` int(10) unsigned NOT NULL DEFAULT '1',
 	`last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
 	`last_modified_date` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
@@ -543,7 +543,7 @@ CREATE TABLE `ophtrintravitinjection_ioplowering_version` (
 	KEY `acv_ophtrintravitinjection_ioplowering_cui_fk` (`created_user_id`),
 	CONSTRAINT `acv_ophtrintravitinjection_ioplowering_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_ioplowering_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_ioplowering_version','id','int(10) unsigned NOT NULL');
@@ -580,7 +580,7 @@ CREATE TABLE `ophtrintravitinjection_ioplowering_assign_version` (
 	CONSTRAINT `acv_ophtrintravitinjection_ioplowering_assign_ele_fk` FOREIGN KEY (`element_id`) REFERENCES `et_ophtrintravitinjection_treatment` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_ioplowering_assign_eye_id_fk` FOREIGN KEY (`eye_id`) REFERENCES `eye` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_ioplowering_assign_lku_fk` FOREIGN KEY (`ioplowering_id`) REFERENCES `ophtrintravitinjection_ioplowering` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_ioplowering_assign_version','id','int(10) unsigned NOT NULL');
@@ -598,7 +598,7 @@ CREATE TABLE `ophtrintravitinjection_ioplowering_assign_version` (
 		$this->execute("
 CREATE TABLE `ophtrintravitinjection_lens_status_version` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-	`name` varchar(128) COLLATE utf8_bin NOT NULL,
+	`name` varchar(128) NOT NULL,
 	`display_order` int(10) unsigned NOT NULL DEFAULT '1',
 	`default_distance` decimal(2,1) NOT NULL,
 	`last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
@@ -610,7 +610,7 @@ CREATE TABLE `ophtrintravitinjection_lens_status_version` (
 	KEY `acv_ophtrintravitinjection_lens_status_cui_fk` (`created_user_id`),
 	CONSTRAINT `acv_ophtrintravitinjection_lens_status_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_lens_status_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_lens_status_version','id','int(10) unsigned NOT NULL');
@@ -628,7 +628,7 @@ CREATE TABLE `ophtrintravitinjection_lens_status_version` (
 		$this->execute("
 CREATE TABLE `ophtrintravitinjection_postinjection_drops_version` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-	`name` varchar(128) COLLATE utf8_bin NOT NULL,
+	`name` varchar(128) NOT NULL,
 	`display_order` int(10) unsigned NOT NULL DEFAULT '1',
 	`last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
 	`last_modified_date` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
@@ -639,7 +639,7 @@ CREATE TABLE `ophtrintravitinjection_postinjection_drops_version` (
 	KEY `acv_ophtrintravitinjection_postinjection_drops_cui_fk` (`created_user_id`),
 	CONSTRAINT `acv_ophtrintravitinjection_postinjection_drops_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_postinjection_drops_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_postinjection_drops_version','id','int(10) unsigned NOT NULL');
@@ -657,7 +657,7 @@ CREATE TABLE `ophtrintravitinjection_postinjection_drops_version` (
 		$this->execute("
 CREATE TABLE `ophtrintravitinjection_skin_drug_version` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-	`name` varchar(128) COLLATE utf8_bin NOT NULL,
+	`name` varchar(128) NOT NULL,
 	`display_order` int(10) unsigned NOT NULL DEFAULT '1',
 	`last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
 	`last_modified_date` datetime NOT NULL DEFAULT '1901-01-01 00:00:00',
@@ -669,7 +669,7 @@ CREATE TABLE `ophtrintravitinjection_skin_drug_version` (
 	KEY `acv_ophtrintravitinjection_skin_drug_cui_fk` (`created_user_id`),
 	CONSTRAINT `acv_ophtrintravitinjection_skin_drug_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_skin_drug_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_skin_drug_version','id','int(10) unsigned NOT NULL');
@@ -702,7 +702,7 @@ CREATE TABLE `ophtrintravitinjection_skindrug_allergy_assignment_version` (
 	CONSTRAINT `acv_ophtrintravitinjection_skindrug_allergy_assign_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_skindrug_allergy_assign_iopi_fk` FOREIGN KEY (`skindrug_id`) REFERENCES `ophtrintravitinjection_skin_drug` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_skindrug_allergy_assign_allergyi_fk` FOREIGN KEY (`allergy_id`) REFERENCES `allergy` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_skindrug_allergy_assignment_version','id','int(10) unsigned NOT NULL');
@@ -720,7 +720,7 @@ CREATE TABLE `ophtrintravitinjection_skindrug_allergy_assignment_version` (
 		$this->execute("
 CREATE TABLE `ophtrintravitinjection_treatment_drug_version` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-	`name` varchar(128) COLLATE utf8_bin NOT NULL,
+	`name` varchar(128) NOT NULL,
 	`display_order` int(10) unsigned NOT NULL DEFAULT '1',
 	`available` tinyint(1) NOT NULL DEFAULT '1',
 	`last_modified_user_id` int(10) unsigned NOT NULL DEFAULT '1',
@@ -732,7 +732,7 @@ CREATE TABLE `ophtrintravitinjection_treatment_drug_version` (
 	KEY `acv_ophtrintravitinjection_treatment_drug_cui_fk` (`created_user_id`),
 	CONSTRAINT `acv_ophtrintravitinjection_treatment_drug_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_treatment_drug_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		");
 
 		$this->alterColumn('ophtrintravitinjection_treatment_drug_version','id','int(10) unsigned NOT NULL');
