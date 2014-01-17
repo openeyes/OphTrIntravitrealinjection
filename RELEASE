@@ -1,6 +1,14 @@
 Release History
 ===============
 
+1.5.2
+-----
++ bugfix: warning message indicating the injection eye was always both regardless of sides entered in the event
+
+1.5.1
+-----
++ fixed flash message display
+
 1.5.0
 -----
 + Consolidated migrations
