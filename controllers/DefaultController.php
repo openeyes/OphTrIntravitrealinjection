@@ -95,7 +95,7 @@ class DefaultController extends BaseEventTypeController
 
 		if ($this->episode && $exam_api && $imc = $exam_api->getLatestInjectionManagementComplex($this->episode, $since) ) {
 			if ($side = $imc->getInjectionSide()) {
-				$this->side_to_inject = $default_eye;
+				$this->side_to_inject = $side;
 			}
 			else {
 				$this->side_to_inject = 0;
