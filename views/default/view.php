@@ -30,6 +30,12 @@
 
 	<h2 class="event-title"><?php echo $this->event_type->name?></h2>
 
+	<?php if ($this->event->delete_pending) {?>
+		<div class="alert-box alert with-icon">
+			This event is pending deletion and has been locked.
+		</div>
+	<?php }?>
+
 	<?php $this->renderDefaultElements($this->action->id)?>
 	<?php $this->renderOptionalElements($this->action->id)?>
 
