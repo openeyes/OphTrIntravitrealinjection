@@ -22,19 +22,19 @@
 }
 /* line 19, ../sass/components/_event.scss */
 .event .event-content {
-  background-image: url('../img/watermark.png?1385733426');
+  background-image: url('../img/watermark.png?1387445453');
 }
 /* line 22, ../sass/components/_event.scss */
 .event .event-title {
   background-image: url('../img/medium.png?1383822664');
 }
 
-/* line 115, ../../../../../sass/openeyes/_mixins.scss */
+/* line 115, ../../../../assets/sass/openeyes/_mixins.scss */
 .row.anterior-segment .column.fixed {
   width: 326px;
 }
 
-/* line 125, ../../../../../sass/openeyes/_mixins.scss */
+/* line 125, ../../../../assets/sass/openeyes/_mixins.scss */
 .row.anterior-segment .column.fluid {
   width: -moz-calc(100% - 326px);
   width: -o-calc(100% - 326px);
@@ -42,11 +42,11 @@
   width: calc(100% - 326px);
 }
 
-/* line 115, ../../../../../sass/openeyes/_mixins.scss */
+/* line 115, ../../../../assets/sass/openeyes/_mixins.scss */
 .view .row.anterior-segment .column.fixed {
   width: 220px;
 }
-/* line 125, ../../../../../sass/openeyes/_mixins.scss */
+/* line 125, ../../../../assets/sass/openeyes/_mixins.scss */
 .view .row.anterior-segment .column.fluid {
   width: -moz-calc(100% - 220px);
   width: -o-calc(100% - 220px);

@@ -13,13 +13,8 @@ class DefaultController extends BaseEventTypeController
 	 */
 	protected function beforeAction($action)
 	{
-		if (!Yii::app()->getRequest()->getIsAjaxRequest() && !$this->isPrintAction($action->id)) {
-			Yii::app()->getClientScript()->registerScriptFile(Yii::app()->createUrl('js/spliteventtype.js'));
-		}
-
-		$res = parent::beforeAction($action);
-
-		return $res;
+		Yii::app()->assetManager->registerScriptFile('js/spliteventtype.js', null, null, AssetManager::OUTPUT_SCREEN);
+		return parent::beforeAction($action);
 	}
 
 	/**
@@ -60,7 +55,7 @@ class DefaultController extends BaseEventTypeController
 		// been created on the day of this injection
 		$since = new DateTime();
 		$since->setTime(0, 0, 0);
-		
+
 		if ($this->episode && $exam_api && $imc = $exam_api->getLatestInjectionManagementComplex($this->episode, $since) ) {
 			if ($side = $imc->getInjectionSide()) {
 				$this->side_to_inject = $side;
