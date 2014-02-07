@@ -1,6 +1,10 @@
 Release History
 ===============
 
+1.5.3
+-----
++ Support event locking and delete reason/request
+
 1.5.2
 -----
 + bugfix: warning message indicating the injection eye was always both regardless of sides entered in the event
