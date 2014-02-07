@@ -31,7 +31,7 @@
  * @property User $usermodified
  */
 
-class OphTrIntravitrealinjection_Complication extends BaseActiveRecordVersioned
+class OphTrIntravitrealinjection_Complication extends BaseActiveRecordVersionedSoftDelete
 {
 	/**
 	 * Returns the static model of the specified AR class.
