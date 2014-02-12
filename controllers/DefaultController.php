@@ -44,9 +44,9 @@ class DefaultController extends BaseEventTypeController
 	 *
 	 * @see BaseEventTypeController::createInit()
 	 */
-	protected function createInit()
+	protected function initActionCreate()
 	{
-		parent::createInit();
+		parent::initActionCreate();
 		$this->editInit();
 
 		// set up the injection side if provided by the injection management in examination
@@ -69,12 +69,11 @@ class DefaultController extends BaseEventTypeController
 	/**
 	 * call edit init
 	 *
-	 * @param $id
-	 * @see BaseEventTypeController::updateInit($id)
+	 * @see BaseEventTypeController::updateInit()
 	 */
-	protected function updateInit($id)
+	protected function initActionUpdate()
 	{
-		parent::updateInit($id);
+		parent::initActionUpdate();
 		$this->editInit();
 	}
 
