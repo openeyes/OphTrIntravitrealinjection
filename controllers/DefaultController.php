@@ -69,12 +69,11 @@ class DefaultController extends BaseEventTypeController
 	/**
 	 * call edit init
 	 *
-	 * @param $id
-	 * @see BaseEventTypeController::updateInit($id)
+	 * @see BaseEventTypeController::updateInit()
 	 */
-	protected function initActionUpdate($id)
+	protected function initActionUpdate()
 	{
-		parent::initActionUpdate($id);
+		parent::initActionUpdate();
 		$this->editInit();
 	}
 
