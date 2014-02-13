@@ -47,7 +47,6 @@ CREATE TABLE `et_ophtrintravitinjection_anaesthetic_version` (
 		$this->dropPrimaryKey('id','et_ophtrintravitinjection_anaesthetic_version');
 
 		$this->createIndex('et_ophtrintravitinjection_anaesthetic_aid_fk','et_ophtrintravitinjection_anaesthetic_version','id');
-		$this->addForeignKey('et_ophtrintravitinjection_anaesthetic_aid_fk','et_ophtrintravitinjection_anaesthetic_version','id','et_ophtrintravitinjection_anaesthetic','id');
 
 		$this->addColumn('et_ophtrintravitinjection_anaesthetic_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -86,7 +85,6 @@ CREATE TABLE `et_ophtrintravitinjection_anteriorseg_version` (
 		$this->dropPrimaryKey('id','et_ophtrintravitinjection_anteriorseg_version');
 
 		$this->createIndex('et_ophtrintravitinjection_anteriorseg_aid_fk','et_ophtrintravitinjection_anteriorseg_version','id');
-		$this->addForeignKey('et_ophtrintravitinjection_anteriorseg_aid_fk','et_ophtrintravitinjection_anteriorseg_version','id','et_ophtrintravitinjection_anteriorseg','id');
 
 		$this->addColumn('et_ophtrintravitinjection_anteriorseg_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -121,7 +119,6 @@ CREATE TABLE `et_ophtrintravitinjection_complications_version` (
 		$this->dropPrimaryKey('id','et_ophtrintravitinjection_complications_version');
 
 		$this->createIndex('et_ophtrintravitinjection_complications_aid_fk','et_ophtrintravitinjection_complications_version','id');
-		$this->addForeignKey('et_ophtrintravitinjection_complications_aid_fk','et_ophtrintravitinjection_complications_version','id','et_ophtrintravitinjection_complications','id');
 
 		$this->addColumn('et_ophtrintravitinjection_complications_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -164,7 +161,6 @@ CREATE TABLE `et_ophtrintravitinjection_postinject_version` (
 		$this->dropPrimaryKey('id','et_ophtrintravitinjection_postinject_version');
 
 		$this->createIndex('et_ophtrintravitinjection_postinject_aid_fk','et_ophtrintravitinjection_postinject_version','id');
-		$this->addForeignKey('et_ophtrintravitinjection_postinject_aid_fk','et_ophtrintravitinjection_postinject_version','id','et_ophtrintravitinjection_postinject','id');
 
 		$this->addColumn('et_ophtrintravitinjection_postinject_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -197,7 +193,6 @@ CREATE TABLE `et_ophtrintravitinjection_site_version` (
 		$this->dropPrimaryKey('id','et_ophtrintravitinjection_site_version');
 
 		$this->createIndex('et_ophtrintravitinjection_site_aid_fk','et_ophtrintravitinjection_site_version','id');
-		$this->addForeignKey('et_ophtrintravitinjection_site_aid_fk','et_ophtrintravitinjection_site_version','id','et_ophtrintravitinjection_site','id');
 
 		$this->addColumn('et_ophtrintravitinjection_site_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -266,7 +261,6 @@ CREATE TABLE `et_ophtrintravitinjection_treatment_version` (
 		$this->dropPrimaryKey('id','et_ophtrintravitinjection_treatment_version');
 
 		$this->createIndex('et_ophtrintravitinjection_treatment_aid_fk','et_ophtrintravitinjection_treatment_version','id');
-		$this->addForeignKey('et_ophtrintravitinjection_treatment_aid_fk','et_ophtrintravitinjection_treatment_version','id','et_ophtrintravitinjection_treatment','id');
 
 		$this->addColumn('et_ophtrintravitinjection_treatment_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -298,7 +292,6 @@ CREATE TABLE `ophtrintravitinjection_anaestheticagent_version` (
 		$this->dropPrimaryKey('id','ophtrintravitinjection_anaestheticagent_version');
 
 		$this->createIndex('ophtrintravitinjection_anaestheticagent_aid_fk','ophtrintravitinjection_anaestheticagent_version','id');
-		$this->addForeignKey('ophtrintravitinjection_anaestheticagent_aid_fk','ophtrintravitinjection_anaestheticagent_version','id','ophtrintravitinjection_anaestheticagent','id');
 
 		$this->addColumn('ophtrintravitinjection_anaestheticagent_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -329,7 +322,6 @@ CREATE TABLE `ophtrintravitinjection_anaestheticdelivery_version` (
 		$this->dropPrimaryKey('id','ophtrintravitinjection_anaestheticdelivery_version');
 
 		$this->createIndex('ophtrintravitinjection_anaestheticdelivery_aid_fk','ophtrintravitinjection_anaestheticdelivery_version','id');
-		$this->addForeignKey('ophtrintravitinjection_anaestheticdelivery_aid_fk','ophtrintravitinjection_anaestheticdelivery_version','id','ophtrintravitinjection_anaestheticdelivery','id');
 
 		$this->addColumn('ophtrintravitinjection_anaestheticdelivery_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -361,7 +353,6 @@ CREATE TABLE `ophtrintravitinjection_anaesthetictype_version` (
 		$this->dropPrimaryKey('id','ophtrintravitinjection_anaesthetictype_version');
 
 		$this->createIndex('ophtrintravitinjection_anaesthetictype_aid_fk','ophtrintravitinjection_anaesthetictype_version','id');
-		$this->addForeignKey('ophtrintravitinjection_anaesthetictype_aid_fk','ophtrintravitinjection_anaesthetictype_version','id','ophtrintravitinjection_anaesthetictype','id');
 
 		$this->addColumn('ophtrintravitinjection_anaesthetictype_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -394,7 +385,6 @@ CREATE TABLE `ophtrintravitinjection_antiseptic_allergy_assignment_version` (
 		$this->dropPrimaryKey('id','ophtrintravitinjection_antiseptic_allergy_assignment_version');
 
 		$this->createIndex('ophtrintravitinjection_antiseptic_allergy_assignment_aid_fk','ophtrintravitinjection_antiseptic_allergy_assignment_version','id');
-		$this->addForeignKey('ophtrintravitinjection_antiseptic_allergy_assignment_aid_fk','ophtrintravitinjection_antiseptic_allergy_assignment_version','id','ophtrintravitinjection_antiseptic_allergy_assignment','id');
 
 		$this->addColumn('ophtrintravitinjection_antiseptic_allergy_assignment_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -491,7 +481,6 @@ CREATE TABLE `ophtrintravitinjection_complicat_assignment_version` (
 		$this->dropPrimaryKey('id','ophtrintravitinjection_complicat_assignment_version');
 
 		$this->createIndex('ophtrintravitinjection_complicat_assignment_aid_fk','ophtrintravitinjection_complicat_assignment_version','id');
-		$this->addForeignKey('ophtrintravitinjection_complicat_assignment_aid_fk','ophtrintravitinjection_complicat_assignment_version','id','ophtrintravitinjection_complicat_assignment','id');
 
 		$this->addColumn('ophtrintravitinjection_complicat_assignment_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -521,7 +510,6 @@ CREATE TABLE `ophtrintravitinjection_injectionuser_version` (
 		$this->dropPrimaryKey('id','ophtrintravitinjection_injectionuser_version');
 
 		$this->createIndex('ophtrintravitinjection_injectionuser_aid_fk','ophtrintravitinjection_injectionuser_version','id');
-		$this->addForeignKey('ophtrintravitinjection_injectionuser_aid_fk','ophtrintravitinjection_injectionuser_version','id','ophtrintravitinjection_injectionuser','id');
 
 		$this->addColumn('ophtrintravitinjection_injectionuser_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -587,7 +575,6 @@ CREATE TABLE `ophtrintravitinjection_ioplowering_assign_version` (
 		$this->dropPrimaryKey('id','ophtrintravitinjection_ioplowering_assign_version');
 
 		$this->createIndex('ophtrintravitinjection_ioplowering_assign_aid_fk','ophtrintravitinjection_ioplowering_assign_version','id');
-		$this->addForeignKey('ophtrintravitinjection_ioplowering_assign_aid_fk','ophtrintravitinjection_ioplowering_assign_version','id','ophtrintravitinjection_ioplowering_assign','id');
 
 		$this->addColumn('ophtrintravitinjection_ioplowering_assign_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -709,7 +696,6 @@ CREATE TABLE `ophtrintravitinjection_skindrug_allergy_assignment_version` (
 		$this->dropPrimaryKey('id','ophtrintravitinjection_skindrug_allergy_assignment_version');
 
 		$this->createIndex('ophtrintravitinjection_skindrug_allergy_assignment_aid_fk','ophtrintravitinjection_skindrug_allergy_assignment_version','id');
-		$this->addForeignKey('ophtrintravitinjection_skindrug_allergy_assignment_aid_fk','ophtrintravitinjection_skindrug_allergy_assignment_version','id','ophtrintravitinjection_skindrug_allergy_assignment','id');
 
 		$this->addColumn('ophtrintravitinjection_skindrug_allergy_assignment_version','version_date',"datetime not null default '1900-01-01 00:00:00'");
 
@@ -747,74 +733,30 @@ CREATE TABLE `ophtrintravitinjection_treatment_drug_version` (
 		$this->addPrimaryKey('version_id','ophtrintravitinjection_treatment_drug_version','version_id');
 		$this->alterColumn('ophtrintravitinjection_treatment_drug_version','version_id','int(10) unsigned NOT NULL AUTO_INCREMENT');
 
-		$this->addColumn('et_ophtrintravitinjection_anaesthetic','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('et_ophtrintravitinjection_anaesthetic_version','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('et_ophtrintravitinjection_anteriorseg','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('et_ophtrintravitinjection_anteriorseg_version','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('et_ophtrintravitinjection_complications','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('et_ophtrintravitinjection_complications_version','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('et_ophtrintravitinjection_postinject','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('et_ophtrintravitinjection_postinject_version','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('et_ophtrintravitinjection_site','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('et_ophtrintravitinjection_site_version','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('et_ophtrintravitinjection_treatment','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('et_ophtrintravitinjection_treatment_version','deleted','tinyint(1) unsigned not null');
-
-		$this->addColumn('ophtrintravitinjection_anaestheticagent','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_anaestheticagent_version','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_anaestheticdelivery','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_anaestheticdelivery_version','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_anaesthetictype','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_anaesthetictype_version','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_antiseptic_allergy_assignment','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_antiseptic_allergy_assignment_version','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_antiseptic_drug','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_antiseptic_drug_version','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_complicat','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_complicat_version','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_complicat_assignment','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_complicat_assignment_version','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_injectionuser','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_injectionuser_version','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_ioplowering','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_ioplowering_version','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_ioplowering_assign','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_ioplowering_assign_version','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_lens_status','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_lens_status_version','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_postinjection_drops','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_postinjection_drops_version','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_skin_drug','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_skin_drug_version','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_skindrug_allergy_assignment','deleted','tinyint(1) unsigned not null');
-		$this->addColumn('ophtrintravitinjection_skindrug_allergy_assignment_version','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_treatment_drug','deleted','tinyint(1) unsigned not null');
 		$this->addColumn('ophtrintravitinjection_treatment_drug_version','deleted','tinyint(1) unsigned not null');
 	}
 
 	public function down()
 	{
-		$this->dropColumn('et_ophtrintravitinjection_anaesthetic','deleted');
-		$this->dropColumn('et_ophtrintravitinjection_anteriorseg','deleted');
-		$this->dropColumn('et_ophtrintravitinjection_complications','deleted');
-		$this->dropColumn('et_ophtrintravitinjection_postinject','deleted');
-		$this->dropColumn('et_ophtrintravitinjection_site','deleted');
-		$this->dropColumn('et_ophtrintravitinjection_treatment','deleted');
-
-		$this->dropColumn('ophtrintravitinjection_anaestheticagent','deleted');
-		$this->dropColumn('ophtrintravitinjection_anaestheticdelivery','deleted');
-		$this->dropColumn('ophtrintravitinjection_anaesthetictype','deleted');
-		$this->dropColumn('ophtrintravitinjection_antiseptic_allergy_assignment','deleted');
 		$this->dropColumn('ophtrintravitinjection_antiseptic_drug','deleted');
 		$this->dropColumn('ophtrintravitinjection_complicat','deleted');
-		$this->dropColumn('ophtrintravitinjection_complicat_assignment','deleted');
-		$this->dropColumn('ophtrintravitinjection_injectionuser','deleted');
 		$this->dropColumn('ophtrintravitinjection_ioplowering','deleted');
-		$this->dropColumn('ophtrintravitinjection_ioplowering_assign','deleted');
 		$this->dropColumn('ophtrintravitinjection_lens_status','deleted');
 		$this->dropColumn('ophtrintravitinjection_postinjection_drops','deleted');
 		$this->dropColumn('ophtrintravitinjection_skin_drug','deleted');
-		$this->dropColumn('ophtrintravitinjection_skindrug_allergy_assignment','deleted');
 		$this->dropColumn('ophtrintravitinjection_treatment_drug','deleted');
 
 		$this->dropTable('et_ophtrintravitinjection_anaesthetic_version');
