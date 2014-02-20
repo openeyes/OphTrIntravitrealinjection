@@ -251,34 +251,6 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 	}
 
 	/**
-	 * returns list of treatment drugs for the given side
-	 *
-	 * @param string $side - left or right
-	 * @return OphTrIntravitrealinjection_Treatment_Drug[]
-	 */
-	public function getTreatmentDrugs($side)
-	{
-		$drugs = OphTrIntravitrealinjection_Treatment_Drug::model()->availableScope()->findAll();
-
-		if ($curr_id = $this->{$side . '_drug_id'}) {
-			$drug_array = array();
-
-			foreach ($drugs as $drug) {
-				if ($curr_id == $drug->id) {
-					// current drug is in the list so we don't need to append
-					return $drugs;
-				}
-				$drug_array[] = $drug;
-			}
-
-			// got this far so the current drug for this side is no longer available
-			$drug_array[] = $this->{$side . '_drug'};
-			$drugs = $drug_array;
-		}
-		return $drugs;
-	}
-
-	/**
 	 * clear out sided fields to prevent validation of irrelevant data
 	 *
 	 * (non-PHPdoc)
@@ -416,4 +388,17 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		}
 	}
 
+	/**
+	 * Get ids of IOP lowering drugs currently associated with the element
+	 */
+	public function getIopLoweringDrugValues()
+	{
+		$drug_values = array();
+
+		foreach ($this->ioplowering_assignments as $ioplowering_assignment) {
+			$drug_values[] = $ioplowering_assignment->ioplowering_id;
+		}
+
+		return $drug_values;
+	}
 }

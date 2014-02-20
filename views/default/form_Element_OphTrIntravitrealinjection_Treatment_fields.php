@@ -19,7 +19,7 @@
 ?>
 
 <?php
-	$antiseptic_drugs = OphTrIntravitrealinjection_AntiSepticDrug::model()->with('allergies')->findAll();
+	$antiseptic_drugs = OphTrIntravitrealinjection_AntiSepticDrug::model()->with('allergies')->activeOrPk($element->{$side . '_pre_antisept_drug_id'})->findAll();
 	$antiseptic_drugs_opts = array(
 		'empty' => '- Please select -',
 		'nowrapper' => true,
@@ -38,7 +38,7 @@
 		}
 		$antiseptic_drugs_opts['options'][(string)$drug->id] = $opts;
 	}
-	$skin_drugs = OphTrIntravitrealinjection_SkinDrug::model()->with('allergies')->findAll();
+	$skin_drugs = OphTrIntravitrealinjection_SkinDrug::model()->with('allergies')->activeOrPk($element->{$side.'_pre_skin_drug_id'})->findAll();
 	$skin_drugs_opts = array('empty' => '- Please select -', 'nowrapper' => true, 'options' => array());
 	$skin_allergic = false;
 	foreach ($skin_drugs as $drug) {
@@ -111,13 +111,13 @@ if (isset($_POST[get_class($element)])) {
 		'div_id' =>  "div_" . get_class($element) ."_" . $side . "_pre_ioploweringdrugs",
 		'label' => $element->getAttributeLabel($side . '_pre_ioploweringdrugs'),
 		'div_class' => $div_class);
-	$ioplowering_drugs = OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order'=>'display_order asc'));
+	$ioplowering_drugs = OphTrIntravitrealinjection_IOPLoweringDrug::model()->activeOrPk($element->iopLoweringDrugValues)->findAll(array('order'=>'display_order asc'));
 	foreach ($ioplowering_drugs as $drug) {
 		$html_options['options'][(string) $drug->id] = array('data-order' => $drug->display_order);
 	}
 	echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_pre_ioploweringdrugs]', $side . '_pre_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options,false,false,null,false,false,array('field'=>6));
 
-	$drugs = $element->getTreatmentDrugs($side);
+	$drugs = OphTrIntravitrealinjection_Treatment_Drug::model()->activeOrPk($element->{$side.'_drug_id'})->findAll();
 
 	$html_options = array(
 		'empty' => '- Please select -',
@@ -275,7 +275,7 @@ echo $form->checkbox($element, $side . '_post_ioplowering_required');
 		'div_id' =>  "div_" . get_class($element) ."_" . $side . "_post_ioploweringdrugs",
 		'label' => $element->getAttributeLabel($side . '_post_ioploweringdrugs'),
 		'div_class' => $div_class);
-	$ioplowering_drugs = OphTrIntravitrealinjection_IOPLoweringDrug::model()->findAll(array('order'=>'display_order asc'));
+	$ioplowering_drugs = OphTrIntravitrealinjection_IOPLoweringDrug::model()->activeOrPk($element->iopLoweringDrugValues)->findAll(array('order'=>'display_order asc'));
 	foreach ($ioplowering_drugs as $drug) {
 		$html_options['options'][(string) $drug->id] = array('data-order' => $drug->display_order);
 	}

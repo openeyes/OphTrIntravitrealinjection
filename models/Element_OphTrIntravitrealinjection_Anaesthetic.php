@@ -196,7 +196,7 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 	public function getAnaestheticTypes()
 	{
 		$options = array();
-		foreach (OphTrIntravitrealinjection_AnaestheticType::model()->with('anaesthetic_type')->findAll(array('order' => 'display_order asc')) as $ad) {
+		foreach (OphTrIntravitrealinjection_AnaestheticType::model()->with('anaesthetic_type')->findAll(array('order' => 't.display_order asc')) as $ad) {
 			$options[$ad->anaesthetic_type->id] = $ad->anaesthetic_type->name;
 		}
 		return $options;

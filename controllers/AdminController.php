@@ -23,7 +23,7 @@ class AdminController extends ModuleAdminController
 
 	public function actionViewTreatmentDrugs()
 	{
-		$model_list = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order' => 'display_order asc'));
+		$model_list = OphTrIntravitrealinjection_Treatment_Drug::model()->active()->findAll(array('order' => 'display_order asc'));
 		$this->jsVars['OphTrIntravitrealinjection_sort_url'] = $this->createUrl('sortTreatmentDrugs');
 
 		Audit::add('admin','list',null,null,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
