@@ -17,21 +17,14 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 ?>
-
-<section class="element">
-	<header class="element-header">
-		<h3 class="element-title"><?php echo $element->elementType->name?></h3>
-	</header>
-
-	<div class="element-data">
-		<div class="row data-row">
-			<div class="large-2 column">
-				<div class="data-label"><?php echo $element->getAttributeLabel('site_id') ?>:</div>
-			</div>
-			<div class="large-10 column end">
-				<div class="data-value"><?php echo $element->{'site'}->name ?></div>
-			</div>
+<div class="element-data">
+	<div class="row data-row">
+		<div class="large-2 column">
+			<div class="data-label"><?php echo $element->getAttributeLabel('site_id') ?>:</div>
+		</div>
+		<div class="large-10 column end">
+			<div class="data-value"><?php echo $element->{'site'}->name ?></div>
 		</div>
 	</div>
+</div>
 
-</section>

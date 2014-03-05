@@ -471,7 +471,6 @@ CREATE TABLE `ophtrintravitinjection_complicat_assignment_version` (
 	KEY `acv_ophtrintravitinjection_complicat_assignment_lku_fk` (`complication_id`),
 	CONSTRAINT `acv_ophtrintravitinjection_complicat_assignment_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_complicat_assignment_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
-	CONSTRAINT `acv_ophtrintravitinjection_complicat_assignment_ele_fk` FOREIGN KEY (`element_id`) REFERENCES `et_ophtrintravitinjection_complications` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_complicat_assign_eye_id_fk` FOREIGN KEY (`eye_id`) REFERENCES `eye` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_complicat_assignment_lku_fk` FOREIGN KEY (`complication_id`) REFERENCES `ophtrintravitinjection_complicat` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
@@ -565,7 +564,6 @@ CREATE TABLE `ophtrintravitinjection_ioplowering_assign_version` (
 	KEY `acv_ophtrintravitinjection_ioplowering_assign_lku_fk` (`ioplowering_id`),
 	CONSTRAINT `acv_ophtrintravitinjection_ioplowering_assign_lmui_fk` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_ioplowering_assign_cui_fk` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
-	CONSTRAINT `acv_ophtrintravitinjection_ioplowering_assign_ele_fk` FOREIGN KEY (`element_id`) REFERENCES `et_ophtrintravitinjection_treatment` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_ioplowering_assign_eye_id_fk` FOREIGN KEY (`eye_id`) REFERENCES `eye` (`id`),
 	CONSTRAINT `acv_ophtrintravitinjection_ioplowering_assign_lku_fk` FOREIGN KEY (`ioplowering_id`) REFERENCES `ophtrintravitinjection_ioplowering` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
