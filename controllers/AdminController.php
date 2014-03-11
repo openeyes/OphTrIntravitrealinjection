@@ -26,7 +26,11 @@ class AdminController extends ModuleAdminController
 		$model_list = OphTrIntravitrealinjection_Treatment_Drug::model()->active()->findAll(array('order' => 'display_order asc'));
 		$this->jsVars['OphTrIntravitrealinjection_sort_url'] = $this->createUrl('sortTreatmentDrugs');
 
+		$transaction = Yii::app()->db->beginTransaction('List','Treatment drugs');
+
 		Audit::add('admin','list',null,null,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
+
+		$transaction->commit();
 
 		$this->render('list_OphTrIntravitrealinjection_Treatment_Drug',array(
 				'model_list' => $model_list,
@@ -40,6 +44,8 @@ class AdminController extends ModuleAdminController
 		$model = new OphTrIntravitrealinjection_Treatment_Drug();
 
 		if (isset($_POST['OphTrIntravitrealinjection_Treatment_Drug'])) {
+			$transaction = Yii::app()->db->beginTransaction('Create','Treatment drug');
+
 			$model->attributes = $_POST['OphTrIntravitrealinjection_Treatment_Drug'];
 
 			if ($bottom_drug = OphTrIntravitrealinjection_Treatment_Drug::model()->find(array('order'=>'display_order desc'))) {
@@ -51,9 +57,14 @@ class AdminController extends ModuleAdminController
 
 			if ($model->save()) {
 				Audit::add('admin','create',$model->id,null,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
+
+				$transaction->commit();
+
 				Yii::app()->user->setFlash('success', 'Treatment drug created');
 
 				$this->redirect(array('ViewTreatmentDrugs'));
+			} else {
+				$transaction->rollback();
 			}
 		}
 
@@ -72,13 +83,20 @@ class AdminController extends ModuleAdminController
 		}
 
 		if (isset($_POST['OphTrIntravitrealinjection_Treatment_Drug'])) {
+			$transaction = Yii::app()->db->beginTransaction('Update','Treatment drug');
+
 			$model->attributes = $_POST['OphTrIntravitrealinjection_Treatment_Drug'];
 
 			if ($model->save()) {
 				Audit::add('admin','update',$model->id,null,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
+
+				$transaction->commit();
+
 				Yii::app()->user->setFlash('success', 'Treatment drug updated');
 
 				$this->redirect(array('ViewTreatmentDrugs'));
+			} else {
+				$transaction->rollback();
 			}
 		}
 
@@ -95,6 +113,8 @@ class AdminController extends ModuleAdminController
 	public function actionSortTreatmentDrugs()
 	{
 		if (!empty($_POST['order'])) {
+			$transaction = Yii::app()->db->beginTransaction('Sort','Treatment drugs');
+
 			foreach ($_POST['order'] as $i => $id) {
 				if ($drug = OphTrIntravitrealinjection_Treatment_Drug::model()->findByPk($id)) {
 					$drug->display_order = $i+1;
@@ -103,6 +123,8 @@ class AdminController extends ModuleAdminController
 					}
 				}
 			}
+
+			$transaction->commit();
 		}
 	}
 
@@ -110,10 +132,18 @@ class AdminController extends ModuleAdminController
 	{
 		$result = 1;
 
-		foreach (OphTrIntravitrealinjection_Treatment_Drug::model()->findAllByPk($_POST['treatment_drugs']) as $drug) {
-			if (!$drug->delete()) {
-				$result = 0;
+		if (!empty($_POST['treatment_drugs'])) {
+			$transaction = Yii::app()->db->beginTransaction('Delete','Treatment drugs');
+
+			foreach (OphTrIntravitrealinjection_Treatment_Drug::model()->findAllByPk($_POST['treatment_drugs']) as $drug) {
+				if (!$drug->delete()) {
+					$transaction->rollback();
+
+					throw new Exception("Unable to delete treatment drug: ".print_r($drug->getErrors(),true));
+				}
 			}
+
+			$transaction->commit();
 		}
 
 		echo $result;
