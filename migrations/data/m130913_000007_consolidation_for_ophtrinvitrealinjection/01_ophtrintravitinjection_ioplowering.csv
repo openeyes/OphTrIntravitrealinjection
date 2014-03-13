@@ -1,5 +1,5 @@
-name,display_order
-"Iopidine 0.5%",1
-"Iopidine 1.0%",2
-"Diamox 250mg",3
-"Diamox 500mg",4
+id,name,display_order
+1,"Iopidine 0.5%",1
+2,"Iopidine 1.0%",2
+3,"Diamox 250mg",3
+4,"Diamox 500mg",4
