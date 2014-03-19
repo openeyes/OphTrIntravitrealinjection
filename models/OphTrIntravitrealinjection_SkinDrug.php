@@ -32,7 +32,7 @@
  * @property User $usermodified
  */
 
-class OphTrIntravitrealinjection_SkinDrug extends BaseActiveRecordVersionedSoftDelete
+class OphTrIntravitrealinjection_SkinDrug extends BaseActiveRecordVersioned
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -49,6 +49,11 @@ class OphTrIntravitrealinjection_SkinDrug extends BaseActiveRecordVersionedSoftD
 	public function tableName()
 	{
 		return 'ophtrintravitinjection_skin_drug';
+	}
+
+	public function defaultScope()
+	{
+		return array('order' => $this->getTableAlias(true, false) . '.display_order');
 	}
 
 	/**
@@ -109,6 +114,13 @@ class OphTrIntravitrealinjection_SkinDrug extends BaseActiveRecordVersionedSoftD
 			));
 	}
 
+	public function behaviors()
+	{
+		return array(
+			'LookupTable' => 'LookupTable',
+		);
+	}
+
 	/**
 	 * get the default skin drug (if set)
 	 *
@@ -118,5 +130,4 @@ class OphTrIntravitrealinjection_SkinDrug extends BaseActiveRecordVersionedSoftD
 	{
 		return OphTrIntravitrealinjection_SkinDrug::model()->find('is_default = ?', array(true));
 	}
-
 }

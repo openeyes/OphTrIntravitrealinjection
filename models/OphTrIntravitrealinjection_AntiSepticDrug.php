@@ -30,7 +30,7 @@
  * @property User $usermodified
  */
 
-class OphTrIntravitrealinjection_AntiSepticDrug extends BaseActiveRecordVersionedSoftDelete
+class OphTrIntravitrealinjection_AntiSepticDrug extends BaseActiveRecordVersioned
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -47,6 +47,11 @@ class OphTrIntravitrealinjection_AntiSepticDrug extends BaseActiveRecordVersione
 	public function tableName()
 	{
 		return 'ophtrintravitinjection_antiseptic_drug';
+	}
+
+	public function defaultScope()
+	{
+		return array('order' => $this->getTableAlias(true, false) . '.display_order');
 	}
 
 	/**
@@ -105,6 +110,13 @@ class OphTrIntravitrealinjection_AntiSepticDrug extends BaseActiveRecordVersione
 		return new CActiveDataProvider(get_class($this), array(
 				'criteria' => $criteria,
 			));
+	}
+
+	public function behaviors()
+	{
+		return array(
+			'LookupTable' => 'LookupTable',
+		);
 	}
 
 	/**
