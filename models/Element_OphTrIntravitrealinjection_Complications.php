@@ -138,25 +138,10 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 	public function getophtrintravitinjection_complication_defaults()
 	{
 		$ids = array();
-		foreach (OphTrIntravitrealinjection_Complication::model()->notDeleted()->findAll('`default` = ?',array(1)) as $item) {
+		foreach (OphTrIntravitrealinjection_Complication::model()->active()->findAll('`default` = 1') as $item) {
 			$ids[] = $item->id;
 		}
 		return $ids;
-	}
-
-	protected function beforeSave()
-	{
-		return parent::beforeSave();
-	}
-
-	protected function afterSave()
-	{
-		return parent::afterSave();
-	}
-
-	protected function beforeValidate()
-	{
-		return parent::beforeValidate();
 	}
 
 	/*

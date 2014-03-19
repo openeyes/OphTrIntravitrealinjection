@@ -31,7 +31,7 @@
  * @property User $usermodified
  */
 
-class OphTrIntravitrealinjection_Complication extends BaseActiveRecordVersionedSoftDelete
+class OphTrIntravitrealinjection_Complication extends BaseActiveRecordVersioned
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -48,6 +48,11 @@ class OphTrIntravitrealinjection_Complication extends BaseActiveRecordVersionedS
 	public function tableName()
 	{
 		return 'ophtrintravitinjection_complicat';
+	}
+
+	public function defaultScope()
+	{
+		return array('order' => $this->getTableAlias(true, false) . '.display_order');
 	}
 
 	/**
@@ -88,6 +93,13 @@ class OphTrIntravitrealinjection_Complication extends BaseActiveRecordVersionedS
 		);
 	}
 
+	public function behaviors()
+	{
+		return array(
+			'LookupTable' => 'LookupTable',
+		);
+	}
+
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -105,27 +117,5 @@ class OphTrIntravitrealinjection_Complication extends BaseActiveRecordVersionedS
 		return new CActiveDataProvider(get_class($this), array(
 				'criteria' => $criteria,
 			));
-	}
-
-	/**
-	 * Set default values for forms on create
-	 */
-	public function setDefaultOptions()
-	{
-	}
-
-	protected function beforeSave()
-	{
-		return parent::beforeSave();
-	}
-
-	protected function afterSave()
-	{
-		return parent::afterSave();
-	}
-
-	protected function beforeValidate()
-	{
-		return parent::beforeValidate();
 	}
 }

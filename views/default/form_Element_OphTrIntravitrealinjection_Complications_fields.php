@@ -24,7 +24,7 @@
 		'empty' => '- Please select -',
 		'div_id' =>  get_class($element) . '_' . $side . '_complications',
 		'label' => 'Complications');
-	$complications = OphTrIntravitrealinjection_Complication::model()->notDeletedOrPk($element->complicationValues)->findAll(array('order'=>'display_order asc'));
+	$complications = OphTrIntravitrealinjection_Complication::model()->activeOrPk($element->complicationValues)->findAll();
 	foreach ($complications as $complication) {
 		$html_options['options'][(string) $complication->id] = array('data-order' => $complication->display_order, 'data-description_required' => $complication->description_required);
 	}
