@@ -44,7 +44,7 @@
 			<div class="data-label"><?php echo $element->getAttributeLabel($side . '_oth_descrip') ?>:</div>
 		</div>
 		<div class="large-8 column">
-			<div class="data-value"><?php echo CHtml::encode($element->{$side . '_oth_descrip'}) ?></div>
+			<div class="data-value"><?php echo Yii::app()->format->Ntext($element->{$side . '_oth_descrip'}) ?></div>
 		</div>
 	</div>
 <?php } ?>
