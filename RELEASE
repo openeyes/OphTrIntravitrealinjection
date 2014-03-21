@@ -1,6 +1,15 @@
 Release History
 ===============
 
+1.6.0
+-----
++ Flash messages are not displaying on some pages
++ Require a close button for the Anaesthetic section as well as the Treatment
++ Asset refactoring
++ Basic Medical Retina episode summary
++ Remove POST handling from models
++ Rationalise db character set and collation
+
 1.5.3
 -----
 + Support event locking and delete reason/request
