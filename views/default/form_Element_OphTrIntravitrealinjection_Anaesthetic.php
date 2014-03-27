@@ -33,7 +33,6 @@
 		<div class="element-eye right-eye left side column <?php if (!$element->hasRight()) { ?> inactive<?php } ?>"
 			data-side="right">
 			<div class="active-form">
-				<a href="#" class="icon-remove-side remove-side">Remove side</a>
 				<?php $this->renderPartial('form_' . get_class($element) . '_fields',
 					array('side' => 'right', 'element' => $element, 'form' => $form, 'data' => $data)); ?>
 			</div>
@@ -47,7 +46,6 @@
 		<div class="element-eye left-eye right side column <?php if (!$element->hasLeft()) { ?> inactive<?php } ?>"
 			data-side="left">
 			<div class="active-form">
-				<a href="#" class="icon-remove-side remove-side">Remove side</a>
 				<?php $this->renderPartial('form_' . get_class($element) . '_fields',
 					array('side' => 'left', 'element' => $element, 'form' => $form, 'data' => $data)); ?>
 			</div>
