@@ -19,4 +19,4 @@
 ?>
 
 <?php echo $form->textField($model, 'name')?>
-<?php echo $form->radioBoolean($model, 'available')?>
+<?php echo $form->radioBoolean($model, 'active')?>

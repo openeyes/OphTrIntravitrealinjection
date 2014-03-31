@@ -48,7 +48,7 @@
 							<?php echo $model->name?>
 						</td>
 						<td>
-							<?php echo $model->available ? 'Yes' : 'No'?>
+							<?php echo $model->active ? 'Yes' : 'No'?>
 						</td>
 					</tr>
 				<?php }?>
