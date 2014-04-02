@@ -95,7 +95,7 @@ class ReportController extends BaseController {
 				->join("et_ophtrintravitinjection_site insite", "insite.event_id = treat.event_id")
 				->join("site", "insite.site_id = site.id")
 				->where("e.deleted = 0 and ep.deleted = 0 and e.created_date >= :from_date and e.created_date < (:to_date + interval 1 day)")
-				->order("p.id, e.created_date desc");
+				->order("p.id, e.created_date asc");
 		$params = array(':from_date' => $date_from, ':to_date' => $date_to);
 
 		$results = array();
