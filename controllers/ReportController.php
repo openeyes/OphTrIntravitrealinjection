@@ -186,7 +186,7 @@ class ReportController extends BaseController {
 					->from("event e")
 					->join("episode ep", "e.episode_id = ep.id")
 					->where("e.deleted = 0 and ep.deleted = 0 and ep.patient_id = :patient_id and e.event_type_id = :etype_id",
-							array(':patient_id' => $patient_id, ':etype_id' => $this->_examination_event_type_id)
+							array(':patient_id' => $patient_id, ':etype_id' => $this->getExaminationEventTypeId())
 					);
 			$event_ids = array();
 			foreach ($command->queryAll() as $res) {
