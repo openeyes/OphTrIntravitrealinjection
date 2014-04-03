@@ -152,8 +152,8 @@ class ReportController extends BaseController {
 				$site = 'Unknown';
 			}
 			foreach (array('left', 'right') as $side) {
+				$dt = date('j M Y', strtotime($row['created_date']));
 				if ($drug = $this->getDrugById($row[$side . '_drug_id'])) {
-					$dt = date('j M Y', strtotime($row['created_date']));
 					$patient_data[$side][$drug->name][$site]['last_injection_date'] = $dt;
 					$patient_data[$side][$drug->name][$site]['injection_number'] = $row[$side . '_number'];
 					if (!isset($patient_data[$side][$drug->name][$site]['first_injection_date'])) {
