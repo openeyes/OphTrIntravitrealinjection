@@ -1,6 +1,10 @@
 Release History
 ===============
 
+1.5.4
+-----
++ Initial reports
+
 1.5.3
 -----
 + Support event locking and delete reason/request
