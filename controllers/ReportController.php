@@ -110,6 +110,7 @@ class ReportController extends BaseController {
 		}
 		return $records;
 	}
+	private $patient_id = null;
 
 	protected function getSummaryInjections($date_from, $date_to)
 	{
@@ -127,9 +128,15 @@ class ReportController extends BaseController {
 				->join("eye", "eye.id = treat.eye_id")
 				->join("et_ophtrintravitinjection_site insite", "insite.event_id = treat.event_id")
 				->leftJoin("site", "insite.site_id = site.id")
-				->where("e.deleted = 0 and ep.deleted = 0 and e.created_date >= :from_date and e.created_date < (:to_date + interval 1 day)")
 				->order("p.id, e.created_date asc");
-		$params = array(':from_date' => $date_from, ':to_date' => $date_to);
+		// for debug
+		if ($this->patient_id) {
+			$command->where("ep.patient_id = :pat_id and e.deleted = 0 and ep.deleted = 0 and e.created_date >= :from_date and e.created_date < (:to_date + interval 1 day)");
+			$params = array(':from_date' => $date_from, ':to_date' => $date_to, ':pat_id' => $this->patient_id);
+		} else {
+			$command->where("e.deleted = 0 and ep.deleted = 0 and e.created_date >= :from_date and e.created_date < (:to_date + interval 1 day)");
+			$params = array(':from_date' => $date_from, ':to_date' => $date_to);
+		}
 
 		$results = array();
 		foreach ($command->queryAll(true, $params) as $row) {
