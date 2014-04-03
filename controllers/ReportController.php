@@ -63,7 +63,12 @@ class ReportController extends BaseController {
 				$date_to = date('Y-m-d', strtotime($_GET['date_to']));
 			}
 
-			$results = $this->getInjections($date_from, $date_to);
+			if (@$_GET['summary']) {
+				$results = $this->getSummaryInjections($date_from, $date_to);
+			}
+			else {
+				$results = $this->getInjections($date_from, $date_to);
+			}
 
 			$filename = 'therapyapplication_report_' . date('YmdHis') . '.csv';
 			$this->sendCsvHeaders($filename);
@@ -77,6 +82,91 @@ class ReportController extends BaseController {
 			);
 			$this->render('index', $context);
 		}
+	}
+
+	protected function extractSummaryData($patient_data)
+	{
+		$records = array();
+		foreach (array('left', 'right') as $side) {
+			if (@$patient_data[$side]) {
+				foreach (array_keys($patient_data[$side]) as $drug) {
+					foreach (array_keys($patient_data[$side][$drug]) as $site) {
+						$records[] = array(
+							'patient_hosnum' => $patient_data['patient_hosnum'],
+							'patient_firstname' => $patient_data['patient_firstname'],
+							'patient_surname' => $patient_data['patient_surname'],
+							'patient_gender' => $patient_data['patient_gender'],
+							'patient_dob' => $patient_data['patient_dob'],
+							'eye' => $side,
+							'drug' => $drug,
+							'site' => $site,
+							'first_injection_date' => $patient_data[$side][$drug][$site]['first_injection_date'],
+							'last_injection_date' => $patient_data[$side][$drug][$site]['last_injection_date'],
+							'injection_number' => $patient_data[$side][$drug][$site]['injection_number']
+						);
+					}
+				}
+			}
+		}
+		return $records;
+	}
+
+	protected function getSummaryInjections($date_from, $date_to)
+	{
+		$patient_data = array();
+		$command = Yii::app()->db->createCommand()
+				->select(
+						"p.id as patient_id, treat.left_drug_id, treat.right_drug_id, treat.left_number, treat.right_number, e.id,
+						e.created_date, c.first_name, c.last_name, e.created_date, p.hos_num,p.gender, p.dob, eye.name AS eye, site.name as site_name"
+				)
+				->from("et_ophtrintravitinjection_treatment treat")
+				->join("event e", "e.id = treat.event_id")
+				->join("episode ep", "e.episode_id = ep.id")
+				->join("patient p", "ep.patient_id = p.id")
+				->join("contact c", "p.contact_id = c.id")
+				->join("eye", "eye.id = treat.eye_id")
+				->join("et_ophtrintravitinjection_site insite", "insite.event_id = treat.event_id")
+				->leftJoin("site", "insite.site_id = site.id")
+				->where("e.deleted = 0 and ep.deleted = 0 and e.created_date >= :from_date and e.created_date < (:to_date + interval 1 day)")
+				->order("p.id, e.created_date asc");
+		$params = array(':from_date' => $date_from, ':to_date' => $date_to);
+
+		$results = array();
+		foreach ($command->queryAll(true, $params) as $row) {
+			if (@$patient_data['id'] != $row['patient_id']) {
+				if (@$patient_data['id']) {
+					foreach ($this->extractSummaryData($patient_data) as $record) {
+						$results[] = $record;
+					}
+				}
+				$patient_data = array(
+					"id" => $row['patient_id'],
+					"patient_hosnum" => $row['hos_num'],
+					"patient_firstname" => $row['first_name'],
+					"patient_surname" => $row['last_name'],
+					"patient_gender" => $row['gender'],
+					"patient_dob" => date('j M Y', strtotime($row['dob'])),
+				);
+			}
+			if (!$site = @$row['site_name']) {
+				$site = 'Unknown';
+			}
+			foreach (array('left', 'right') as $side) {
+				if ($drug = $this->getDrugById($row[$side . '_drug_id'])) {
+					$dt = date('j M Y', strtotime($row['created_date']));
+					$patient_data[$side][$drug->name][$site]['last_injection_date'] = $dt;
+					$patient_data[$side][$drug->name][$site]['injection_number'] = $row[$side . '_number'];
+					if (!isset($patient_data[$side][$drug->name][$site]['first_injection_date'])) {
+						$patient_data[$side][$drug->name][$site]['first_injection_date'] = $dt;
+					}
+				}
+			}
+		}
+		foreach ($this->extractSummaryData($patient_data) as $record) {
+			$results[] = $record;
+		}
+
+		return $results;
 	}
 
 	protected function getInjections($date_from, $date_to)

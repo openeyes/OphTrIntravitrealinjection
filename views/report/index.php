@@ -40,6 +40,14 @@
 								))?>
 					</div>
 				</div>
+				<div class="row field-row">
+					<div class="large-2 column">
+						<?php echo CHtml::label('Summarise patient data', 'summary') ?>
+					</div>
+					<div class="large-4 column end">
+						<?php echo CHtml::checkBox('summary'); ?>
+					</div>
+				</div>
 
 				<h3>Examination Information</h3>
 				<div class="row field-row">
