@@ -10,6 +10,10 @@ Release History
 + Remove POST handling from models
 + Rationalise db character set and collation
 
+1.5.4
+-----
++ Initial reports
+
 1.5.3
 -----
 + Support event locking and delete reason/request
