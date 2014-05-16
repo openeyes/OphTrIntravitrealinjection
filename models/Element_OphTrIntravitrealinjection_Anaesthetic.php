@@ -190,28 +190,28 @@ class Element_OphTrIntravitrealinjection_Anaesthetic extends SplitEventTypeEleme
 		return parent::beforeValidate();
 	}
 
-	/**
-	 * extending this function for the radio button interface, which has a slightly different way of doing things
-	 * would be nice to change if we get the chance (to be consistent with how options are defined for other form
-	 * input types)
-	 *
+	/*
+	 * Get anaesthetic types for the form
 	 */
-	public function getFormOptions($table)
+	public function getAnaestheticTypes()
 	{
-		if ($table == 'ophtrintravitinjection_anaesthetictype') {
-			$options = array();
-			foreach (OphTrIntravitrealinjection_AnaestheticType::model()->with('anaesthetic_type')->findAll(array('order' => 'display_order asc')) as $ad) {
-				$options[$ad->anaesthetic_type->id] = $ad->anaesthetic_type->name;
-			}
-			return $options;
+		$options = array();
+		foreach (OphTrIntravitrealinjection_AnaestheticType::model()->with('anaesthetic_type')->findAll(array('order' => 't.display_order asc')) as $ad) {
+			$options[$ad->anaesthetic_type->id] = $ad->anaesthetic_type->name;
 		}
-		if ($table == 'ophtrintravitinjection_anaestheticdelivery') {
-			$options = array();
-			foreach (OphTrIntravitrealinjection_AnaestheticDelivery::model()->with('anaesthetic_delivery')->findAll(array('order' => 't.display_order asc')) as $ad) {
-				$options[$ad->anaesthetic_delivery->id] = $ad->anaesthetic_delivery->name;
-			}
-			return $options;
-		} else return parent::getFormOptions($table);
+		return $options;
+	}
+
+	/*
+	 * Get anaesthetic delivery types
+	 */
+	public function getAnaestheticDeliveryTypes()
+	{
+		$options = array();
+		foreach (OphTrIntravitrealinjection_AnaestheticDelivery::model()->with('anaesthetic_delivery')->findAll(array('order' => 't.display_order asc')) as $ad) {
+			$options[$ad->anaesthetic_delivery->id] = $ad->anaesthetic_delivery->name;
+		}
+		return $options;
 	}
 
 	/**

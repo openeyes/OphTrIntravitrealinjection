@@ -34,7 +34,7 @@
  * @property User $usermodified
  */
 
-class OphTrIntravitrealinjection_IOPLoweringAssignment extends BaseActiveRecord
+class OphTrIntravitrealinjection_IOPLoweringAssignment extends BaseActiveRecordVersioned
 {
 	/**
 	 * Returns the static model of the specified AR class.

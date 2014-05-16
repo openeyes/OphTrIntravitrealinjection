@@ -51,7 +51,7 @@
 		<?php
 		$values = array();
 		$options = array();
-		foreach (OphTrIntravitrealinjection_LensStatus::model()->findAll() as $lens_status) {
+		foreach (OphTrIntravitrealinjection_LensStatus::model()->activeOrPk($element->{$side.'_lens_status_id'})->findAll() as $lens_status) {
 			$values[] = $lens_status;
 			$options[$lens_status->id]['data-default-distance'] = $lens_status->default_distance;
 		}

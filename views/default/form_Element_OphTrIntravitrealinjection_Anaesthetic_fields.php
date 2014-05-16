@@ -20,9 +20,9 @@
 
 <?php
 
-echo $form->radioButtons($element, $side . '_anaesthetictype_id', 'ophtrintravitinjection_anaesthetictype');
+echo $form->radioButtons($element, $side . '_anaesthetictype_id', $element->anaestheticTypes);
 
-echo $form->radioButtons($element, $side . '_anaestheticdelivery_id', 'ophtrintravitinjection_anaestheticdelivery');
+echo $form->radioButtons($element, $side . '_anaestheticdelivery_id', $element->anaestheticDeliveryTypes);
 
 echo $form->dropDownList($element, $side . '_anaestheticagent_id', CHtml::listData($element->getAnaestheticAgentsForSide($side), 'id', 'name'), array('empty' => '- Please select -'),false,array('field'=>6));
 

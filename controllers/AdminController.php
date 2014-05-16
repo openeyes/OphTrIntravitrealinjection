@@ -23,10 +23,10 @@ class AdminController extends ModuleAdminController
 
 	public function actionViewTreatmentDrugs()
 	{
-		$model_list = OphTrIntravitrealinjection_Treatment_Drug::model()->findAll(array('order' => 'display_order asc'));
+		$model_list = OphTrIntravitrealinjection_Treatment_Drug::model()->active()->findAll(array('order' => 'display_order asc'));
 		$this->jsVars['OphTrIntravitrealinjection_sort_url'] = $this->createUrl('sortTreatmentDrugs');
 
-		Audit::add('admin','list',null,false,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
+		Audit::add('admin','list',null,null,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
 
 		$this->render('list_OphTrIntravitrealinjection_Treatment_Drug',array(
 				'model_list' => $model_list,
@@ -50,7 +50,7 @@ class AdminController extends ModuleAdminController
 			$model->display_order = $display_order;
 
 			if ($model->save()) {
-				Audit::add('admin','create',serialize($model->attributes),false,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
+				Audit::add('admin','create',$model->id,null,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
 				Yii::app()->user->setFlash('success', 'Treatment drug created');
 
 				$this->redirect(array('ViewTreatmentDrugs'));
@@ -75,7 +75,7 @@ class AdminController extends ModuleAdminController
 			$model->attributes = $_POST['OphTrIntravitrealinjection_Treatment_Drug'];
 
 			if ($model->save()) {
-				Audit::add('admin','update',serialize($model->attributes),false,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
+				Audit::add('admin','update',$model->id,null,array('module'=>'OphTrIntravitrealinjection','model'=>'OphTrIntravitrealinjection_Treatment_Drug'));
 				Yii::app()->user->setFlash('success', 'Treatment drug updated');
 
 				$this->redirect(array('ViewTreatmentDrugs'));

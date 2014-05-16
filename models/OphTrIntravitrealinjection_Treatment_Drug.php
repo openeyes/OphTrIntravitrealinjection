@@ -22,7 +22,7 @@
  * The followings are the available columns in table:
  * @property string $id
  * @property string $name
- * @property boolean $available
+ * @property boolean $active
  *
  * The followings are the available model relations:
  *
@@ -33,7 +33,7 @@
  * @property User $usermodified
  */
 
-class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
+class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecordVersioned
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -42,20 +42,6 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
-	}
-
-	/*
-	 * scope to get all records including those marked as unavailable
-	 *
-	 */
-	public function availableScope()
-	{
-		$alias = $this->getTableAlias(false);
-		$this->resetScope()->getDbCriteria()->mergeWith(array(
-			'order' => $alias . '.display_order ASC',
-			'condition' => $alias . '.available = true',
-		));
-		return $this;
 	}
 
 	/**
@@ -88,11 +74,11 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, available', 'safe'),
-			array('name, available', 'required'),
+			array('name, active', 'safe'),
+			array('name, active', 'required'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, available', 'safe', 'on' => 'search'),
+			array('id, name', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -115,7 +101,14 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
-			'available' => 'Available'
+			'active' => 'Available'
+		);
+	}
+
+	public function behaviors()
+	{
+		return array(
+			'LookupTable' => 'LookupTable',
 		);
 	}
 
@@ -136,27 +129,5 @@ class OphTrIntravitrealinjection_Treatment_Drug extends BaseActiveRecord
 		return new CActiveDataProvider(get_class($this), array(
 				'criteria' => $criteria,
 			));
-	}
-
-	/**
-	 * Set default values for forms on create
-	 */
-	public function setDefaultOptions()
-	{
-	}
-
-	protected function beforeSave()
-	{
-		return parent::beforeSave();
-	}
-
-	protected function afterSave()
-	{
-		return parent::afterSave();
-	}
-
-	protected function beforeValidate()
-	{
-		return parent::beforeValidate();
 	}
 }

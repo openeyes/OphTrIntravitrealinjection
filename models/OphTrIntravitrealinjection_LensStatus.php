@@ -31,7 +31,7 @@
  * @property User $usermodified
  */
 
-class OphTrIntravitrealinjection_LensStatus extends BaseActiveRecord
+class OphTrIntravitrealinjection_LensStatus extends BaseActiveRecordVersioned
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -48,6 +48,11 @@ class OphTrIntravitrealinjection_LensStatus extends BaseActiveRecord
 	public function tableName()
 	{
 		return 'ophtrintravitinjection_lens_status';
+	}
+
+	public function defaultScope()
+	{
+		return array('order' => $this->getTableAlias(true, false) . '.display_order');
 	}
 
 	/**
@@ -87,6 +92,13 @@ class OphTrIntravitrealinjection_LensStatus extends BaseActiveRecord
 		);
 	}
 
+	public function behaviors()
+	{
+		return array(
+			'LookupTable' => 'LookupTable',
+		);
+	}
+
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -104,27 +116,5 @@ class OphTrIntravitrealinjection_LensStatus extends BaseActiveRecord
 		return new CActiveDataProvider(get_class($this), array(
 				'criteria' => $criteria,
 			));
-	}
-
-	/**
-	 * Set default values for forms on create
-	 */
-	public function setDefaultOptions()
-	{
-	}
-
-	protected function beforeSave()
-	{
-		return parent::beforeSave();
-	}
-
-	protected function afterSave()
-	{
-		return parent::afterSave();
-	}
-
-	protected function beforeValidate()
-	{
-		return parent::beforeValidate();
 	}
 }

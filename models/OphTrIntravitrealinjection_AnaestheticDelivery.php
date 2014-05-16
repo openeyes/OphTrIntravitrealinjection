@@ -27,7 +27,7 @@
  * The followings are the available model relations:
  * @property AnaestheticDelivery $anaesthetic_delivery
  */
-class OphTrIntravitrealinjection_AnaestheticDelivery extends BaseActiveRecord
+class OphTrIntravitrealinjection_AnaestheticDelivery extends BaseActiveRecordVersioned
 {
 
 	/**
