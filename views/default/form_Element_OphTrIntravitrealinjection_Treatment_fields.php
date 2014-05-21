@@ -115,7 +115,7 @@ if (isset($_POST[get_class($element)])) {
 	foreach ($ioplowering_drugs as $drug) {
 		$html_options['options'][(string) $drug->id] = array('data-order' => $drug->display_order);
 	}
-	echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_pre_ioploweringdrugs]', $side . '_pre_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options,false,false,null,false,false,array('field'=>6));
+	echo $form->multiSelectList($element, $side . '_pre_ioploweringdrugs', $side . '_pre_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options,false,false,null,false,false,array('field'=>6));
 
 	$drugs = OphTrIntravitrealinjection_Treatment_Drug::model()->activeOrPk($element->{$side.'_drug_id'})->findAll();
 
@@ -279,5 +279,5 @@ echo $form->checkbox($element, $side . '_post_ioplowering_required');
 	foreach ($ioplowering_drugs as $drug) {
 		$html_options['options'][(string) $drug->id] = array('data-order' => $drug->display_order);
 	}
-	echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_post_ioploweringdrugs]', $side . '_post_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options,false,false,null,false,false,array('field'=>6));
+	echo $form->multiSelectList($element, $side . '_post_ioploweringdrugs', $side . '_post_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options,false,false,null,false,false,array('field'=>6));
 ?>

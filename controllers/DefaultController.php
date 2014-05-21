@@ -190,7 +190,7 @@ class DefaultController extends BaseEventTypeController
 	protected function setElementComplexAttributesFromData($element, $data, $index = null)
 	{
 		foreach (array('left', 'right') as $side) {
-			if (get_class($element) == 'Element_OphTrIntravitrealinjection_Complications') {
+			/*if (get_class($element) == 'Element_OphTrIntravitrealinjection_Complications') {
 				if (isset($data['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) ) {
 					$complications = array();
 
@@ -202,7 +202,8 @@ class DefaultController extends BaseEventTypeController
 					$element->{$side . '_complications'} = $complications;
 				}
 			}
-			else if (get_class($element) == 'Element_OphTrIntravitrealinjection_Treatment') {
+			else
+			if (get_class($element) == 'Element_OphTrIntravitrealinjection_Treatment') {
 				foreach (array('pre', 'post') as $stage) {
 					if (isset($data['Element_OphTrIntravitrealinjection_Treatment'][$side . '_' . $stage . '_ioploweringdrugs']) ) {
 						$ioplowerings = array();
@@ -216,6 +217,7 @@ class DefaultController extends BaseEventTypeController
 					}
 				}
 			}
+			*/
 		}
 	}
 
@@ -228,6 +230,8 @@ class DefaultController extends BaseEventTypeController
 	 */
 	protected function saveEventComplexAttributesFromData($data)
 	{
+		return;
+
 		foreach ($this->open_elements as $el) {
 			foreach (array('left' => SplitEventTypeElement::LEFT, 'right' => SplitEventTypeElement::RIGHT) as $side => $sconst) {
 				if (get_class($el) == 'Element_OphTrIntravitrealinjection_Complications') {
@@ -238,7 +242,7 @@ class DefaultController extends BaseEventTypeController
 						// only set if relevant to element side, otherwise force reset of data
 						$comps = $data['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications'];
 					}
-					$el->updateComplications($sconst, $comps);
+					//$el->updateComplications($sconst, $comps);
 				}
 				else if (get_class($el) == 'Element_OphTrIntravitrealinjection_Treatment') {
 					$drugs = array();

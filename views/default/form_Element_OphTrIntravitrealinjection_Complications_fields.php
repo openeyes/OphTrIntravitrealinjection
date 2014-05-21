@@ -28,7 +28,7 @@
 	foreach ($complications as $complication) {
 		$html_options['options'][(string) $complication->id] = array('data-order' => $complication->display_order, 'data-description_required' => $complication->description_required);
 	}
-	echo $form->multiSelectList($element, get_class($element) . '[' . $side . '_complications]', $side . '_complications', 'id', CHtml::listData($complications,'id','name'), $element->ophtrintravitinjection_complication_defaults, $html_options,false,false,null,false,false,array('field'=>6))
+	echo $form->multiSelectList($element, $side . '_complications', $side . '_complications', 'id', CHtml::listData($complications,'id','name'), $element->ophtrintravitinjection_complication_defaults, $html_options,false,false,null,false,false,array('field'=>6))
 ?>
 <?php
 $show_desc = false;
@@ -41,9 +41,11 @@ else {
 	$complications = $element->{$side . '_complications'};
 }
 
-foreach ($complications as $complication) {
-	if ($complication->description_required) {
-		$show_desc = true;
+if (!empty($complications)) {
+	foreach ($complications as $complication) {
+		if ($complication->description_required) {
+			$show_desc = true;
+		}
 	}
 }
 ?>

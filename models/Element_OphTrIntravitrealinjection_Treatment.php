@@ -57,7 +57,25 @@
 
 class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 {
-	public $service;
+	protected $auto_update_relations = true;
+	protected $relation_defaults = array(
+		'left_pre_ioploweringdrugs' => array(
+			'eye_id' => Eye::LEFT,
+			'is_pre' => true,
+		),
+		'left_post_ioploweringdrugs' => array(
+			'eye_id' => Eye::LEFT,
+			'is_pre' => false,
+		),
+		'right_pre_ioploweringdrugs' => array(
+			'eye_id' => Eye::RIGHT,
+			'is_pre' => true,
+		),
+		'right_post_ioploweringdrugs' => array(
+			'eye_id' => Eye::RIGHT,
+			'is_pre' => false,
+		),
+	);
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -87,7 +105,7 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			array('event_id, site_id, eye_id, left_pre_antisept_drug_id, left_pre_skin_drug_id, left_drug_id, left_number, left_batch_number, ' .
 				'left_batch_expiry_date, left_injection_given_by_id, left_injection_time, right_pre_antisept_drug_id, right_pre_skin_drug_id, right_drug_id, ' .
 				'right_number, right_batch_number, right_batch_expiry_date, right_injection_given_by_id, right_injection_time, ' .
-				'left_pre_ioplowering_required, left_post_ioplowering_required, right_pre_ioplowering_required, right_post_ioplowering_required', 'safe'),
+				'left_pre_ioplowering_required, left_post_ioplowering_required, right_pre_ioplowering_required, right_post_ioplowering_required, left_pre_ioploweringdrugs, left_post_ioploweringdrugs, right_pre_ioploweringdrugs, right_post_ioploweringdrugs', 'safe'),
 			array('left_pre_antisept_drug_id, left_pre_skin_drug_id, left_drug_id, left_number, left_batch_number, left_batch_expiry_date, ' .
 				'left_injection_given_by_id, left_injection_time, left_pre_ioplowering_required, left_post_ioplowering_required', 'requiredIfSide', 'side' => 'left'),
 			array('right_pre_antisept_drug_id, right_pre_skin_drug_id, right_drug_id, right_number, right_batch_number, right_batch_expiry_date, ' .
