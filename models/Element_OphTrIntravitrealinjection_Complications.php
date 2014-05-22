@@ -38,7 +38,15 @@
 
 class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeElement
 {
-	public $service;
+	protected $auto_update_relations = true;
+	protected $relation_defaults = array(
+		'left_complications' => array(
+			'eye_id' => SplitEventTypeElement::LEFT,
+		),
+		'right_complications' => array(
+			'eye_id' => SplitEventTypeElement::RIGHT,
+		),
+	);
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -65,7 +73,7 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, eye_id, left_oth_descrip, right_oth_descrip', 'safe'),
+			array('event_id, eye_id, left_oth_descrip, right_oth_descrip, left_complications, right_complications', 'safe'),
 			array('left_complications', 'complicationsOtherValidation', 'side' => 'left'),
 			array('right_complications', 'complicationsOtherValidation', 'side' => 'right'),
 			// The following rule is used by search().
@@ -151,9 +159,11 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 	{
 		$other_comp = null;
 		$complications = $this->{$params['side'] . '_complications'};
-		foreach ($complications as $comp) {
-			if ($comp->description_required) {
-				$other_comp = $comp;
+		if (!empty($complications)) {
+			foreach ($complications as $comp) {
+				if ($comp->description_required) {
+					$other_comp = $comp;
+				}
 			}
 		}
 		if ($other_comp) {
