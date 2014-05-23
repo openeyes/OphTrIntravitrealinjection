@@ -29,6 +29,11 @@
   background-image: url('../img/medium.png?1383822664');
 }
 
+/* line 18, ../sass/components/_elements.scss */
+.Element_OphTrIntravitrealinjection_AnteriorSegment .ed-fields-container {
+  padding-top: 170px;
+}
+
 /* line 115, ../../../../assets/sass/openeyes/_mixins.scss */
 .row.anterior-segment .column.fixed {
   width: 326px;
@@ -65,9 +70,4 @@
     margin-top: 1em;
     width: 100%;
   }
-}
-
-/* line 26, ../sass/components/_grid.scss */
-.edit .row.anterior-segment .fluid {
-  padding-top: 200px;
 }
