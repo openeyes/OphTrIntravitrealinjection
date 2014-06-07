@@ -76,7 +76,7 @@
 		<div class="data-label"><?php echo $element->getAttributeLabel($side . '_number') ?>:</div>
 	</div>
 	<div class="large-8 column">
-		<div class="data-value"><?php echo $element->{$side . '_number'} ?></div>
+		<div class="data-value"><?php echo CHtml::encode($element->{$side . '_number'})?></div>
 	</div>
 </div>
 
@@ -85,7 +85,7 @@
 		<div class="data-label"><?php echo $element->getAttributeLabel($side . '_batch_number') ?>:</div>
 	</div>
 	<div class="large-8 column">
-		<div class="data-value"><?php echo $element->{$side . '_batch_number'} ?></div>
+		<div class="data-value"><?php echo CHtml::encode($element->{$side . '_batch_number'})?></div>
 	</div>
 </div>
 
