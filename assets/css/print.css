@@ -69,6 +69,15 @@
     border: 1px solid #000;
   }
   /* line 58, ../../../../assets/sass/openeyes/components/print/_event.scss */
+  .event .sub-element {
+    border: 0;
+  }
+  /* line 60, ../../../../assets/sass/openeyes/components/print/_event.scss */
+  .event .sub-element .sub-element-title {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  /* line 65, ../../../../assets/sass/openeyes/components/print/_event.scss */
   .event .metadata {
     padding: 10px 0;
     margin: 10px 0;
