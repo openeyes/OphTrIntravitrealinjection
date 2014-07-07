@@ -416,4 +416,17 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		}
 	}
 
+	/**
+	 * Function to retrieve the unique list of users that have been recorded as administering an injection on at least one eye
+	 *
+	 * @return User[]
+	 */
+	public static function getExistingInjectionUsers()
+	{
+		$criteria = new CDbCriteria();
+		$table_name = self::model()->tableName();
+		$criteria->addCondition("t.id IN (SELECT DISTINCT(left_injection_given_by_id) FROM " .
+				$table_name  . " UNION SELECT DISTINCT(right_injection_given_by_id) FROM " . $table_name . ")");
+		return User::model()->findAll($criteria);
+	}
 }

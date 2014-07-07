@@ -40,6 +40,22 @@
 								))?>
 					</div>
 				</div>
+
+				<div class="row field-row">
+					<div class="large-2 column">
+						<?php echo CHtml::label('Injection User(s)', 'injection_user_ids') ?>
+					</div>
+					<div class="large-4 column end">
+						<?php $this->widget('application.widgets.MultiSelectList', array(
+										'field' => 'injection_user_ids',
+										'default_options' => @$_GET['injection_user_ids'],
+										'options' => CHtml::listData($injection_users, 'id','fullName'),
+										'htmlOptions' => array('empty' => '- Please Select -', 'nowrapper' => true),
+										'noSelectionsMessage' => 'All Injectors')
+						); ?>
+					</div>
+				</div>
+
 				<div class="row field-row">
 					<div class="large-2 column">
 						<?php echo CHtml::label('Summarise patient data', 'summary') ?>
@@ -49,8 +65,27 @@
 					</div>
 				</div>
 
+
+				<div class="row field-row non-summary">
+					<div class="large-2 column">
+						<?php echo CHtml::label('Complications', 'complications') ?>
+					</div>
+					<div class="large-4 column end">
+						<?php echo CHtml::checkBox('complications'); ?>
+					</div>
+				</div>
+
+				<div class="row field-row non-summary">
+					<div class="large-2 column">
+						<?php echo CHtml::label('Lens Status', 'lens_status') ?>
+					</div>
+					<div class="large-4 column end">
+						<?php echo CHtml::checkBox('lens_status'); ?>
+					</div>
+				</div>
+
 				<h3>Examination Information</h3>
-				<div class="row field-row">
+				<div class="row field-row non-summary">
 					<div class="large-2 column">
 						<?php echo CHtml::label('Pre injection VA', 'pre_va') ?>
 					</div>
@@ -58,12 +93,20 @@
 						<?php echo CHtml::checkBox('pre_va'); ?>
 					</div>
 				</div>
-				<div class="row field-row">
+				<div class="row field-row non-summary">
 					<div class="large-2 column">
 						<?php echo CHtml::label('Post injection VA', 'post_va') ?>
 					</div>
 					<div class="large-4 column end">
 						<?php echo CHtml::checkBox('post_va'); ?>
+					</div>
+				</div>
+				<div class="row field-row non-summary">
+					<div class="large-2 column">
+						<?php echo CHtml::label('Diagnoses', 'diagnoses') ?>
+					</div>
+					<div class="large-4 column end">
+						<?php echo CHtml::checkBox('diagnoses'); ?>
 					</div>
 				</div>
 				<div class="row field-row">

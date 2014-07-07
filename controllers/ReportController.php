@@ -19,10 +19,14 @@
  */
 
 
-class ReportController extends BaseController {
+class ReportController extends BaseModuleController {
 	public function accessRules()
 	{
 		return array(
+				array('allow',
+						'actions' => array('index'),
+						'roles' => array('OprnGenerateReport'),
+				),
 				array('deny'),
 		);
 	}
@@ -63,11 +67,18 @@ class ReportController extends BaseController {
 				$date_to = date('Y-m-d', strtotime($_GET['date_to']));
 			}
 
+			$users = null;
+			if (@$_GET['injection_user_ids']) {
+				$criteria = new CDbCriteria();
+				$criteria->addInCondition('id', $_GET['injection_user_ids']);
+				$users = User::model()->findAll($criteria);
+			}
+
 			if (@$_GET['summary']) {
-				$results = $this->getSummaryInjections($date_from, $date_to);
+				$results = $this->getSummaryInjections($date_from, $date_to, $users);
 			}
 			else {
-				$results = $this->getInjections($date_from, $date_to);
+				$results = $this->getInjections($date_from, $date_to, $users);
 			}
 
 			$filename = 'therapyapplication_report_' . date('YmdHis') . '.csv';
@@ -79,6 +90,7 @@ class ReportController extends BaseController {
 			$context = array(
 					'date_from' => $date_from,
 					'date_to' => $date_to,
+					'injection_users' => Element_OphTrIntravitrealinjection_Treatment::getExistingInjectionUsers()
 			);
 			$this->render('index', $context);
 		}
@@ -112,13 +124,25 @@ class ReportController extends BaseController {
 	}
 	private $patient_id = null;
 
-	protected function getSummaryInjections($date_from, $date_to)
+	/**
+	 * @param $date_from
+	 * @param $date_to
+	 * @param User[] $users
+	 * @return array
+	 */
+	protected function getSummaryInjections($date_from, $date_to, $users = null)
 	{
+		$user_ids = null;
+		if ($users) {
+			$user_ids = array_map(function($a) { return $a->id; }, $users);
+		}
+
 		$patient_data = array();
 		$command = Yii::app()->db->createCommand()
 				->select(
-						"p.id as patient_id, treat.left_drug_id, treat.right_drug_id, treat.left_number, treat.right_number, e.id,
-						e.created_date, c.first_name, c.last_name, e.created_date, p.hos_num,p.gender, p.dob, eye.name AS eye, site.name as site_name"
+						"p.id as patient_id, treat.left_drug_id, treat.right_drug_id, treat.left_number, treat.right_number,
+						treat.left_injection_given_by_id, treat.right_injection_given_by_id, e.id, e.created_date, c.first_name,
+						c.last_name, e.created_date, p.hos_num,p.gender, p.dob, eye.name AS eye, site.name as site_name"
 				)
 				->from("et_ophtrintravitinjection_treatment treat")
 				->join("event e", "e.id = treat.event_id")
@@ -129,14 +153,26 @@ class ReportController extends BaseController {
 				->join("et_ophtrintravitinjection_site insite", "insite.event_id = treat.event_id")
 				->leftJoin("site", "insite.site_id = site.id")
 				->order("p.id, e.created_date asc");
+
+		$where = array(
+				"e.deleted = 0",
+				"ep.deleted = 0",
+				"e.created_date >= :from_date",
+				"e.created_date < (:to_date + interval 1 day)"
+		);
+		$params = array(':from_date' => $date_from, ':to_date' => $date_to);
+
+		if ($user_ids) {
+			$where[] = "(treat.left_injection_given_by_id in (:inj_users) OR treat.right_injection_given_by_id in (:inj_users))";
+			$params[":inj_users"] = implode(",", $user_ids);
+		}
+
 		// for debug
 		if ($this->patient_id) {
-			$command->where("ep.patient_id = :pat_id and e.deleted = 0 and ep.deleted = 0 and e.created_date >= :from_date and e.created_date < (:to_date + interval 1 day)");
-			$params = array(':from_date' => $date_from, ':to_date' => $date_to, ':pat_id' => $this->patient_id);
-		} else {
-			$command->where("e.deleted = 0 and ep.deleted = 0 and e.created_date >= :from_date and e.created_date < (:to_date + interval 1 day)");
-			$params = array(':from_date' => $date_from, ':to_date' => $date_to);
+			$where[] = "ep.patient_id = :pat_id";
+			$params[':pat_id'] = $this->patient_id;
 		}
+		$command->where = implode(' AND ', $where);
 
 		$results = array();
 		foreach ($command->queryAll(true, $params) as $row) {
@@ -159,6 +195,9 @@ class ReportController extends BaseController {
 				$site = 'Unknown';
 			}
 			foreach (array('left', 'right') as $side) {
+				if ($user_ids != null && !in_array($row[$side . '_injection_given_by_id'], $user_ids)) {
+					continue;
+				}
 				$dt = date('j M Y', strtotime($row['created_date']));
 				if ($drug = $this->getDrugById($row[$side . '_drug_id'])) {
 					$patient_data[$side][$drug->name][$site]['last_injection_date'] = $dt;
@@ -176,13 +215,20 @@ class ReportController extends BaseController {
 		return $results;
 	}
 
-	protected function getInjections($date_from, $date_to)
+	protected function getInjections($date_from, $date_to, $users)
 	{
+		$user_ids = null;
+		if ($users) {
+			$user_ids = array_map(function($a) { return $a->id; }, $users);
+		}
+		$select_cols = array("p.id as patient_id", "treat.left_drug_id", "treat.right_drug_id", "treat.left_number", "treat.right_number",
+						"treat.left_injection_given_by_id", "treat.right_injection_given_by_id",  "e.id, e.created_date", "c.first_name",
+						"c.last_name", "e.created_date", "p.hos_num", "p.gender", "p.dob", "eye.name AS eye", "site.name as site_name");
+		if (@$_GET['lens_status']) {
+			$select_cols = array_merge($select_cols, array("antseg.left_lens_status_id as left_lens_status_id", "antseg.right_lens_status_id as right_lens_status_id"));
+		}
 		$command = Yii::app()->db->createCommand()
-				->select(
-						"p.id as patient_id, treat.left_drug_id, treat.right_drug_id, treat.left_number, treat.right_number, e.id,
-						e.created_date, c.first_name, c.last_name, e.created_date, p.hos_num,p.gender, p.dob, eye.name AS eye, site.name as site_name"
-				)
+				->select(implode(",", $select_cols))
 				->from("et_ophtrintravitinjection_treatment treat")
 				->join("event e", "e.id = treat.event_id")
 				->join("episode ep", "e.episode_id = ep.id")
@@ -191,9 +237,26 @@ class ReportController extends BaseController {
 				->join("eye", "eye.id = treat.eye_id")
 				->join("et_ophtrintravitinjection_site insite", "insite.event_id = treat.event_id")
 				->join("site", "insite.site_id = site.id")
-				->where("e.deleted = 0 and ep.deleted = 0 and e.created_date >= :from_date and e.created_date < (:to_date + interval 1 day)")
 				->order("p.id, e.created_date asc");
+
+		if (@$_GET['lens_status']) {
+			$command->join("et_ophtrintravitinjection_anteriorseg antseg", "antseg.event_id = treat.event_id");
+		}
+
+		$where = array(
+				"e.deleted = 0",
+				"ep.deleted = 0",
+				"e.created_date >= :from_date",
+				"e.created_date < (:to_date + interval 1 day)"
+		);
 		$params = array(':from_date' => $date_from, ':to_date' => $date_to);
+
+		if ($user_ids) {
+			$where[] = "(treat.left_injection_given_by_id in (:inj_users) OR treat.right_injection_given_by_id in (:inj_users))";
+			$params[":inj_users"] = implode(",", $user_ids);
+		}
+
+		$command->where = implode(' AND ', $where);
 
 		$results = array();
 		foreach ($command->queryAll(true, $params) as $row) {
@@ -211,7 +274,14 @@ class ReportController extends BaseController {
 					'right_drug' => $this->getDrugString($row['right_drug_id']),
 					'right_injection_number' => $row['right_number'],
 			);
+			if (@$_GET['lens_status']) {
+				$record['left_lens_status'] = $this->getLensStatusString($row['left_lens_status_id']);
+				$record['right_lens_status'] = $this->getLensStatusString($row['right_lens_status_id']);
+			}
 
+			if (@$_GET['complications']) {
+				$this->appendComplications($record, $row['id']);
+			}
 			$this->appendExaminationValues($record, $row['patient_id'], $row['created_date']);
 
 			$results[] = $record;
@@ -254,8 +324,91 @@ class ReportController extends BaseController {
 		}
 	}
 
-	protected $_examination_event_type_id;
+	//caching for lens status
+	protected $_lensstatus_cache = array();
 
+	/**
+	 * Simple cache getter for lens status
+	 * @param $id
+	 * @return mixed
+	 */
+	protected function getLensStatusById($id)
+	{
+		if (!isset($this->_lensstatus_cache[$id])) {
+			$this->_lensstatus_cache[$id] = OphTrIntravitrealinjection_LensStatus::model()->findByPk($id);
+		}
+		return $this->_lensstatus_cache[$id];
+	}
+
+	/**
+	 * String wrapper for lens status
+	 *
+	 * @param $id
+	 * @return string
+	 */
+	protected function getLensStatusString($id)
+	{
+		if (!$id) {
+			return "N/A";
+		}
+
+		if ($status = $this->getLensStatusById($id)) {
+			return $status->name;
+		}
+		else {
+			return "UNKNOWN";
+		}
+	}
+
+
+	// caching for complications data
+	protected $_comp_by_id = array();
+	protected function getComplication($id)
+	{
+		if (!isset($_comp_by_id[$id])) {
+			$_comp_by_id[$id] = OphTrIntravitrealinjection_Complication::model()->findByPk($id);
+		}
+		return $_comp_by_id[$id];
+	}
+
+	/**
+	 * Append complication information to the record
+	 *
+	 * @param $record
+	 * @param $event_id
+	 */
+	protected function appendComplications(&$record, $event_id)
+	{
+		$el = Element_OphTrIntravitrealinjection_Complications::model()->with('complication_assignments')->findByAttributes(array('event_id' => $event_id));
+
+		$left_complications = array();
+		$right_complications = array();
+
+		foreach ($el->complication_assignments as $cass) {
+
+			$comp = $this->getComplication($cass->complication_id);
+			if (!$comp->description_required) {
+				if ($cass->eye_id == Eye::LEFT) {
+					$left_complications[] = $comp->name;
+				}
+				else {
+					$right_complications[] = $comp->name;
+				}
+			}
+		}
+		if ($other = $el->left_oth_descrip) {
+			$left_complications[] = $other;
+		}
+		if ($other = $el->right_oth_descrip) {
+			$right_complications[] = $other;
+		}
+
+		$record['left_complications'] = count($left_complications) ? implode(", ", $left_complications) : "None";
+		$record['right_complications'] = count($right_complications) ? implode(", ", $right_complications) : "None";
+	}
+
+	// caching for exam event id
+	protected $_examination_event_type_id;
 	protected function getExaminationEventTypeId() {
 		if (!$this->_examination_event_type_id) {
 			$this->_examination_event_type_id = EventType::model()->findByAttributes(array('class_name' => 'OphCiExamination'))->id;
@@ -266,7 +419,7 @@ class ReportController extends BaseController {
 	protected $_current_patient_id;
 	protected $_patient_vas;
 	/**
-	 * in order to suck up too much memory for larger reports, when this method receives a call for a new patient, it ditches the cache
+	 * in order to avoid sucking up too much memory for larger reports, when this method receives a call for a new patient, it ditches the cache
 	 * it has of the previous patient.
 	 *
 	 * @param $patient_id
@@ -335,6 +488,26 @@ class ReportController extends BaseController {
 				}
 			}
 		}
+
+		if (@$_GET['diagnoses']) {
+			$injmgmts = $this->getPatientInjMgmtElements($patient_id);
+			$before = null;
+			foreach ($injmgmts as $im) {
+				if ($im->event->created_date < $event_date) {
+					$before = $im;
+				}
+				else {
+					break;
+				}
+			}
+
+			foreach (array('left_primary_diagnosis' => 'left_diagnosis1',
+									 'left_secondary_diagnosis' => 'left_diagnosis2',
+									 'right_primary_diagnosis' => 'right_diagnosis1',
+									 'right_secondary_to_diagnosis' => 'right_diagnosis2') as $k => $a) {
+				$record[$k] = ($before && $before->$a) ? $before->$a->term : "N/A";
+			}
+		}
 	}
 
 	/**
@@ -350,5 +523,33 @@ class ReportController extends BaseController {
 			return $reading->convertTo($reading->value, $va->unit_id) . ' (' . $reading->method->name . ')';
 		}
 		return "N/A";
+	}
+
+	protected $_injmgmt_pid = null;
+	protected $_patient_injmgmts = null;
+
+	protected function getPatientInjMgmtElements($patient_id)
+	{
+		if ($patient_id != $this->_current_patient_id) {
+			$this->_injmgmt_pid = $patient_id;
+			$command = Yii::app()->db->createCommand()
+					->select(
+							"e.id"
+					)
+					->from("event e")
+					->join("episode ep", "e.episode_id = ep.id")
+					->where("e.deleted = 0 and ep.deleted = 0 and ep.patient_id = :patient_id and e.event_type_id = :etype_id",
+							array(':patient_id' => $patient_id, ':etype_id' => $this->getExaminationEventTypeId())
+					);
+			$event_ids = array();
+			foreach ($command->queryAll() as $res) {
+				$event_ids[] = $res['id'];
+			}
+			$criteria = new CDbCriteria();
+			$criteria->addInCondition('event_id', $event_ids);
+			$criteria->order = 'event.created_date asc';
+			$this->_patient_injmgmts = Element_OphCiExamination_InjectionManagementComplex::model()->with('event','left_diagnosis1', 'left_diagnosis2', 'right_diagnosis1', 'right_diagnosis2')->findAll($criteria);
+		}
+		return $this->_patient_injmgmts;
 	}
 }
