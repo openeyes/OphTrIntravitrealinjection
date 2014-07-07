@@ -103,7 +103,7 @@
 				</div>
 				<div class="row field-row non-summary">
 					<div class="large-2 column">
-						<?php echo CHtml::label('Diagnoses', 'diagnoses') ?>
+						<?php echo CHtml::label('Injection Management Diagnoses', 'diagnoses') ?>
 					</div>
 					<div class="large-4 column end">
 						<?php echo CHtml::checkBox('diagnoses'); ?>
