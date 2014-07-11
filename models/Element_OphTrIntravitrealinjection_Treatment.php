@@ -304,9 +304,11 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		}
 
 		$params['{attribute}'] = $this->getAttributeLabel($attribute);
-
-		if ($this->$attribute < $min_date) {
-			$this->addError($attribute, strtr($params['message'], $params) );
+		$date_validator = new OEDateValidator();
+		if ($date_validator->validateAttribute($this, $attribute)) {
+			if ($this->$attribute < $min_date) {
+				$this->addError($attribute, strtr($params['message'], $params) );
+			}
 		}
 	}
 
