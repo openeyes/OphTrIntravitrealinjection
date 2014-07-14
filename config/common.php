@@ -23,4 +23,13 @@ return array(
 			'Treatment drugs' => '/OphTrIntravitrealinjection/admin/viewTreatmentDrugs',
 		),
 	),
+	'components' => array(
+		'clientScript' => array(
+			'packages' => array(
+				'OphTrIntravitrealinjection' => array(
+					'depends' => array('split_event')
+				)
+			)
+		)
+	)
 );

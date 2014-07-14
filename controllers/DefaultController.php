@@ -6,18 +6,6 @@ class DefaultController extends BaseEventTypeController
 	public $side_to_inject = null;
 
 	/**
-	 * use the split event type javascript and styling
-	 *
-	 * @param CAction $action
-	 * @return bool
-	 */
-	protected function beforeAction($action)
-	{
-		Yii::app()->assetManager->registerScriptFile('js/spliteventtype.js', null, null, AssetManager::OUTPUT_SCREEN);
-		return parent::beforeAction($action);
-	}
-
-	/**
 	 * set flash message for ptient allergies
 	 */
 	protected function showAllergyWarning()
