@@ -235,7 +235,7 @@ if (!$element->getIsNewRecord()) {
 			if (isset($_POST[get_class($element)])) {
 				$val = $_POST[get_class($element)][$side . '_injection_time'];
 			}
-			echo CHtml::textField(get_class($element) . "[".$side."_injection_time]", $val);
+			echo CHtml::textField(get_class($element) . "[".$side."_injection_time]", $val, array('autocomplete' => Yii::app()->params['html_autocomplete']));
 		?>
 	</div>
 </div>

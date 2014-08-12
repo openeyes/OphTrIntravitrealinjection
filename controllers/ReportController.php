@@ -23,6 +23,10 @@ class ReportController extends BaseController {
 	public function accessRules()
 	{
 		return array(
+				array('allow',
+						'actions' => array('index'),
+						'roles' => array('OprnGenerateReport'),
+				),
 				array('deny'),
 		);
 	}
@@ -70,7 +74,7 @@ class ReportController extends BaseController {
 				$results = $this->getInjections($date_from, $date_to);
 			}
 
-			$filename = 'therapyapplication_report_' . date('YmdHis') . '.csv';
+			$filename = 'intravitrealinjection_report_' . date('YmdHis') . '.csv';
 			$this->sendCsvHeaders($filename);
 
 			echo $this->array2Csv($results);
