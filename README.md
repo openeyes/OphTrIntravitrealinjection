@@ -8,7 +8,7 @@ The first release version of this module is 1.4.
 Admin
 -----
 
-1. The drugs that are available for injection can be adminstered.
+1. The drugs that are available for injection can be administered.
 
 Dependencies
 ------------

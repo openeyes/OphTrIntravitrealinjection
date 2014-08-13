@@ -118,4 +118,13 @@ class AdminController extends ModuleAdminController
 
 		echo $result;
 	}
+
+	public function actionManageIOPLoweringDrugs()
+	{
+		$this->render('//admin/generic_admin',array(
+			'title' => 'Edit IOP Lowering Drugs',
+			'model' => 'OphTrIntravitrealinjection_IOPLoweringDrug',
+		));
+	}
+
 }
