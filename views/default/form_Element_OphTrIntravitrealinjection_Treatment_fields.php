@@ -57,7 +57,7 @@
 
 <div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_pre_antisept_drug_id"
 	 class="row field-row">
-	<div class="<?php echo $form->columns('label');?>">
+	<div class="large-4 column">
 		<label for="<?php echo get_class($element)?>_<?php echo $side ?>_pre_antisept_drug_id">
 			<?php echo $element->getAttributeLabel($side . '_pre_antisept_drug_id') ?>:
 		</label>
@@ -73,7 +73,7 @@
 
 <div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_pre_skin_drug_id"
 	 class="row field-row">
-	<div class="<?php echo $form->columns('label');?>">
+	<div class="large-4 column">
 		<label for="<?php echo get_class($element)?>_<?php echo $side ?>_pre_skin_drug_id">
 			<?php echo $element->getAttributeLabel($side . '_pre_skin_drug_id') ?>:
 		</label>
@@ -88,7 +88,7 @@
 </div>
 
 <?php
-	echo $form->checkbox($element, $side . '_pre_ioplowering_required');
+	echo $form->checkbox($element, $side . '_pre_ioplowering_required', array('text-align' => 'right'));
 ?>
 
 <?php
@@ -115,7 +115,7 @@ if (isset($_POST[get_class($element)])) {
 	foreach ($ioplowering_drugs as $drug) {
 		$html_options['options'][(string) $drug->id] = array('data-order' => $drug->display_order);
 	}
-	echo $form->multiSelectList($element, $side . '_pre_ioploweringdrugs', $side . '_pre_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options,false,false,null,false,false,array('field'=>6));
+	echo $form->multiSelectList($element, $side . '_pre_ioploweringdrugs', $side . '_pre_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options,false,false,null,false,false,array('label'=>4,'field'=>6));
 
 	$drugs = OphTrIntravitrealinjection_Treatment_Drug::model()->activeOrPk($element->{$side.'_drug_id'})->findAll();
 
@@ -149,7 +149,7 @@ if (isset($_POST[get_class($element)])) {
 		}
 	}
 
-	echo $form->dropDownList($element, $side . '_drug_id', CHtml::listData($drugs,'id','name'),$html_options,false,array('field'=>6));
+	echo $form->dropDownList($element, $side . '_drug_id', CHtml::listData($drugs,'id','name'),$html_options,false,array('label'=>4,'field'=>6));
 
 	$selected_drug = null;
 	if (@$_POST['Element_OphTrIntravitrealinjection_Treatment']) {
@@ -161,7 +161,7 @@ if (isset($_POST[get_class($element)])) {
 ?>
 
 <div id="div_<?php echo get_class($element);?>_<?php echo $side?>_number" class="row field-row">
-	<div class="<?php echo $form->columns('label');?>">
+	<div class="large-4 column">
 		<label for="<?php echo get_class($element);?>_<?php echo $side?>_number">
 			<?php echo $element->getAttributeLabel($side . '_number'); ?>:
 		</label>
@@ -200,7 +200,7 @@ if (isset($_POST[get_class($element)])) {
 	</div>
 </div>
 
-<?php echo $form->textField($element, $side . '_batch_number',array(),array(),array('field'=>6))?>
+<?php echo $form->textField($element, $side . '_batch_number',array(),array(),array('label'=>4,'field'=>6))?>
 
 <?php
 if (!$element->getIsNewRecord()) {
@@ -211,15 +211,15 @@ if (!$element->getIsNewRecord()) {
 ?>
 
 <?php echo $form->datePicker($element, $side . '_batch_expiry_date', $expiry_date_params, array(), array(
-	'label' => $form->layoutColumns['label'],
+	'label' => 4,
 	'field' => 3
 ))?>
 
-<?php echo $form->dropDownList($element, $side . '_injection_given_by_id', CHtml::listData(OphTrIntravitrealinjection_InjectionUser::model()->getUsers(),'id','ReversedFullName'),array('empty'=>'- Please select -'),false,array('field'=>6))?>
+<?php echo $form->dropDownList($element, $side . '_injection_given_by_id', CHtml::listData(OphTrIntravitrealinjection_InjectionUser::model()->getUsers(),'id','ReversedFullName'),array('empty'=>'- Please select -'),false,array('label'=>4,'field'=>6))?>
 
 <div id="div_<?php echo get_class($element)?>_<?php echo $side ?>_injection_time"
 	class="row field-row">
-	<div class="<?php echo $form->columns('label');?>">
+	<div class="large-4 column">
 		<label for="<?php echo get_class($element)?>_<?php echo $side ?>_injection_time">
 			<?php echo $element->getAttributeLabel($side . '_injection_time') ?>:
 		</label>
@@ -241,7 +241,7 @@ if (!$element->getIsNewRecord()) {
 </div>
 
 <?php
-echo $form->checkbox($element, $side . '_post_ioplowering_required');
+echo $form->checkbox($element, $side . '_post_ioplowering_required', array('text-align' => 'right'));
 ?>
 
 <?php /*
@@ -279,5 +279,5 @@ echo $form->checkbox($element, $side . '_post_ioplowering_required');
 	foreach ($ioplowering_drugs as $drug) {
 		$html_options['options'][(string) $drug->id] = array('data-order' => $drug->display_order);
 	}
-	echo $form->multiSelectList($element, $side . '_post_ioploweringdrugs', $side . '_post_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options,false,false,null,false,false,array('field'=>6));
+	echo $form->multiSelectList($element, $side . '_post_ioploweringdrugs', $side . '_post_ioploweringdrugs', 'id', CHtml::listData($ioplowering_drugs,'id','name'), array(), $html_options,false,false,null,false,false,array('label'=>4,'field'=>6));
 ?>

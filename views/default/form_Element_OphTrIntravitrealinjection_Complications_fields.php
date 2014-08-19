@@ -28,7 +28,7 @@
 	foreach ($complications as $complication) {
 		$html_options['options'][(string) $complication->id] = array('data-order' => $complication->display_order, 'data-description_required' => $complication->description_required);
 	}
-	echo $form->multiSelectList($element, $side . '_complications', $side . '_complications', 'id', CHtml::listData($complications,'id','name'), $element->ophtrintravitinjection_complication_defaults, $html_options,false,false,null,false,false,array('field'=>6))
+	echo $form->multiSelectList($element, $side . '_complications', $side . '_complications', 'id', CHtml::listData($complications,'id','name'), $element->ophtrintravitinjection_complication_defaults, $html_options,false,false,null,false,false,array('label'=>4,'field'=>6))
 ?>
 <?php
 $show_desc = false;
@@ -51,7 +51,7 @@ if (!empty($complications)) {
 ?>
 
 <div id="div_Element_OphTrIntravitrealinjection_Complications_<?php echo $side; ?>_oth_descrip" class="row field-row<?php if (!$show_desc) { echo ' hide'; } ?>">
-	<div class="<?php echo $form->columns('label');?>">
+	<div class="large-4 column">
 		<label for="<?php echo get_class($element)?>_<?php echo $side . '_oth_descrip'?>">
 			<?php echo $element->getAttributeLabel($side . '_oth_descrip'); ?>:
 		</label>
