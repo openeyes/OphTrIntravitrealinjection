@@ -121,10 +121,6 @@ class AdminController extends ModuleAdminController
 
 	public function actionManageIOPLoweringDrugs()
 	{
-		$this->render('//admin/generic_admin',array(
-			'title' => 'Edit IOP Lowering Drugs',
-			'model' => 'OphTrIntravitrealinjection_IOPLoweringDrug',
-		));
+		$this->genericAdmin('Edit IOP Lowering Drugs', 'OphTrIntravitrealinjection_IOPLoweringDrug');
 	}
-
 }
