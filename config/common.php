@@ -22,5 +22,8 @@ return array(
 		'admin_menu' => array(
 			'Treatment drugs' => '/OphTrIntravitrealinjection/admin/viewTreatmentDrugs',
 		),
+		'reports' => array(
+			'Intravitreal injections' => '/OphTrIntravitrealinjection/report/injections',
+		),
 	),
 );

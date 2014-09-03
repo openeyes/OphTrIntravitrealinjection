@@ -18,14 +18,13 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-
-class ReportController extends BaseController {
+class ReportController extends BaseReportController {
 	public function accessRules()
 	{
 		return array(
 				array('allow',
-						'actions' => array('index'),
-						'roles' => array('OprnGenerateReport'),
+						'actions' => array('injections'),
+						'roles' => array('OprnGenerateReport','admin'),
 				),
 				array('deny'),
 		);
@@ -54,7 +53,7 @@ class ReportController extends BaseController {
 		header("Expires: 0");
 	}
 
-	public function actionIndex()
+	public function actionInjections()
 	{
 		$date_from = date('Y-m-d', strtotime("-1 year"));
 		$date_to = date('Y-m-d');
@@ -84,7 +83,7 @@ class ReportController extends BaseController {
 					'date_from' => $date_from,
 					'date_to' => $date_to,
 			);
-			$this->render('index', $context);
+			$this->render('injections', $context);
 		}
 	}
 
