@@ -1,7 +1,13 @@
 <div class="box reports">
 	<div class="report-fields">
 		<h2>Intravitreal Injection Report</h2>
-		<form>
+		<?php
+		$form = $this->beginWidget('BaseEventTypeCActiveForm', array(
+			'id'=>'module-report-form',
+			'enableAjaxValidation'=>false,
+			'layoutColumns' => array('label'=>2,'field'=>10),
+		))?>
+			<input type="hidden" name="report-name" value="Injections" />
 			<div class="row field-row">
 				<div class="large-2 column">
 					<?php echo CHtml::label('Date From', 'date_from') ?>
@@ -16,7 +22,7 @@
 											'maxDate'=> 0,
 											'defaultDate' => "-1y"
 									),
-									'value'=> $date_from
+									'value'=> date('j M Y',strtotime('-1 year')),
 							))?>
 				</div>
 			</div>
@@ -34,41 +40,67 @@
 											'maxDate'=> 0,
 											'defaultDate' => 0
 									),
-									'value'=> $date_to
+									'value'=> date('j M Y'),
 							))?>
 				</div>
 			</div>
+
 			<div class="row field-row">
 				<div class="large-2 column">
-					<?php echo CHtml::label('Summarise patient data', 'summary') ?>
+					<?php echo CHtml::label('Given by', 'given_by_id') ?>
 				</div>
 				<div class="large-4 column end">
-					<?php echo CHtml::checkBox('summary'); ?>
+					<?php echo CHtml::dropDownList('given_by_id','',CHtml::listData(User::model()->findAll(array('order' => 'first_name asc,last_name asc')),'id','fullName'),array('empty' => '- Please select -'))?>
 				</div>
 			</div>
 
-			<h3>Examination Information</h3>
 			<div class="row field-row">
 				<div class="large-2 column">
-					<?php echo CHtml::label('Pre injection VA', 'pre_va') ?>
+					&nbsp;
 				</div>
 				<div class="large-4 column end">
-					<?php echo CHtml::checkBox('pre_va'); ?>
+					<input type="hidden" name="summary" value="0" />
+					<?php echo CHtml::checkBox('summary'); ?>
+					<?php echo CHtml::label('Summarise patient data', 'summary') ?>
 				</div>
 			</div>
-			<div class="row field-row">
-				<div class="large-2 column">
-					<?php echo CHtml::label('Post injection VA', 'post_va') ?>
+
+			<div class="examinationInformation">
+				<h3>Examination Information</h3>
+				<div class="row field-row">
+					<div class="large-2 column">
+						&nbsp;
+					</div>
+					<div class="large-4 column end">
+						<input type="hidden" name="pre_va" value="0" />
+						<?php echo CHtml::checkBox('pre_va'); ?>
+						<?php echo CHtml::label('Pre injection VA', 'pre_va') ?>
+					</div>
 				</div>
-				<div class="large-4 column end">
-					<?php echo CHtml::checkBox('post_va'); ?>
+				<div class="row field-row">
+					<div class="large-2 column">
+						&nbsp;
+					</div>
+					<div class="large-4 column end">
+						<input type="hidden" name="post_va" value="0" />
+						<?php echo CHtml::checkBox('post_va'); ?>
+						<?php echo CHtml::label('Post injection VA', 'post_va') ?>
+					</div>
 				</div>
 			</div>
-			<div class="row field-row">
-				<div class="large-4 column end">
-					<?php echo CHtml::submitButton('Run report') ?>
-				</div>
+		<?php $this->endWidget()?>
+		<div class="errors alert-box alert with-icon" style="display: none">
+			<p>Please fix the following input errors:</p>
+			<ul>
+			</ul>
+		</div>
+		<div class="row field-row">
+			<div class="large-4 column end">
+				<button type="submit" class="classy blue mini" id="run-module-report" name="run"><span class="button-span button-span-blue">Run report</span></button>
+				<img class="loader" style="display: none;" src="<?php echo Yii::app()->assetManager->createUrl('img/ajax-loader.gif')?>" alt="loading..." />&nbsp;
 			</div>
-		</form>
+		</div>
+		<div class="reportSummary report curvybox white blueborder" style="display: none;">
+		</div>
 	</div>
 </div>
