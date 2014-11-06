@@ -150,7 +150,7 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 	protected function getPreviousTreatmentForSide($patient, $episode, $side)
 	{
 		$checker = ($side == 'left') ? 'hasLeft' : 'hasRight';
-		$treatment = $this->getElementForLatestEventInEpisode($patient, $episode, 'Element_OphTrIntravitrealinjection_Treatment');
+		$treatment = $this->getElementForLatestEventInEpisode($episode, 'Element_OphTrIntravitrealinjection_Treatment');
 		if ($treatment && $treatment->$checker()) {
 			return $treatment;
 		}
@@ -295,7 +295,7 @@ class OphTrIntravitrealinjection_API extends BaseAPI
 	public function getLetterPostInjectionDrops($patient)
 	{
 		if ($episode = $patient->getEpisodeForCurrentSubspecialty()) {
-			if ($el = $this->getElementForLatestEventInEpisode($patient, $episode, 'Element_OphTrIntravitrealinjection_PostInjectionExamination')) {
+			if ($el = $this->getElementForLatestEventInEpisode($episode, 'Element_OphTrIntravitrealinjection_PostInjectionExamination')) {
 				$drops = array();
 				if ($el->hasRight()) {
 					$drops[] = $el->right_drops->name . " to the right eye";
