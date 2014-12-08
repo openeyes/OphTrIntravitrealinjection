@@ -368,14 +368,14 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 		// create assignment and store for saving
 		// if there is, remove from the current complications array
 		// anything left in current ioplowering at the end is ripe for deleting
-		foreach ($ioplowering_ids as $id) {
-			if (!array_key_exists($id, $current_ioplowerings)) {
+		foreach ($ioplowering_ids as $item) {
+			if (!array_key_exists($item['id'], $current_ioplowerings)) {
 				$s = new OphTrIntravitrealinjection_IOPLoweringAssignment();
-				$s->attributes = array('element_id' => $this->id, 'eye_id' => $side, 'ioplowering_id' => $id, 'is_pre' => $is_pre);
+				$s->attributes = array('element_id' => $this->id, 'eye_id' => $side, 'ioplowering_id' => $item['id'], 'is_pre' => $is_pre);
 				$save_ioplowerings[] = $s;
 			} else {
 				// don't want to delete later
-				unset($current_ioplowerings[$id]);
+				unset($current_ioplowerings[$item['id']]);
 			}
 		}
 		// save what needs saving

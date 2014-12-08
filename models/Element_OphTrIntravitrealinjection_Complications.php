@@ -176,7 +176,7 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 
 		foreach ($this->complication_assignments as $curr_comp) {
 			if ($curr_comp->eye_id == $side) {
-				$current_complications[$curr_comp->complication_id] = $curr_comp;
+				$current_complications[$curr_comp->complication_id] = $curr_comp['id'];
 			}
 		}
 
@@ -184,14 +184,14 @@ class Element_OphTrIntravitrealinjection_Complications extends SplitEventTypeEle
 		// create assignment and store for saving
 		// if there is, remove from the current complications array
 		// anything left in current complications at the end is ripe for deleting
-		foreach ($complication_ids as $comp_id) {
-			if (!array_key_exists($comp_id, $current_complications)) {
+		foreach ($complication_ids as $comp) {
+			if (!array_key_exists($comp['id'], $current_complications)) {
 				$s = new OphTrIntravitrealinjection_ComplicationAssignment();
-				$s->attributes = array('element_id' => $this->id, 'eye_id' => $side, 'complication_id' => $comp_id);
+				$s->attributes = array('element_id' => $this->id, 'eye_id' => $side, 'complication_id' => $comp['id']);
 				$save_complications[] = $s;
 			} else {
 				// don't want to delete later
-				unset($current_complications[$comp_id]);
+				unset($current_complications[$comp['id']]);
 			}
 		}
 		// save what needs saving

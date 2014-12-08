@@ -191,12 +191,12 @@ class DefaultController extends BaseEventTypeController
 	{
 		foreach (array('left', 'right') as $side) {
 			if (get_class($element) == 'Element_OphTrIntravitrealinjection_Complications') {
-				if (isset($data['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) ) {
+				if (!empty($data['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) ) {
 					$complications = array();
 
-					foreach ($data['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications'] as $comp_id) {
-						if ($comp = OphTrIntravitrealinjection_Complication::model()->findByPk($comp_id)) {
-							$complications[] = $comp;
+					foreach ($data['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications'] as $comp) {
+						if ($_comp = OphTrIntravitrealinjection_Complication::model()->findByPk($comp['id'])) {
+							$complications[] = $_comp;
 						}
 					}
 					$element->{$side . '_complications'} = $complications;
@@ -204,12 +204,12 @@ class DefaultController extends BaseEventTypeController
 			}
 			else if (get_class($element) == 'Element_OphTrIntravitrealinjection_Treatment') {
 				foreach (array('pre', 'post') as $stage) {
-					if (isset($data['Element_OphTrIntravitrealinjection_Treatment'][$side . '_' . $stage . '_ioploweringdrugs']) ) {
+					if (!empty($data['Element_OphTrIntravitrealinjection_Treatment'][$side . '_' . $stage . '_ioploweringdrugs']) ) {
 						$ioplowerings = array();
 
-						foreach ($data['Element_OphTrIntravitrealinjection_Treatment'][$side . '_' . $stage . '_ioploweringdrugs'] as $ioplowering_id) {
-							if ($ioplowering = OphTrIntravitrealinjection_IOPLoweringDrug::model()->findByPk($ioplowering_id)) {
-								$ioplowerings[] = $ioplowering;
+						foreach ($data['Element_OphTrIntravitrealinjection_Treatment'][$side . '_' . $stage . '_ioploweringdrugs'] as $ioplowering) {
+							if ($_ioplowering = OphTrIntravitrealinjection_IOPLoweringDrug::model()->findByPk($ioplowering['id'])) {
+								$ioplowerings[] = $_ioplowering;
 							}
 						}
 						$element->{$side . '_' . $stage . '_ioploweringdrugs'} = $ioplowerings;
@@ -232,7 +232,7 @@ class DefaultController extends BaseEventTypeController
 			foreach (array('left' => SplitEventTypeElement::LEFT, 'right' => SplitEventTypeElement::RIGHT) as $side => $sconst) {
 				if (get_class($el) == 'Element_OphTrIntravitrealinjection_Complications') {
 					$comps = array();
-					if (isset($data['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) &&
+					if (!empty($data['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) &&
 						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH)
 					) {
 						// only set if relevant to element side, otherwise force reset of data
@@ -243,7 +243,7 @@ class DefaultController extends BaseEventTypeController
 				else if (get_class($el) == 'Element_OphTrIntravitrealinjection_Treatment') {
 					$drugs = array();
 					if ($el->{$side . '_pre_ioplowering_required'} &&
-						isset($data['Element_OphTrIntravitrealinjection_Treatment'][$side . '_pre_ioploweringdrugs']) &&
+						!empty($data['Element_OphTrIntravitrealinjection_Treatment'][$side . '_pre_ioploweringdrugs']) &&
 						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH)
 					) {
 						// only set if relevant to element side, otherwise force reset of data
@@ -253,7 +253,7 @@ class DefaultController extends BaseEventTypeController
 					// reset for post
 					$drugs = array();
 					if ($el->{$side . '_post_ioplowering_required'} &&
-						isset($data['Element_OphTrIntravitrealinjection_Treatment'][$side . '_post_ioploweringdrugs']) &&
+						!empty($data['Element_OphTrIntravitrealinjection_Treatment'][$side . '_post_ioploweringdrugs']) &&
 						($el->eye_id == $sconst || $el->eye_id == Eye::BOTH)
 					) {
 						// only set if relevant to element side, otherwise force reset of data
