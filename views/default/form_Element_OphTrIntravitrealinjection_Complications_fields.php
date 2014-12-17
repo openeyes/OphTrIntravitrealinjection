@@ -41,14 +41,16 @@ else {
 	$complications = $element->{$side . '_complications'};
 }
 
-foreach ($complications as $complication) {
-	if ($complication->description_required) {
-		$show_desc = true;
+if (!empty($complications)) {
+	foreach ($complications as $complication) {
+		if ($complication->description_required) {
+			$show_desc = true;
+		}
 	}
 }
 ?>
 
-<div id="div_Element_OphTrIntravitrealinjection_Complications_<?php echo $side; ?>_oth_descrip" class="row field-row<?php if (!$show_desc) { echo ' hide'; } ?>">
+<div id="div_Element_OphTrIntravitrealinjection_Complications_<?php echo $side; ?>_oth_descrip" class="row field-row<?php if (!$show_desc) { echo ' hide'; }?>">
 	<div class="<?php echo $form->columns('label');?>">
 		<label for="<?php echo get_class($element)?>_<?php echo $side . '_oth_descrip'?>">
 			<?php echo $element->getAttributeLabel($side . '_oth_descrip'); ?>:

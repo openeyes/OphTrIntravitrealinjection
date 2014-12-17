@@ -191,7 +191,7 @@ class DefaultController extends BaseEventTypeController
 	{
 		foreach (array('left', 'right') as $side) {
 			if (get_class($element) == 'Element_OphTrIntravitrealinjection_Complications') {
-				if (isset($data['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) ) {
+				if (!empty($data['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications']) ) {
 					$complications = array();
 
 					foreach ($data['Element_OphTrIntravitrealinjection_Complications'][$side . '_complications'] as $comp_id) {
@@ -204,7 +204,7 @@ class DefaultController extends BaseEventTypeController
 			}
 			else if (get_class($element) == 'Element_OphTrIntravitrealinjection_Treatment') {
 				foreach (array('pre', 'post') as $stage) {
-					if (isset($data['Element_OphTrIntravitrealinjection_Treatment'][$side . '_' . $stage . '_ioploweringdrugs']) ) {
+					if (!empty($data['Element_OphTrIntravitrealinjection_Treatment'][$side . '_' . $stage . '_ioploweringdrugs']) ) {
 						$ioplowerings = array();
 
 						foreach ($data['Element_OphTrIntravitrealinjection_Treatment'][$side . '_' . $stage . '_ioploweringdrugs'] as $ioplowering_id) {
