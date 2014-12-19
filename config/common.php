@@ -20,7 +20,8 @@
 return array(
 	'params' => array(
 		'admin_menu' => array(
-			'Treatment drugs' => '/OphTrIntravitrealinjection/admin/viewTreatmentDrugs',
+			'Treatment Drugs' => '/OphTrIntravitrealinjection/admin/viewTreatmentDrugs',
+			'IOP Lowering Drugs' => '/OphTrIntravitrealinjection/admin/manageIOPLoweringDrugs',
 		),
 		'reports' => array(
 			'Intravitreal injections' => '/OphTrIntravitrealinjection/report/injections',
