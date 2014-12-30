@@ -123,4 +123,54 @@ class AdminController extends ModuleAdminController
 	{
 		$this->genericAdmin('Edit IOP Lowering Drugs', 'OphTrIntravitrealinjection_IOPLoweringDrug');
 	}
+
+	public function actionInjectionUsers()
+	{
+		$injection_users = OphTrIntravitrealinjection_InjectionUser::model()->findAll();
+		$user_ids = CHtml::listData($injection_users, 'id','id');
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition('active=1');
+		$criteria->order = 'first_name asc, last_name asc';
+
+		if (!empty($user_ids)) {
+			$criteria->addNotInCondition('id',$user_ids);
+		}
+
+		$user_list = User::model()->findAll($criteria);
+
+		$this->render('injection_users',array(
+			'injection_users' => $injection_users,
+			'user_list' => $user_list,
+		));
+	}
+
+	public function actionAddInjectionUser()
+	{
+		if (!$user = User::model()->findByPk(@$_POST['user_id'])) {
+			throw new Exception("User not found: ".@$_POST['user_id']);
+		}
+
+		$injection_user = new OphTrIntravitrealinjection_InjectionUser;
+		$injection_user->user_id = $user->id;
+
+		if (!$injection_user->save()) {
+			throw new Exception("Unable to save injection user: ".print_r($injection_user->errors,true));
+		}
+
+		echo "1";
+	}
+
+	public function actionDeleteInjectionUsers()
+	{
+		$criteria = new CDbCriteria;
+
+		$criteria->addInCondition('id',@$_POST['user_id']);
+
+		if (OphTrIntravitrealinjection_InjectionUser::model()->deleteAll($criteria)) {
+			echo "1";
+		} else {
+			echo "0";
+		}
+	}
 }
