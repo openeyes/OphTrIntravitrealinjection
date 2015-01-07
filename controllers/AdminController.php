@@ -126,7 +126,7 @@ class AdminController extends ModuleAdminController
 
 	public function actionInjectionUsers()
 	{
-		$injection_users = OphTrIntravitrealinjection_InjectionUser::model()->findAll();
+		$injection_users = OphTrIntravitrealinjection_InjectionUser::model()->with(array('user'))->findAll(array('order' => 'user.last_name, user.first_name'));
 		$user_ids = CHtml::listData($injection_users, 'id','id');
 
 		$criteria = new CDbCriteria;
