@@ -1,7 +1,15 @@
 Release History
 ===============
 
+1.8.1
+-----
++ reporting update
+
+1.8.0
+-----
+
 1.7.1
+-----
 + added support for PDF printing using wkhtmltopdf
 
 1.7.0
