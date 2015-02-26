@@ -1,0 +1,7 @@
+{
+  "name": "openeyes/openeyes",
+  "description": "Electronic Patient Record system for use in Ophthalmology clinics",
+  "require": {
+    "openeyes/eyedraw": "dev-hotfix/composer"
+  }
+}
