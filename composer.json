@@ -1,6 +1,6 @@
 {
-  "name": "openeyes/openeyes",
-  "description": "Electronic Patient Record system for use in Ophthalmology clinics",
+  "name": "openeyes/oph-tr-intravitreal-injection",
+  "description": "Records intravitreal injection events for patients within OpenEyes",
   "require": {
     "openeyes/eyedraw": "dev-hotfix/composer"
   }
