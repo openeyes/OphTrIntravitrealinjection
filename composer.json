@@ -3,7 +3,7 @@
   "description": "Records intravitreal injection events for patients within OpenEyes",
   "type": "openeyes-module",
   "require": {
-    "openeyes/eyedraw": "dev-hotfix/composer",
-    "openeyes/module-installer": "*"
+    "openeyes/module-installer": "*",
+    "openeyes/eyedraw": "dev-master"
   }
 }
