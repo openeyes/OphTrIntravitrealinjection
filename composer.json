@@ -1,0 +1,9 @@
+{
+  "name": "openeyes/oph-tr-intravitreal-injection",
+  "description": "Records intravitreal injection events for patients within OpenEyes",
+  "type": "openeyes-module",
+  "require": {
+    "openeyes/module-installer": "*",
+    "openeyes/eyedraw": "dev-master"
+  }
+}
