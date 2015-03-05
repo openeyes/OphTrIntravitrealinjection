@@ -1,5 +1,5 @@
 {
-  "name": "openeyes/oph-tr-intravitreal-injection",
+  "name": "openeyes/oph-tr-intravitrealinjection",
   "description": "Records intravitreal injection events for patients within OpenEyes",
   "type": "openeyes-module",
   "require": {
