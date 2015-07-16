@@ -18,21 +18,21 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html The GNU General Public License V3.0
  */
 
-class ReportController extends BaseReportController {
+class ReportController extends BaseReportController
+{
+    public function accessRules()
+    {
+        return array(
+            array('allow',
+                'actions' => array('injections','runReport','downloadReport'),
+                'roles' => array('OprnGenerateReport','admin'),
+            ),
+            array('deny'),
+        );
+    }
 
-	public function accessRules()
-	{
-		return array(
-			array('allow',
-				'actions' => array('injections','runReport','downloadReport'),
-				'roles' => array('OprnGenerateReport','admin'),
-			),
-			array('deny'),
-		);
-	}
-
-	public function actionInjections()
-	{
-		$this->render('injections');
-	}
+    public function actionInjections()
+    {
+        $this->render('injections');
+    }
 }

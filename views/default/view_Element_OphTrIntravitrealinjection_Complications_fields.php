@@ -26,19 +26,20 @@
 	<div class="large-8 column">
 		<div class="data-value">
 			<?php
-			if (!$element->{$side . '_complications'}) {
-				echo "None";
-			} else {
-				foreach ($element->{$side . '_complications'} as $item) {
-					echo $item->name . "<br />";
-				}
-			}
-			?>
+            if (!$element->{$side . '_complications'}) {
+                echo "None";
+            } else {
+                foreach ($element->{$side . '_complications'} as $item) {
+                    echo $item->name . "<br />";
+                }
+            }
+            ?>
 		</div>
 	</div>
 </div>
 
-<?php if ($element->{$side . '_oth_descrip'}) { ?>
+<?php if ($element->{$side . '_oth_descrip'}) {
+    ?>
 	<div class="row data-row">
 		<div class="large-4 column">
 			<div class="data-label"><?php echo $element->getAttributeLabel($side . '_oth_descrip') ?>:</div>
@@ -47,4 +48,5 @@
 			<div class="data-value"><?php echo Yii::app()->format->Ntext($element->{$side . '_oth_descrip'}) ?></div>
 		</div>
 	</div>
-<?php } ?>
+<?php 
+} ?>

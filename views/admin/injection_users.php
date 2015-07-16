@@ -25,10 +25,10 @@
 	</div>
 	<div class="row data-row">
 		<div class="large-3 column">
-			<?php echo CHtml::dropDownList('user_id','',CHtml::listData($user_list,'id','fullName'), array('empty' => '- Select user -'))?>
+			<?php echo CHtml::dropDownList('user_id', '', CHtml::listData($user_list, 'id', 'fullName'), array('empty' => '- Select user -'))?>
 		</div>
 		<div class="large-4 column end">
-			<?php echo CHtml::htmlButton("Add user",array('class' => 'button small addUser'))?>
+			<?php echo CHtml::htmlButton("Add user", array('class' => 'button small addUser'))?>
 		</div>
 	</div>
 	<form id="admin_injection_users">
@@ -36,20 +36,22 @@
 		<table class="grid">
 			<thead>
 				<tr>
-					<?php if (count($injection_users) >0) {?>
+					<?php if (count($injection_users) >0) {
+    ?>
 						<th><input type="checkbox" name="selectall" id="selectall" /></th>
-					<?php }?>
+					<?php 
+}?>
 					<th>User</th>
 				</tr>
 			</thead>
 			<tbody>
-				<?php $this->renderPartial('_injection_users',array('injection_users' => $injection_users))?>
+				<?php $this->renderPartial('_injection_users', array('injection_users' => $injection_users))?>
 			</tbody>
 		</table>
 	</form>
 	<div class="row data-row">
 		<div class="large-4 column end">
-			<?php echo CHtml::htmlButton("Delete user(s)",array('class' => 'button small deleteUser'))?>
+			<?php echo CHtml::htmlButton("Delete user(s)", array('class' => 'button small deleteUser'))?>
 		</div>
 	</div>
 </div>

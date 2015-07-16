@@ -19,18 +19,20 @@
 ?>
 
 <?php
-	$injection_api = Yii::app()->moduleAPI->get('OphTrIntravitrealinjection');
-	$current_episode = $this->patient->getEpisodeForCurrentSubspecialty();
+    $injection_api = Yii::app()->moduleAPI->get('OphTrIntravitrealinjection');
+    $current_episode = $this->patient->getEpisodeForCurrentSubspecialty();
 ?>
 
 <div class="element-fields element-eyes row">
 	<?php echo $form->hiddenInput($element, 'eye_id', false, array('class' => 'sideField')); ?>
-	<div class="element-eye right-eye left side column<?php if (!$element->hasRight()) { ?> inactive<?php } ?>"
+	<div class="element-eye right-eye left side column<?php if (!$element->hasRight()) {
+    ?> inactive<?php 
+} ?>"
 		data-side="right">
 		<div class="active-form">
 			<a href="#" class="icon-remove-side remove-side">Remove side</a>
 			<?php $this->renderPartial($element->form_view . '_fields',
-				array('side' => 'right', 'element' => $element, 'form' => $form, 'data' => $data, 'injection_api' => $injection_api, 'episode' => $current_episode)); ?>
+                array('side' => 'right', 'element' => $element, 'form' => $form, 'data' => $data, 'injection_api' => $injection_api, 'episode' => $current_episode)); ?>
 		</div>
 		<div class="inactive-form">
 			<div class="add-side">
@@ -41,12 +43,14 @@
 			</div>
 		</div>
 	</div>
-	<div class="element-eye left-eye right side column<?php if (!$element->hasLeft()) { ?> inactive<?php } ?>"
+	<div class="element-eye left-eye right side column<?php if (!$element->hasLeft()) {
+    ?> inactive<?php 
+} ?>"
 		data-side="left">
 		<div class="active-form">
 			<a href="#" class="icon-remove-side remove-side">Remove side</a>
 			<?php $this->renderPartial($element->form_view . '_fields',
-				array('side' => 'left', 'element' => $element, 'form' => $form, 'data' => $data, 'injection_api' => $injection_api, 'episode' => $current_episode)); ?>
+                array('side' => 'left', 'element' => $element, 'form' => $form, 'data' => $data, 'injection_api' => $injection_api, 'episode' => $current_episode)); ?>
 		</div>
 		<div class="inactive-form">
 			<div class="add-side">

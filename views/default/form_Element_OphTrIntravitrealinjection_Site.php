@@ -18,6 +18,6 @@
  */
 ?>
 <div class="element-fields">
-<?php echo $form->dropDownList($element, 'site_id', Site::model()->getListForCurrentInstitution(), array(), false, array('label'=>2,'field'=>3)); ?>
+<?php echo $form->dropDownList($element, 'site_id', Site::model()->getListForCurrentInstitution(), array(), false, array('label'=>2, 'field'=>3)); ?>
 </div>
 

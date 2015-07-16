@@ -21,14 +21,14 @@
 <?php $this->renderPartial('//base/_messages')?>
 <div class="hidden" id="add-new-form" style="margin-bottom: 10px">
 	<?php
-	$form = $this->beginWidget('BaseEventTypeCActiveForm', array(
-			'id'=>'clinical-create',
-			'enableAjaxValidation'=>false,
-			'action' => Yii::app()->createURL($this->module->getName() . '/admin/addTreatmentDrug')
-	));
+    $form = $this->beginWidget('BaseEventTypeCActiveForm', array(
+            'id'=>'clinical-create',
+            'enableAjaxValidation'=>false,
+            'action' => Yii::app()->createURL($this->module->getName() . '/admin/addTreatmentDrug')
+    ));
 
-	$this->endWidget();
-	?>
+    $this->endWidget();
+    ?>
 </div>
 <div class="box admin">
 	<form id="admin_treatment_drugs">
@@ -41,7 +41,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($model_list as $i => $model) {?>
+				<?php foreach ($model_list as $i => $model) {
+    ?>
 					<tr class="clickable" data-id="<?php echo $model->id?>" data-uri="OphTrIntravitrealinjection/admin/editTreatmentDrug/<?php echo $model->id?>">
 						<td><input type="checkbox" name="treatment_drugs[]" value="<?php echo $model->id?>" /></td>
 						<td>
@@ -51,7 +52,8 @@
 							<?php echo $model->active ? 'Yes' : 'No'?>
 						</td>
 					</tr>
-				<?php }?>
+				<?php 
+}?>
 			</tbody>
 			<tfoot class="pagination-container">
 				<tr>

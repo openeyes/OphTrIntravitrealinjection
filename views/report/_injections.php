@@ -32,24 +32,32 @@
 			<th>Left injection no</th>
 			<th>Right drug</th>
 			<th>Right injection no</th>
-			<?php if ($report->pre_va) {?>
+			<?php if ($report->pre_va) {
+    ?>
 				<th>Left pre-injection VA</th>
 				<th>Right pre-injection VA</th>
-			<?php }?>
-			<?php if ($report->post_va) {?>
+			<?php 
+}?>
+			<?php if ($report->post_va) {
+    ?>
 				<th>Left post-injection VA</th>
 				<th>Right post-injection VA</th>
-			<?php }?>
+			<?php 
+}?>
 		</tr>
 	<tbody>
-		<?php if (empty($report->injections)) {?>
+		<?php if (empty($report->injections)) {
+    ?>
 			<tr>
 				<td colspan="6">
 					No patients were found with the selected search criteria.
 				</td>
 			</tr>
-		<?php }else{?>
-			<?php foreach ($report->injections as $ts => $injection) {?>
+		<?php 
+} else {
+    ?>
+			<?php foreach ($report->injections as $ts => $injection) {
+    ?>
 				<tr>
 					<td><?php echo $injection['injection_date']?></td>
 					<td><?php echo $injection['patient_hosnum']?></td>
@@ -63,16 +71,25 @@
 					<td><?php echo $injection['left_injection_number']?></td>
 					<td><?php echo $injection['right_drug']?></td>
 					<td><?php echo $injection['right_injection_number']?></td>
-					<?php if ($report->pre_va) {?>
+					<?php if ($report->pre_va) {
+    ?>
 						<td><?php echo $injection['left_preinjection_va']?></td>
 						<td><?php echo $injection['right_preinjection_va']?></td>
-					<?php }?>
-					<?php if ($report->post_va) {?>
+					<?php 
+}
+    ?>
+					<?php if ($report->post_va) {
+    ?>
 						<td><?php echo $injection['left_postinjection_va']?></td>
 						<td><?php echo $injection['left_postinjection_va']?></td>
-					<?php }?>
+					<?php 
+}
+    ?>
 				</tr>
-			<?php }?>
-		<?php }?>
+			<?php 
+}
+    ?>
+		<?php 
+}?>
 	</tbody>
 </table>

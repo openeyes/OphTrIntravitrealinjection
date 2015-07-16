@@ -34,14 +34,21 @@
 	</div>
 	<div class="large-8 column">
 		<div class="data-value">
-	<?php if ($element->{$side . '_iop_check'}) {?>
+	<?php if ($element->{$side . '_iop_check'}) {
+    ?>
 		IOP should be checked
-		<?php if (Yii::app()->hasModule('OphCiPhasing')) { ?>
+		<?php if (Yii::app()->hasModule('OphCiPhasing')) {
+    ?>
 		- Please add a Phasing event.
-		<?php } ?>
-	<?php } else {?>
+		<?php 
+}
+    ?>
+	<?php 
+} else {
+    ?>
 		IOP does not need to be checked.
-	<?php } ?>
+	<?php 
+} ?>
 		</div>
 	</div>
 </div>
@@ -52,10 +59,12 @@
 	</div>
 	<div class="large-8 column">
 		<div class="data-value"><?php if ($element->{$side . '_drops'}) {
-		echo $element->{$side . '_drops'}->name;
-	} else { ?>
+    echo $element->{$side . '_drops'}->name;
+} else {
+    ?>
 		Not Recorded
-	<?php }?>
+	<?php 
+}?>
 		</div>
 	</div>
 </div>

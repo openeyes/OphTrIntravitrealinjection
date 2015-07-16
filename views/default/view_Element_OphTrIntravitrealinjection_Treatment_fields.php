@@ -45,7 +45,8 @@
 	</div>
 </div>
 
-<?php if ($element->{$side . '_pre_ioploweringdrugs'}) { ?>
+<?php if ($element->{$side . '_pre_ioploweringdrugs'}) {
+    ?>
 <div class="row data-row">
 	<div class="large-4 column">
 		<div class="data-label"><?php echo $element->getAttributeLabel($side . '_pre_ioploweringdrugs') ?>:</div>
@@ -53,14 +54,15 @@
 	<div class="large-8 column">
 		<div class="data-value">
 			<?php 
-			foreach ($element->{$side . '_pre_ioploweringdrugs'} as $item) {
-				echo $item->name . "<br />";
-			}
-			?>
+            foreach ($element->{$side . '_pre_ioploweringdrugs'} as $item) {
+                echo $item->name . "<br />";
+            }
+    ?>
 		</div>
 	</div>
 </div>
-<?php } ?>
+<?php 
+} ?>
 
 <div class="row data-row">
 	<div class="large-4 column">
@@ -112,7 +114,7 @@
 		<div class="data-label"><?php echo $element->getAttributeLabel($side . '_injection_time') ?>:</div>
 	</div>
 	<div class="large-8 column">
-		<div class="data-value"><?php echo date('H:i',strtotime($element->{$side . '_injection_time'})); ?></div>
+		<div class="data-value"><?php echo date('H:i', strtotime($element->{$side . '_injection_time'})); ?></div>
 	</div>
 </div>
 
@@ -125,7 +127,8 @@
 	</div>
 </div>
 
-<?php if ($element->{$side . '_post_ioploweringdrugs'}) { ?>
+<?php if ($element->{$side . '_post_ioploweringdrugs'}) {
+    ?>
 <div class="row data-row">
 	<div class="large-4 column">
 		<div class="data-label"><?php echo $element->getAttributeLabel($side . '_post_ioploweringdrugs') ?>:</div>
@@ -133,12 +136,13 @@
 	<div class="large-8 column">
 		<div class="data-value">
 			<?php 
-			foreach ($element->{$side . '_post_ioploweringdrugs'} as $item) {
-				echo $item->name . "<br />";
-			}
-			?>
+            foreach ($element->{$side . '_post_ioploweringdrugs'} as $item) {
+                echo $item->name . "<br />";
+            }
+    ?>
 		</div>
 	</div>
 </div>
 
-<?php } ?>
+<?php 
+} ?>

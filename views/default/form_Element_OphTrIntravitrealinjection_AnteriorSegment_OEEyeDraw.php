@@ -20,36 +20,36 @@
 
 <div class="eyedraw-row field-row anterior-segment">
 	<?php
-	$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
-		'doodleToolBarArray' => array('InjectionSite',),
-		'onReadyCommandArray' => array(
-				array('addDoodle', array('AntSeg')),
-				array('addDoodle', array('InjectionSite')),
-				array('deselectDoodles', array()),
-		),
-		/*
-		'bindingArray' => array(
-			'InjectionSite' => array(
-				'gauge' => array(
-					'id' => 'Element_OphTrIntravitrealinjection_AnteriorSegment_' + $side +' _lens_status_id',
-					'attribute' => 'data-default-distance'
-				),
-			),
-		),
-		*/
-		'listenerArray' => array('OphTrIntravitrealinjection_antSegListener'),
-		'scale' => 0.5,
-		'idSuffix' => $side.'_'.$element->elementType->id,
-		'side' => ($side == 'right') ? 'R' : 'L',
-		'mode' => 'edit',
-		'model' => $element,
-		'attribute' => $side.'_eyedraw',
-		'template' => 'OEEyeDrawWidget_InlineToolbar',
-		'fields' => $this->renderPartial($element->form_view . '_OEEyeDraw_fields', array(
-			'form' => $form,
-			'side' => $side,
-			'element' => $element
-		), true)
-	));
-	?>
+    $this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+        'doodleToolBarArray' => array('InjectionSite', ),
+        'onReadyCommandArray' => array(
+                array('addDoodle', array('AntSeg')),
+                array('addDoodle', array('InjectionSite')),
+                array('deselectDoodles', array()),
+        ),
+        /*
+        'bindingArray' => array(
+            'InjectionSite' => array(
+                'gauge' => array(
+                    'id' => 'Element_OphTrIntravitrealinjection_AnteriorSegment_' + $side +' _lens_status_id',
+                    'attribute' => 'data-default-distance'
+                ),
+            ),
+        ),
+        */
+        'listenerArray' => array('OphTrIntravitrealinjection_antSegListener'),
+        'scale' => 0.5,
+        'idSuffix' => $side.'_'.$element->elementType->id,
+        'side' => ($side == 'right') ? 'R' : 'L',
+        'mode' => 'edit',
+        'model' => $element,
+        'attribute' => $side.'_eyedraw',
+        'template' => 'OEEyeDrawWidget_InlineToolbar',
+        'fields' => $this->renderPartial($element->form_view . '_OEEyeDraw_fields', array(
+            'form' => $form,
+            'side' => $side,
+            'element' => $element
+        ), true)
+    ));
+    ?>
 </div>

@@ -43,14 +43,18 @@
 			<th>Injection no</th>
 		</tr>
 	<tbody>
-		<?php if (empty($report->injections)) {?>
+		<?php if (empty($report->injections)) {
+    ?>
 			<tr>
 				<td colspan="6">
 					No patients were found with the selected search criteria.
 				</td>
 			</tr>
-		<?php }else{?>
-			<?php foreach ($report->injections as $ts => $injection) {?>
+		<?php 
+} else {
+    ?>
+			<?php foreach ($report->injections as $ts => $injection) {
+    ?>
 				<tr>
 					<td><?php echo $injection['patient_hosnum']?></td>
 					<td><?php echo $injection['patient_firstname']?></td>
@@ -64,8 +68,11 @@
 					<td><?php echo $injection['last_injection_date']?></td>
 					<td><?php echo $injection['injection_number']?></td>
 				</tr>
-			<?php }?>
-		<?php }?>
+			<?php 
+}
+    ?>
+		<?php 
+}?>
 	</tbody>
 </table>
 <div>
