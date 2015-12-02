@@ -101,6 +101,7 @@ class Element_OphTrIntravitrealinjection_Treatment extends SplitEventTypeElement
 			array('left_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'left', 'message' => 'Left {attribute} cannot be in the past.'),
 			array('right_batch_expiry_date', 'todayOrFutureValidationIfSide', 'side' => 'right', 'message' => 'Right {attribute} cannot be in the past.'),
 			array('left_number, right_number', 'numerical', 'integerOnly' => true, 'min' => 1, 'message' => 'Number of Injections must be higher or equal to 1'),
+			array('left_number, right_number', 'numerical', 'integerOnly' => true, 'max' => 1000, 'message' => 'Number of Injections cannot exceed 1000'),
 			// The following rule is used by search().
 			array('id, event_id, eye_id, left_pre_antisept_drug_id, left_pre_skin_drug_id, left_drug_id, left_number, left_batch_number, ' .
 				'left_batch_expiry_date, left_injection_given_by_id, left_injection_time, right_pre_antisept_drug_id, right_pre_skin_drug_id, right_drug_id, ' .
