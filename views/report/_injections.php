@@ -40,6 +40,12 @@
 				<th>Left post-injection VA</th>
 				<th>Right post-injection VA</th>
 			<?php }?>
+			<th>Left Pre-injection Antiseptics</th>
+			<th>Right Pre-injection Antiseptics</th>
+			<th>Left Injection given by</th>
+			<th>Right Injection given by</th>
+			<th>Left Lens Status</th>
+			<th>Right Lens Status</th>
 		</tr>
 	<tbody>
 		<?php if (empty($report->injections)) {?>
@@ -71,6 +77,12 @@
 						<td><?php echo $injection['left_postinjection_va']?></td>
 						<td><?php echo $injection['left_postinjection_va']?></td>
 					<?php }?>
+					<td><?php echo $injection['pre_antisept_drug_left']?></td>
+					<td><?php echo $injection['pre_antisept_drug_right']?></td>
+					<td><?php echo $injection['given_by_left']?></td>
+					<td><?php echo $injection['given_by_right']?></td>
+					<td><?php echo $injection['lens_status_left']?></td>
+					<td><?php echo $injection['lens_status_right']?></td>
 				</tr>
 			<?php }?>
 		<?php }?>
