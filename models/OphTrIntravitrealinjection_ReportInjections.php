@@ -409,6 +409,21 @@ class OphTrIntravitrealinjection_ReportInjections extends BaseReport
 			$applicationData = $command2->queryRow();
 			if($applicationData){
 				// TODO: add application module selects here!!!
+				$criteria2 = new CDbCriteria();
+				$criteria2->addCondition('event_id', $eventData['id']);
+				$applicationData = Element_OphCoTherapyapplication_Therapydiagnosis::model()->findAll($criteria2);
+				if($injectionManagementData){
+					if(isset($applicationData->left_diagnosis2_id) && $applicationData->left_diagnosis2_id > 0){
+						$left_diagnosis_id = $applicationData->left_diagnosis2_id;
+					}else if(isset($applicationData->left_diagnosis1_id) && $applicationData->left_diagnosis1_id > 0){
+						$left_diagnosis_id = $applicationData->left_diagnosis1_id;
+					}
+					if(isset($applicationData->right_diagnosis2_id) && $applicationData->right_diagnosis2_id > 0){
+						$right_diagnosis_id = $applicationData->right_diagnosis2_id;
+					}else if(isset($applicationData->right_diagnosis1_id) && $applicationData->right_diagnosis1_id > 0){
+						$right_diagnosis_id = $applicationData->right_diagnosis1_id;
+					}
+				}
 			}
 		}
 		return array('left_diagnosis_id'=>$left_diagnosis_id,'right_diagnosis_id'=>$right_diagnosis_id );
