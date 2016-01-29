@@ -46,6 +46,8 @@
 			<th>Right Injection given by</th>
 			<th>Left Lens Status</th>
 			<th>Right Lens Status</th>
+			<th>Left Diagnosis</th>
+			<th>Right Diagnosis</th>
 		</tr>
 	<tbody>
 		<?php if (empty($report->injections)) {?>
@@ -83,6 +85,9 @@
 					<td><?php echo $injection['given_by_right']?></td>
 					<td><?php echo $injection['lens_status_left']?></td>
 					<td><?php echo $injection['lens_status_right']?></td>
+					<td><?php echo $injection['diagnosis_left']?></td>
+					<td><?php echo $injection['diagnosis_right']?></td>
+
 				</tr>
 			<?php }?>
 		<?php }?>
