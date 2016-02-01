@@ -348,21 +348,13 @@ class OphTrIntravitrealinjection_ReportInjections extends BaseReport
 			if ($this->post_va) {
 				$output .= ",Left post-injection VA,Right post-injection VA";
 			}
-			$output .= ",Left Pre-injection Antiseptics,Right Pre-injection Antiseptics,Left Injection given by,Right Injection given by,Left Lens Status,Right Lens Status\n";
+			$output .= ",Left Pre-injection Antiseptics,Right Pre-injection Antiseptics,Left Injection given by,Right Injection given by,Left Lens Status,Right Lens Status,Left Diagnosis,Right Diagnosis\n";
 		}
 
 		return $output . $this->array2Csv($this->injections);
 	}
 
-	/**
-	 *  a) From the injection management element under Examination event saved before the injection event - usually on the same day
-	 *	b) If no injection management saved then this can be obtained from the application event If there is an application event saved before the injection started for the patient
-	 *	c) if there is no application then diagnoses for the episode
-	 */
-	protected function getDiagnosisData($patient_id, $close_to_date){
-
-		// check for examination data
-		// search for the closest examination event first
+	protected function getDiagnosisDataFromEvent($patient_id, $close_to_date, $event_type_id, $model){
 		$command = Yii::app()->db->createCommand()
 			->select(
 				"e.id"
@@ -370,8 +362,9 @@ class OphTrIntravitrealinjection_ReportInjections extends BaseReport
 			->from("event e")
 			->join("episode ep", "e.episode_id = ep.id")
 			->where("e.deleted = 0 and ep.deleted = 0 and ep.patient_id = :patient_id and e.event_type_id = :etype_id and e.event_date<= :close_date",
-				array(':patient_id' => $patient_id, ':etype_id' => $this->getExaminationEventTypeId(), ':close_date' => $close_to_date )
+				array(':patient_id' => $patient_id, ':etype_id' => $event_type_id, ':close_date' => $close_to_date )
 			)->order("event_date desc")->limit(1);
+
 		$eventData = $command->queryRow();
 
 		$left_diagnosis_id = 0;
@@ -379,8 +372,11 @@ class OphTrIntravitrealinjection_ReportInjections extends BaseReport
 
 		if($eventData){
 			$criteria = new CDbCriteria();
-			$criteria->addCondition('event_id', $eventData['id']);
-			$injectionManagementData = OEModule\OphCiExamination\models\Element_OphCiExamination_InjectionManagementComplex::model()->findAll($criteria);
+			$criteria->addCondition('event_id = '.$eventData['id'] );
+			$injectionManagementData = $model::model()->find($criteria);
+
+			//var_dump($injectionManagementData);
+
 			if($injectionManagementData){
 				if(isset($injectionManagementData->left_diagnosis2_id) && $injectionManagementData->left_diagnosis2_id > 0){
 					$left_diagnosis_id = $injectionManagementData->left_diagnosis2_id;
@@ -394,39 +390,27 @@ class OphTrIntravitrealinjection_ReportInjections extends BaseReport
 				}
 			}
 		}
-
-		if(!$left_diagnosis_id || !$right_diagnosis_id){
-			// check for application event data
-			$command2 = Yii::app()->db->createCommand()
-				->select(
-					"e.id"
-				)
-				->from("event e")
-				->join("episode ep", "e.episode_id = ep.id")
-				->where("e.deleted = 0 and ep.deleted = 0 and ep.patient_id = :patient_id and e.event_type_id = :etype_id and e.event_date<= :close_date",
-					array(':patient_id' => $patient_id, ':etype_id' => $this->getApplicationEventTypeID(), ':close_date' => $close_to_date)
-				)->order("event_date desc")->limit(1);
-			$applicationData = $command2->queryRow();
-			if($applicationData){
-				// TODO: add application module selects here!!!
-				$criteria2 = new CDbCriteria();
-				$criteria2->addCondition('event_id', $eventData['id']);
-				$applicationData = Element_OphCoTherapyapplication_Therapydiagnosis::model()->findAll($criteria2);
-				if($injectionManagementData){
-					if(isset($applicationData->left_diagnosis2_id) && $applicationData->left_diagnosis2_id > 0){
-						$left_diagnosis_id = $applicationData->left_diagnosis2_id;
-					}else if(isset($applicationData->left_diagnosis1_id) && $applicationData->left_diagnosis1_id > 0){
-						$left_diagnosis_id = $applicationData->left_diagnosis1_id;
-					}
-					if(isset($applicationData->right_diagnosis2_id) && $applicationData->right_diagnosis2_id > 0){
-						$right_diagnosis_id = $applicationData->right_diagnosis2_id;
-					}else if(isset($applicationData->right_diagnosis1_id) && $applicationData->right_diagnosis1_id > 0){
-						$right_diagnosis_id = $applicationData->right_diagnosis1_id;
-					}
-				}
-			}
-		}
+		//var_dump('Patient: '.$patient_id.' LEFT: '.$left_diagnosis_id." RIGHT: ".$right_diagnosis_id." Command: ".$command->getText()." :: ".print_r($command->params));
 		return array('left_diagnosis_id'=>$left_diagnosis_id,'right_diagnosis_id'=>$right_diagnosis_id );
+	}
+
+	/**
+	 *  a) From the injection management element under Examination event saved before the injection event - usually on the same day
+	 *	b) If no injection management saved then this can be obtained from the application event If there is an application event saved before the injection started for the patient
+	 *	c) if there is no application then diagnoses for the episode
+	 */
+	protected function getDiagnosisData($patient_id, $close_to_date){
+
+		// check for examination data
+		// search for the closest examination event first
+
+		$diagnosisData = $this->getDiagnosisDataFromEvent($patient_id, $close_to_date, $this->getExaminationEventTypeId(), 'OEModule\OphCiExamination\models\Element_OphCiExamination_InjectionManagementComplex');
+
+		if(!$diagnosisData['left_diagnosis_id'] || !$diagnosisData['right_diagnosis_id']){
+			$diagnosisData = $this->getDiagnosisDataFromEvent($patient_id, $close_to_date, $this->getApplicationEventTypeID(), 'Element_OphCoTherapyapplication_Therapydiagnosis');
+		}
+
+		return $diagnosisData;
 	}
 
 	/**
