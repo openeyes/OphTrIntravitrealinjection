@@ -340,7 +340,7 @@ class OphTrIntravitrealinjection_ReportInjections extends BaseReport
 			}
 			$output .= "\n";
 		} else {
-			$output .= 'Date,'.Patient::model()->getAttributeLabel('hos_num').','.Patient::model()->getAttributeLabel('first_name').','.Patient::model()->getAttributeLabel('last_name').','.Patient::model()->getAttributeLabel('gender').','.Patient::model()->getAttributeLabel('dob').",Eye,Site,Left drug,Left injection no,Right drug,Right injection no";
+			$output .= 'Date,'.Patient::model()->getAttributeLabel('hos_num').','.Patient::model()->getAttributeLabel('first_name').','.Patient::model()->getAttributeLabel('last_name').','.Patient::model()->getAttributeLabel('gender').','.Patient::model()->getAttributeLabel('dob').",Eye,Site,Left drug,Left injection no,Right drug,Right injection no,Left Pre-injection Antiseptics,Right Pre-injection Antiseptics,Left Injection given by,Right Injection given by,Left Lens Status,Right Lens Status,Left Diagnosis,Right Diagnosis";
 
 			if ($this->pre_va) {
 				$output .= ",Left pre-injection VA,Right pre-injection VA";
@@ -348,7 +348,7 @@ class OphTrIntravitrealinjection_ReportInjections extends BaseReport
 			if ($this->post_va) {
 				$output .= ",Left post-injection VA,Right post-injection VA";
 			}
-			$output .= ",Left Pre-injection Antiseptics,Right Pre-injection Antiseptics,Left Injection given by,Right Injection given by,Left Lens Status,Right Lens Status,Left Diagnosis,Right Diagnosis\n";
+			$output .= "\n";
 		}
 
 		return $output . $this->array2Csv($this->injections);
